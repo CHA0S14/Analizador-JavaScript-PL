@@ -15,17 +15,17 @@ public class TransicionLexico extends Transicion {
 	// Acciones semanticas correspondientes a la transicion
 	private String[] accionesSemanticas;
 
-	public TransicionLexico(char caracter, int estado, String[] accionesSemanticas) {
-		super(caracter, estado);
+	public TransicionLexico(String regex, int estado, String[] accionesSemanticas) {
+		super(regex, estado);
 		this.accionesSemanticas = accionesSemanticas;
 	}
 
-	public TransicionLexico(char caracter, int estado) {
-		super(caracter, estado);
+	public TransicionLexico(String regex, int estado) {
+		super(regex, estado);
 	}
 
-	public TransicionLexico(char caracter) {
-		super(caracter);
+	public TransicionLexico(String regex) {
+		super(regex);
 	}
 
 	public String[] getAccionesSemanticas() {

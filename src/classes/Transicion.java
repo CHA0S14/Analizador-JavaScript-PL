@@ -1,5 +1,7 @@
 package classes;
 
+import java.util.regex.Pattern;
+
 /**
  * 
  * @author Ismael Ortega Sanchez
@@ -10,21 +12,21 @@ package classes;
  */
 public class Transicion {
 	// Caracter que lanza la transicion
-	private char caracter;
+	private String regex;
 	// Estado destino del automata
 	private int estado;
 
-	public Transicion(char caracter, int estado) {
-		this.caracter = caracter;
+	public Transicion(String regex, int estado) {
+		this.regex = regex;
 		this.estado = estado;
 	}
 
-	public Transicion(char caracter) {
-		this.caracter = caracter;
+	public Transicion(String regex) {
+		this.regex = regex;
 	}
 
-	public char getCaracter() {
-		return caracter;
+	public String getRegex() {
+		return regex;
 	}
 
 	public int getEstado() {
@@ -42,9 +44,9 @@ public class Transicion {
 	 */
 	public boolean equals(Object arg0) {
 		// Comprueba que el objeto recibido es de la clase Transicion
-		if (arg0 instanceof Transicion) {
-			// Compara los caracteres y se devuelve el resultado
-			return this.caracter == ((Transicion) arg0).getCaracter();
+		if (arg0 instanceof String) {
+			//Compila la expresion regular y compara con el string a ver si lo contiene
+			return Pattern.matches(regex, (String)arg0);
 		}
 		return false;
 	}
