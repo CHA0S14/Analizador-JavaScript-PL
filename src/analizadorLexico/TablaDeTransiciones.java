@@ -13,9 +13,9 @@ import java.util.List;
  */
 public class TablaDeTransiciones {
 	// Tabla de transiciones del automata
-	private List<List<TransicionLexico>> tabla = new ArrayList<List<TransicionLexico>>();
+	private static List<List<TransicionLexico>> tabla = new ArrayList<List<TransicionLexico>>();
 
-	public TablaDeTransiciones() {
+	static {
 		// Creo las listas de transicion por cada estado
 		TransicionLexico[] estado0 = {};
 
@@ -33,11 +33,11 @@ public class TablaDeTransiciones {
 	 *            Caracter leido del fichero que lanza la transicion
 	 * @return Transicion a realizar
 	 */
-	public TransicionLexico getTransicion(int estado, char caracter) {
+	public static TransicionLexico getTransicion(int estado, char caracter) {
 		@SuppressWarnings("unlikely-arg-type") // Como el equals de transicion realmente trabaja con un string, nos vale
 												// lo siguiente pero java te pone un warning para que tengas cuidad por
 												// eso el supress warning
-		int indice = this.tabla.get(estado).indexOf("" + caracter);
-		return this.tabla.get(estado).get(indice);
+		int indice = tabla.get(estado).indexOf("" + caracter);
+		return tabla.get(estado).get(indice);
 	}
 }
