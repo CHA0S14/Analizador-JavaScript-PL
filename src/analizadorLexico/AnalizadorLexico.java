@@ -57,16 +57,28 @@ public class AnalizadorLexico {
 	 *            Array de int que contiene las codificaciones de las acciones
 	 *            semanticas a realizar
 	 */
-	private int[] realizarAccionSemantica(int[] accionesSemanticas) {
+	private int[] realizarAccionSemantica(char[] accionesSemanticas) {
 		int[] token = null;
 		// Recorro la lista de acciones semanticas recibidas
-		for (int accion : accionesSemanticas) {
+		for (char accion : accionesSemanticas) {
 			// Dependiendo del valor realizo una accion u otra
 			switch (accion) {
-			case 0: // Leer
+			case 'L': // Leer
 				leerCaracter();
 				break;
-			case 1:
+			case 'N': // Crear numero
+				break;
+			case 'D': // Incrementar numero decimal
+				break;
+			case 'O': // Incrementar numero octal
+				break;
+			case 'H': // Incrementar numero hexadecimal
+				break;
+			case 'S': // Crear cadena
+				break;
+			case 'C': // Concatenar caracter
+				break;
+			case 'T': // Crear token
 				break;
 			}
 		}
