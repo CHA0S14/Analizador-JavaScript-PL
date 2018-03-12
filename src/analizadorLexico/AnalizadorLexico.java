@@ -54,6 +54,11 @@ public class AnalizadorLexico {
 			// semantica genera un token lo capturo para devolverlo
 			token = realizarAccionSemantica(transicion.getAccionesSemanticas());
 		}
+
+		// Reseteo los valores de las variables auxiliares
+		numero = -1;
+		cadena = null;
+
 		return token;
 	}
 
