@@ -19,6 +19,10 @@ public class TablaDeTransiciones {
 
 	static {
 		// Creo las listas de transicion por cada estado
+
+		// Este estado es el estado inicial del automata del analizador lexico, se
+		// encarga de iniciar la lectura de algunos tokens y crear los tokens
+		// , ; ( ) { } y EOF
 		TransicionLexico[] estado0 = {
 				// Si llega una / se va a al estado 1 y la accion semantica es la de lectura
 				// se espera que sea un comentario, de line o bloque, o el token / o /=
@@ -100,6 +104,10 @@ public class TablaDeTransiciones {
 				// se queda en el estado 0 y lee el siguiente caracter
 				new TransicionLexico("( |\r|\t|\n)", 0, new String[] { "L" }) };
 
+		// Este estado se encarga de identificar que hacer con el / recibido
+		// anteriormente, si llega otra / es un comentario de linea, si llega un * es un
+		// comentario de bloque, si llega un igual es un token /= y si llega cualquier
+		// otra cosa es un token /
 		TransicionLexico[] estado1 = {
 				// Si llega una / es que se ha generado un comentario de line, se va al estado 2
 				// y se lee el siguiente caracter
@@ -114,6 +122,8 @@ public class TablaDeTransiciones {
 				// "[^/|\\*|=]" Esto simboliza cualquier cosa que no se /, * o =
 				new TransicionLexico("[^/|\\*|=]", -1, new String[] { "T4" }) };
 
+		// Estado que se encarga del comentario en linea y se encarfa de pasar todos los
+		// caracteres esperando a un salto de linea
 		TransicionLexico[] estado2 = {
 				// Si llega un salto de linea el comentario de linea ha acabado y volvemos al
 				// estado 0 y leemos el siguiente caracter
@@ -122,6 +132,9 @@ public class TablaDeTransiciones {
 				// sigue en el estado dos y se lee el siguiente caracter
 				new TransicionLexico("[^\n]", 2, new String[] { "L" }) };
 
+		// Estado que se encarga del comentario en bloque y pasa todos los caracteres
+		// del programa esperando por un asterisco que es el primero de los dos
+		// caracteres que finalizan un comentario de bloque
 		TransicionLexico[] estado3 = {
 				// Si llega un * es posible que se este acabando el comentario de bloque asi que
 				// se va al estado 4 que se va a encargar de comprobar si finaliza o solo es un
@@ -131,6 +144,7 @@ public class TablaDeTransiciones {
 				// estado 3, ademas se lee el siguiente caracter
 				new TransicionLexico("[^\\*]", 3, new String[] { "L" }) };
 
+		// Estado que comprueba si un comentario de bloque va a finalizar o no
 		TransicionLexico[] estado4 = {
 				// Si llega un / el comentario de bloque se ha acabado y se vuelve al estado 0
 				// leyendo el siguiente caracter
@@ -143,45 +157,230 @@ public class TablaDeTransiciones {
 				// que se vuelve al estado 3 y se lee el siguiente caracter
 				new TransicionLexico("[^/|\\*]", 3, new String[] { "L" }) };
 
-		TransicionLexico[] estado5 = {};
-		
-		TransicionLexico[] estado6 = {};
-		
-		TransicionLexico[] estado7 = {};
-		
-		TransicionLexico[] estado8 = {};
-		
-		TransicionLexico[] estado9 = {};
-		
-		TransicionLexico[] estado10 = {};
-		
-		TransicionLexico[] estado11 = {};
-		
-		TransicionLexico[] estado12 = {};
-		
-		TransicionLexico[] estado13 = {};
-		
-		TransicionLexico[] estado14 = {};
-		
-		TransicionLexico[] estado15 = {};
-		
-		TransicionLexico[] estado16 = {};
-		
-		TransicionLexico[] estado17 = {};
-		
-		TransicionLexico[] estado18 = {};
-		
-		TransicionLexico[] estado19 = {};
-		
-		TransicionLexico[] estado20 = {};
-		
-		TransicionLexico[] estado21 = {};
-		
-		TransicionLexico[] estado22 = {};
-		
-		TransicionLexico[] estado23 = {};
-		
-		TransicionLexico[] estado24 = {};
+		// Estado que se encarga de generar los tokens que empiezan por '-':
+		// -, -- y -=
+		TransicionLexico[] estado5 = {
+				// Si llega un - es el segundo - seguido asi que se va al estado final -1 y se
+				// genera un token 16 reservado para el --
+				new TransicionLexico("-", -1, new String[] { "T16" }),
+				// Si llega un igual se va al estado final -1 y se genera un token 19 reservado
+				// al -=
+				new TransicionLexico("=", -1, new String[] { "T19" }),
+				// Si llega cualquier otro caracter se va al estado finale -1 y se genera un
+				// token 2 reservado al -
+				new TransicionLexico("[^-|=]", -1, new String[] { "T2" }) };
+
+		// Este estado se encarga de montar el token numerico decimal distinto de 0
+		TransicionLexico[] estado6 = {
+				// Si llega un numero cualquiera se aniade el valor a la variable interna
+				// numerica de la siguiente manera:
+				// numero = 10 * numero + valor_leido
+				// Ademas se lee el siguiente caracter y se queda en el estado 6
+				new TransicionLexico("[0-9]", 6, new String[] { "D", "L" }),
+				// Si llega cualquier otro caracter se comprueba que el numero acumulado no sea
+				// mayor a 32767 y se genera el token numerico codificado con el valor 25 y que
+				// de segundo valor tiene el valor numerico de la variable interna y pasamos al
+				// estado final -1
+				new TransicionLexico("[^0-9]", -1, new String[] { "E", "T25" }) };
+
+		// Este estado se encarga de identificar si se va a generar un token numerico
+		// ( el cual genera ) decimal igual a cero, un numero octar o uno hexadecimal
+		TransicionLexico[] estado7 = {
+				// Si llega un numero del 0 al 7 se esta recibiendo un numero octal asi que se
+				// va al estado 8 y se inicia un numero nuevo con el valor leido en la variable
+				// interna y se lee el siguiente valor
+				new TransicionLexico("[0-7]", 8, new String[] { "N", "L" }),
+				// Si llega una equis se esta recibiendo un numero hexadecimal asi que se viaja
+				// al estado 9 y se lee el siguiente caracter
+				new TransicionLexico("x", 9, new String[] { "L" }),
+				// Si llega cualquier otro caracter se comprueba que el valor de la variable
+				// numerica interna no supere 32767 y se pasa a crear un token 25 cuyo segundo
+				// valor es el valor de la variable numerica interna, ademas se viaja al estado
+				// final -1
+				new TransicionLexico("[^0-7|x]", -1, new String[] { "E", "T25" }) };
+
+		// Este estado se encarga de montar el numero octal y de generar su token
+		TransicionLexico[] estado8 = {
+				// Si llega un valor numerico octal se añade a la variable numerica interna de
+				// la siguiente manera:
+				// numero = 8 * numero + valor_leido
+				// ademas se lee el siguiente caracter y nos quedamos en el estado 8
+				new TransicionLexico("[0-7]", 8, new String[] { "O", "L" }),
+				// Si llega cualquier otro caracter se comprueba que el valor de la variable
+				// numerica interna no supere 32767 y se pasa a crear un token 25 cuyo segundo
+				// valor es el valor de la variable numerica interna, ademas se viaja al estado
+				// final -1
+				new TransicionLexico("[^0-7]", -1, new String[] { "E", "T25" }) };
+
+		// Este estado se encarga de iniciar la lectura del numero hexadecimal
+		TransicionLexico[] estado9 = {
+				// Si llega un numero hexadecimal se le asigna a la variable numerica interna el
+				// valor recibido, si es una letra se transforma a decimal, ademas se va al
+				// estado 10 y se lee el sigueinte caracter
+				new TransicionLexico("[0-9|A-F]", 10, new String[] { "F", "L" }) };
+
+		// Este estado se encarga de montar el numero hexadecimal y de generar el token
+		// numerico
+		TransicionLexico[] estado10 = {
+				// Si llega un valor numerico hexadecimal se añade su valor decimal al la
+				// variable numerica interna de la siguiente manera:
+				// numero = 16 * numero + valor_leido
+				// ademas se lee el siguiente caracter y nos quedamos en el estado 10
+				new TransicionLexico("[0-9|A-F]", 10, new String[] { "H", "L" }),
+				// Si llega cualquier otro caracter se comprueba que el valor de la variable
+				// numerica interna no supere 32767 y se pasa a crear un token 25 cuyo segundo
+				// valor es el valor de la variable numerica interna, ademas se viaja al estado
+				// final -1
+				new TransicionLexico("[^0-9|A-F]", -1, new String[] { "E", "T25" }) };
+
+		// Este estado se encarga de montar la cadena de variable String creado con
+		// comillas dobles
+		TransicionLexico[] estado11 = {
+				// Si llegan unas comillas el string se ha acabado con lo que se va al estado
+				// final -1 y se genera el token 26 cuyo segundo valor es la cadena en si
+				new TransicionLexico("\"", -1, new String[] { "T26" }),
+				// Si llega un \ el cual es un caracter de escape, se va al estado 12, se
+				// concatena y se lee
+				// el siguiente el caracter
+				new TransicionLexico("\\\\", 12, new String[] { "C", "L" }),
+				// Si llega cualquier otro caracter se concatena en la cadena interna y se lee
+				// el siguiente caracter, ademas se queda en el estado 11
+				new TransicionLexico("[^\"|\\\\]", 11, new String[] { "C", "L" }) };
+
+		// Este estado se encarga de comprobar que detras del caracter de escape de un
+		// string sea un caracter valido siendo estos:
+		// n, t, ", \
+		TransicionLexico[] estado12 = {
+				// Si llega un caracter valido se va al estado 11, se concatena el valor y se
+				// lee el siguiente caracter
+				new TransicionLexico("[n|t|\"|\\\\]", 11, new String[] { "C", "L" }) };
+
+		// Este estado se encarga de montar la cadena de variable String creado con
+		// comillas simples
+		TransicionLexico[] estado13 = {
+				// Si llegan unas comillas simples el string se ha acabado con lo que se va al
+				// estado final -1 y se genera el token 26 cuyo segundo valor es la cadena en si
+				new TransicionLexico("'", -1, new String[] { "T26" }),
+				// Si llega un \ el cual es un caracter de escape, se va al estado 14, se
+				// concatena y se lee
+				// el siguiente el caracter
+				new TransicionLexico("\\\\", 14, new String[] { "C", "L" }),
+				// Si llega cualquier otro caracter se concatena en la cadena interna y se lee
+				// el siguiente caracter, ademas se queda en el estado 13
+				new TransicionLexico("[^'|\\\\]", 13, new String[] { "C", "L" }) };
+
+		// Este estado se encarga de comprobar que detras del caracter de escape de un
+		// string sea un caracter valido siendo estos:
+		// n, t, ', \
+		TransicionLexico[] estado14 = {
+				// Si llega un caracter valido se va al estado 13, se concatena el valor y se
+				// lee el siguiente caracter
+				new TransicionLexico("[n|t|'|\\\\]", 13, new String[] { "C", "L" }) };
+
+		// este estado se encarga de comprobar que token generar con el mas:
+		// ++, += o +
+		TransicionLexico[] estado15 = {
+				// Si llega un mas se va al estado final -1 y se genera el token 15 reservado
+				// para el ++
+				new TransicionLexico("+", -1, new String[] { "T15" }),
+				// Si llega un igual se va al estado final -1 y se genera el token 18 reservado
+				// para el +=
+				new TransicionLexico("=", -1, new String[] { "T18" }),
+				// Si llega cualquier otro caracter se va al estado final -1 y se genera el
+				// token 1 reservado al +
+				new TransicionLexico("[^=|+]", -1, new String[] { "T1" }) };
+
+		// este estado se encarga de comprobar que token generar con el por:
+		// * o *=
+		TransicionLexico[] estado16 = {
+				// Si llega un igual se va al estado final -1 y se genera el token 20 reservado
+				// para el *=
+				new TransicionLexico("=", -1, new String[] { "T20" }),
+				// Si llega cualquier otro caracter se va al estado final -1 y se genera el
+				// token 3 reservado al *
+				new TransicionLexico("[^=]", -1, new String[] { "T3" }) };
+
+		// este estado se encarga de comprobar que token generar con el modelo:
+		// % o %=
+		TransicionLexico[] estado17 = {
+				// Si llega un igual se va al estado final -1 y se genera el token 22 reservado
+				// para el %=
+				new TransicionLexico("=", -1, new String[] { "T22" }),
+				// Si llega cualquier otro caracter se va al estado final -1 y se genera el
+				// token 5 reservado al %
+				new TransicionLexico("[^=]", -1, new String[] { "T5" }) };
+
+		// este estado se encarga de comprobar que token generar con el igual:
+		// = o ==
+		TransicionLexico[] estado18 = {
+				// Si llega un igual se va al estado final -1 y se genera el token 6 reservado
+				// para el ==
+				new TransicionLexico("=", -1, new String[] { "T6" }),
+				// Si llega cualquier otro caracter se va al estado final -1 y se genera el
+				// token 17 reservado al =
+				new TransicionLexico("[^=]", -1, new String[] { "T17" }) };
+
+		// este estado se encarga de comprobar que token generar con el &:
+		// & o &=
+		TransicionLexico[] estado19 = {
+				// Si llega un igual se va al estado final -1 y se genera el token 23 reservado
+				// para el &=
+				new TransicionLexico("=", -1, new String[] { "T23" }),
+				// Si llega un & se va al estado final -1 y se genera el token 12 reservado al
+				// &&
+				new TransicionLexico("&", -1, new String[] { "T12" }) };
+
+		// este estado se encarga de comprobar que token generar con el |:
+		// | o |=
+		TransicionLexico[] estado20 = {
+				// Si llega un igual se va al estado final -1 y se genera el token 23 reservado
+				// para el |=
+				new TransicionLexico("=", -1, new String[] { "T24" }),
+				// Si llega un | se va al estado final -1 y se genera el token 12 reservado al
+				// &&
+				new TransicionLexico("|", -1, new String[] { "T13" }) };
+
+		// este estado se encarga de concatenar la cadena que hace de identificador
+		TransicionLexico[] estado21 = {
+				// Si llega una letra, una barra baja o un numero, se sigue leyendo el
+				// identificador asi que se concatena la cadena y se pasa al siguiente caracter
+				new TransicionLexico("[a-zA-Z|_|[0-9]", -1, new String[] { "C", "L" }),
+				// Se llega cualquier otro caracter se comprueba que la cadena formada es una
+				// palabra reservada o un identificador, ademas si es un identificador, se
+				// mirara si estamos en zona de declaracion, por ultimo se generara el token
+				// necesario, no sale en el array de acciones semanticas porque se añadira
+				// dinamicamente segun sea necesario
+				new TransicionLexico("[^a-zA-Z|_|[0-9]", -1, new String[] { "P" }) };
+
+		// este estado se encarga de comprobar que token generar con el >:
+		// > o >=
+		TransicionLexico[] estado22 = {
+				// Si llega un igual se va al estado final -1 y se genera el token 11 reservado
+				// para el >=
+				new TransicionLexico("=", -1, new String[] { "T11" }),
+				// Si llega cualquier otro caracter se va al estado final -1 y se genera el
+				// token 9 reservado al >
+				new TransicionLexico("[^=]", -1, new String[] { "T9" }) };
+
+		// este estado se encarga de comprobar que token generar con el >:
+		// < o <=
+		TransicionLexico[] estado23 = {
+				// Si llega un igual se va al estado final -1 y se genera el token 10 reservado
+				// para el <=
+				new TransicionLexico("=", -1, new String[] { "T10" }),
+				// Si llega cualquier otro caracter se va al estado final -1 y se genera el
+				// token 8 reservado al <
+				new TransicionLexico("[^=]", -1, new String[] { "T8" }) };
+
+		// este estado se encarga de comprobar que token generar con la !:
+		// ! o !=
+		TransicionLexico[] estado24 = {
+				// Si llega un igual se va al estado final -1 y se genera el token 7 reservado
+				// para el !=
+				new TransicionLexico("=", -1, new String[] { "T7" }),
+				// Si llega cualquier otro caracter se va al estado final -1 y se genera el
+				// token 14 reservado al !
+				new TransicionLexico("[^=]", -1, new String[] { "T14" }) };
 
 		// Añado las transiciones de los estados a la tabla
 		tabla.add(Arrays.asList(estado0));
@@ -223,9 +422,10 @@ public class TablaDeTransiciones {
 	 * @return Transicion a realizar
 	 */
 	public static TransicionLexico getTransicion(int estado, char caracter) {
-		@SuppressWarnings("unlikely-arg-type") // Como el equals de transicion realmente trabaja con un string, nos vale
-												// lo siguiente pero java te pone un warning para que tengas cuidad por
-												// eso el supress warning
+		// Como el equals de transicion realmente trabaja con un string, nos vale
+		// lo siguiente pero java te pone un warning para que tengas cuidad por
+		// eso el supress warning
+		@SuppressWarnings("unlikely-arg-type")
 		int indice = tabla.get(estado).indexOf("" + caracter);
 		return tabla.get(estado).get(indice);
 	}

@@ -81,6 +81,8 @@ public class AnalizadorLexico {
 				break;
 			case "N": // Crear numero
 				break;
+			case "F": // Crear numero hexadecimal
+				break;
 			case "D": // Incrementar numero decimal
 				break;
 			case "O": // Incrementar numero octal
