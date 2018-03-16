@@ -7,7 +7,7 @@ package analizadorLexico.tablas;
  *
  */
 public class TablaPalabrasReservadas {
-	private final String[] palabrasReservadas = { "true", "false", "var", "int", "bool", "chars", "write", "promp",
+	private static final String[] palabrasReservadas = { "true", "false", "var", "int", "bool", "chars", "write", "prompt",
 			"return", "if", "else", "while", "do", "for", "switch", "case", "break", "default", "funtion" };
 
 	/**
@@ -18,7 +18,7 @@ public class TablaPalabrasReservadas {
 	 *            Cadena que se desea comprobar si es una palabra reservada
 	 * @return Codigo del token para la palabra reservada o -1 si no existe
 	 */
-	public int getCodigoPalabraReservada(String palabraReservada) {
+	public static int getCodigoPalabraReservada(String palabraReservada) {
 		int index = -1;
 		int i = 0;
 		// Recorremos las tabla en busca de la palabra reservada

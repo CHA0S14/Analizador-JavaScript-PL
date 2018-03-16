@@ -7,34 +7,33 @@ package analizadorLexico;
  *         Clase que simboliza un token del analizador lexico
  */
 public class Token {
-	private int token; // Valor codificado del token
-	private int valorNumerico = -1; // Valor numerico del token si procede
-	private String valorCadena = null; // Valor de cadena del token si procede
-	
+	private int codigo; // Codigo del token
+	private int atributo = -1; // Valor del atributo del token
+	private String atributoCadena = null; // Lexema de la cadena
+
 	public Token(int token) {
-		super();
-		this.token = token;
+		this.codigo = token;
 	}
 
 	public Token(int token, int valorNumerico) {
-		this.token = token;
-		this.valorNumerico = valorNumerico;
+		this.codigo = token;
+		this.atributo = valorNumerico;
 	}
 
 	public Token(int token, String cadena) {
-		this.token = token;
-		this.valorCadena = cadena;
+		this.codigo = token;
+		this.atributoCadena = cadena;
 	}
 
 	public int getToken() {
-		return token;
+		return codigo;
 	}
 
-	public int getValorNumerico() {
-		return valorNumerico;
+	public int getAtributo() {
+		return atributo;
 	}
 
-	public String getValorCadena() {
-		return valorCadena;
+	public String getAtributoCadena() {
+		return atributoCadena;
 	}
 }

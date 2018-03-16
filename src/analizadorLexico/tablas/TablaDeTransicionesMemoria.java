@@ -13,7 +13,7 @@ import analizadorLexico.TransicionLexico;
  *         Esta clase representa la tabla de transiciones correspondiente al
  *         automata del analizador lexico
  */
-public class TablaDeTransiciones {
+public class TablaDeTransicionesMemoria {
 	// Tabla de transiciones del automata
 	private static List<List<TransicionLexico>> tabla = new ArrayList<List<TransicionLexico>>();
 
@@ -333,16 +333,17 @@ public class TablaDeTransiciones {
 		// este estado se encarga de comprobar que token generar con el |:
 		// | o |=
 		TransicionLexico[] estado20 = {
-				// Si llega un igual se va al estado final -1 y se genera el token 23 reservado
+				// TODO revisa numero token
+				// Si llega un igual se va al estado final -1 y se genera el token 24 reservado
 				// para el |=
 				new TransicionLexico("=", -1, new String[] { "T24" }),
-				// Si llega un | se va al estado final -1 y se genera el token 12 reservado al
-				// &&
+				// Si llega un | se va al estado final -1 y se genera el token 13 reservado al
+				// ||
 				new TransicionLexico("|", -1, new String[] { "T13" }) };
 
 		// este estado se encarga de concatenar la cadena que hace de identificador
 		TransicionLexico[] estado21 = {
-				// Si llega una letra, una barra baja o un numero, se sigue leyendo el
+				// Si llega una letra, una barra baja o un digito, se sigue leyendo el
 				// identificador asi que se concatena la cadena y se pasa al siguiente caracter
 				new TransicionLexico("[a-zA-Z|_|[0-9]", -1, new String[] { "C", "L" }),
 				// Se llega cualquier otro caracter se comprueba que la cadena formada es una
@@ -350,7 +351,7 @@ public class TablaDeTransiciones {
 				// mirara si estamos en zona de declaracion, por ultimo se generara el token
 				// necesario, no sale en el array de acciones semanticas porque se añadira
 				// dinamicamente segun sea necesario
-				new TransicionLexico("[^a-zA-Z|_|[0-9]", -1, new String[] { "P" }) };
+				new TransicionLexico("[^a-zA-Z|_|[0-9]", -1, new String[] { "P", "" }) };
 
 		// este estado se encarga de comprobar que token generar con el >:
 		// > o >=
