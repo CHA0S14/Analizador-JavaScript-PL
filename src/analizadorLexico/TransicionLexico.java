@@ -13,11 +13,11 @@ import classes.Transicion;
  */
 public class TransicionLexico extends Transicion {
 	// Acciones semanticas correspondientes a la transicion
-	private String[] accionesSemanticas;
+	private String accionSemantica;
 
-	public TransicionLexico(String regex, int estado, String[] accionesSemanticas) {
+	public TransicionLexico(String regex, int estado, String accionSemantica) {
 		super(regex, estado);
-		this.accionesSemanticas = accionesSemanticas;
+		this.accionSemantica = accionSemantica;
 	}
 
 	public TransicionLexico(String regex, int estado) {
@@ -28,7 +28,7 @@ public class TransicionLexico extends Transicion {
 		super(regex);
 	}
 
-	public String[] getAccionesSemanticas() {
-		return accionesSemanticas;
+	public String getAccionSemantica() {
+		return accionSemantica;
 	}
 }
