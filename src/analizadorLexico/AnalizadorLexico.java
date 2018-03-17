@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.Charset;
 
-import analizadorLexico.tablas.TablaDeTransicionesMemoria;
+import analizadorLexico.tablas.TablaDeTransiciones;
 import analizadorLexico.tablas.TablaPalabrasReservadas;
 
 /**
@@ -52,7 +52,7 @@ public class AnalizadorLexico {
 		Token token = null;
 		while (estado != -1) {
 			// Obtengo la transicion de la tabla de transiciones
-			TransicionLexico transicion = TablaDeTransicionesMemoria.getTransicion(estado, caracter);
+			TransicionLexico transicion = TablaDeTransiciones.getTransicion(estado, caracter);
 			// Actualizo el estado segun la transicion
 			this.estado = transicion.getEstado();
 			// Proceso las acciones semanticas segun la transicion, si alguna accion
