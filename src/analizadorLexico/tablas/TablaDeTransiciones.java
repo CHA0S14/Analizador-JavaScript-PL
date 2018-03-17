@@ -28,6 +28,7 @@ public class TablaDeTransiciones {
 	static {
 		try {
 			// abro el fichero que contiene la tabla de transiciones
+			// Hacer que la tabla de transiciones sea recibida por parametro
 			BufferedReader br = new BufferedReader(new FileReader("TablaDeTransiciones.csv"));
 
 			// Leo la primera linea, la cual contiene las cabeceras de las columnas

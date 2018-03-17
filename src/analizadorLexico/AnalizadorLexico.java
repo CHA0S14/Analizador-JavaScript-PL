@@ -82,37 +82,40 @@ public class AnalizadorLexico {
 		case "L": // Leer
 			leerCaracter();
 			break;
-		case "N": // Inicializar numero
+		case "N": // Inicializar numero y leer
 			numero = Character.getNumericValue(caracter);
+			leerCaracter();
 			break;
-		case "F": // Inicializar numero hexadecimal
+		case "F": // Inicializar numero hexadecimal y leer
 			numero = fromHexToDec(caracter);
+			leerCaracter();
 			break;
-		case "D": // Calcular numero decimal
+		case "D": // Calcular numero decimal y leer
 			numero = numero * 10 + Character.getNumericValue(caracter);
+			leerCaracter();
 			break;
-		case "O": // Calcular numero octal
+		case "O": // Calcular numero octal y leer
 			numero = numero * 8 + Character.getNumericValue(caracter);
+			leerCaracter();
 			break;
-		case "H": // Calcular numero hexadecimal
+		case "H": // Calcular numero hexadecimal y leer
 			numero = numero * 16 + fromHexToDec(caracter);
+			leerCaracter();
 			break;
-		case "E": // Comprobar que el numero no supera el valor maximo
-			if (numero > MAX_INT) {
-				// TODO gestor de errores
-			}
-			break;
-		case "S": // Crear cadena
+		case "S": // Crear cadena y leer
 			if (caracter == '"' || caracter == '\'') {
 				cadena = "";
 			} else {
 				cadena = caracter + "";
 			}
+			leerCaracter();
 			break;
-		case "C": // Concatenar caracter
+		case "C": // Concatenar caracter y leer
 			cadena.concat(caracter + "");
+			leerCaracter();
 			break;
-		case "P": // Comprobar si identificador es una palabra reservada
+		case "P": // Comprobar si identificador es una palabra reservada y generar token
+					// correspondiente
 			int index = TablaPalabrasReservadas.getCodigoPalabraReservada(cadena);
 			if (index == -1) {
 				// Se aniade la accion semantica de comprobar si estamos en zona de declaracion
@@ -140,9 +143,11 @@ public class AnalizadorLexico {
 			break;
 		case "T6": // Generar token ==
 			token = new Token(6);
+			leerCaracter();
 			break;
 		case "T7": // Generar token !=
 			token = new Token(7);
+			leerCaracter();
 			break;
 		case "T8": // Generar token <
 			token = new Token(8);
@@ -152,54 +157,71 @@ public class AnalizadorLexico {
 			break;
 		case "T10": // Generar token <=
 			token = new Token(10);
+			leerCaracter();
 			break;
 		case "T11": // Generar token >=
 			token = new Token(11);
+			leerCaracter();
 			break;
 		case "T12": // Generar token &&
 			token = new Token(12);
+			leerCaracter();
 			break;
 		case "T13": // Generar token ||
 			token = new Token(13);
+			leerCaracter();
 			break;
 		case "T14": // Generar token !
 			token = new Token(14);
 			break;
 		case "T15": // Generar token ++
 			token = new Token(15);
+			leerCaracter();
 			break;
 		case "T16": // Generar token --
 			token = new Token(16);
+			leerCaracter();
 			break;
 		case "T17": // Generar token =
 			token = new Token(17);
 			break;
 		case "T18": // Generar token +=
 			token = new Token(18);
+			leerCaracter();
 			break;
 		case "T19": // Generar token -=
 			token = new Token(19);
+			leerCaracter();
 			break;
 		case "T20": // Generar token *=
 			token = new Token(20);
+			leerCaracter();
 			break;
 		case "T21": // Generar token /=
 			token = new Token(21);
+			leerCaracter();
 			break;
 		case "T22": // Generar token %=
 			token = new Token(22);
+			leerCaracter();
 			break;
 		case "T23": // Generar token &=
 			token = new Token(23);
+			leerCaracter();
 			break;
 		case "T24": // Generar token |=
 			token = new Token(24);
+			leerCaracter();
 			break;
 		case "T25": // Generar token entero
+			if (numero > MAX_INT) {
+				// TODO gestor de errores
+			}
 			token = new Token(25, numero);
 			break;
 		case "T26": // Generar token cadena
 			token = new Token(26, cadena);
+			leerCaracter();
 			break;
 		case "T27": // Generar token true
 			token = new Token(27);
@@ -260,31 +282,37 @@ public class AnalizadorLexico {
 			break;
 		case "T46": // Generar token (
 			token = new Token(46);
+			leerCaracter();
 			break;
 		case "T47": // Generar token )
 			token = new Token(47);
+			leerCaracter();
 			break;
 		case "T48": // Generar token {
 			token = new Token(48);
+			leerCaracter();
 			break;
 		case "T49": // Generar token }
 			token = new Token(49);
+			leerCaracter();
 			break;
 		case "T50": // Generar token ,
 			token = new Token(50);
+			leerCaracter();
 			break;
 		case "T51": // Generar token ;
 			token = new Token(51);
+			leerCaracter();
 			break;
 		case "T52": // Generar token fin de fichero
 			token = new Token(52);
 			break;
 		case "T53": // Generar Token identificador
 			token = new Token(53, cadena);
-			/*
+			/* TODO
 			 * if (zonaDeclaracion && !tablaSimbolos.existe(token){
-			 * tablaSimbolor.insertarIdentificador(token); } else if { si el indice es
-			 * positivo global, si el indice es negativo de funcion }
+			 * tablaSimbolor.insertarIdentificador(token); } else if (!zonaDeclaracion && tablaSimbolos.existe(token) { si el indice es
+			 * positivo global, si el indice es negativo de funcion } else{ // TODO Gestor de errores}
 			 */
 
 		}
