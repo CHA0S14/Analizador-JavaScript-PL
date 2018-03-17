@@ -11,6 +11,7 @@ import java.nio.charset.Charset;
 
 import analizadorLexico.tablas.TablaDeTransiciones;
 import analizadorLexico.tablas.TablaPalabrasReservadas;
+import classes.TablaDeSimbolos;
 
 /**
  * 
@@ -24,6 +25,8 @@ public class AnalizadorLexico {
 	private Reader fichero; // Fichero con el programa a analizar
 	private int estado = 0; // Estado en el que se encuentra el automata
 	private char caracter; // Caracter que se acaba de leer del fichero
+	private TablaDeSimbolos tablaGlobal;
+	private TablaDeSimbolos tablaActiva = null;
 
 	private int numero; // variable que ira guardando el valor del token numerico
 	private String cadena; // variable que ira guardando las cadenas para distintos tokens
@@ -36,9 +39,10 @@ public class AnalizadorLexico {
 			Reader reader = new InputStreamReader(in, Charset.defaultCharset());
 			this.fichero = new BufferedReader(reader);
 			leerCaracter();
+
+			this.tablaGlobal = new TablaDeSimbolos();
 		} catch (FileNotFoundException e) {
 			// TODO Gestor de errores
-			e.printStackTrace();
 		}
 	}
 
@@ -55,6 +59,7 @@ public class AnalizadorLexico {
 			TransicionLexico transicion = TablaDeTransiciones.getTransicion(estado, caracter);
 			// Actualizo el estado segun la transicion
 			this.estado = transicion.getEstado();
+			
 			// Proceso las acciones semanticas segun la transicion, si alguna accion
 			// semantica genera un token lo capturo para devolverlo
 			token = realizarAccionSemantica(transicion.getAccionSemantica());
@@ -77,6 +82,7 @@ public class AnalizadorLexico {
 	 */
 	private Token realizarAccionSemantica(String accionSemantica) {
 		Token token = null;
+		
 		// Dependiendo del valor realizo una accion u otra
 		switch (accionSemantica) {
 		case "L": // Leer
@@ -308,13 +314,32 @@ public class AnalizadorLexico {
 			token = new Token(52);
 			break;
 		case "T53": // Generar Token identificador
-			token = new Token(53, cadena);
-			/* TODO
-			 * if (zonaDeclaracion && !tablaSimbolos.existe(token){
-			 * tablaSimbolor.insertarIdentificador(token); } else if (!zonaDeclaracion && tablaSimbolos.existe(token) { si el indice es
-			 * positivo global, si el indice es negativo de funcion } else{ // TODO Gestor de errores}
-			 */
+			int indice = -1;
+			if (zonaDeclaracion && tablaActiva != null) {
+				indice = tablaActiva.insertarId(cadena) * -1;
+				if (indice == -1) {
+					// TODO Gestor de errores id ya existente
+				}
+			} else if (zonaDeclaracion && tablaActiva == null) {
+				indice = tablaGlobal.insertarId(cadena);
+				if (indice == -1) {
+					// TODO Gestor de errores id ya existente
+				}
+			} else if (!zonaDeclaracion && tablaActiva != null) {
+				indice = tablaActiva.getIndexId(cadena) * -1;
+				if (indice == -1) {
+					// TODO Gestor de errores no esta declarada
+				}
 
+			} else if (!zonaDeclaracion && tablaActiva == null) {
+				indice = tablaGlobal.getIndexId(cadena);
+				if (indice == -1) {
+					// TODO Gestor de errores no esta declarada
+				}
+			} else {
+				// TODO Gestor de errores
+			}
+			token = new Token(53, indice * -1);
 		}
 
 		return token;

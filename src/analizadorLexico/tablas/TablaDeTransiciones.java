@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -37,7 +38,10 @@ public class TablaDeTransiciones {
 			// mayor legibilidad en excel
 			// split(SEPARATOR) me separa el string en un array segun el caracter de
 			// separacion en este caso ;
-			cabeceras = quitarComasDeEscape(linea.replaceAll(";;", ";").split(SEPARATOR));
+			cabeceras = quitarComasDeEscape(linea.replaceAll(";;", ";").replaceAll("\";\"", "punto y coma").split(SEPARATOR));
+			
+			// metodo que sustituye las notaciones especiales
+			sustituirNotacionesEspeciales();
 
 			// Creo un array list que contendra la tabla de transiciones
 			List<String[]> tablaDeTransiciones = new ArrayList<>();
@@ -79,6 +83,13 @@ public class TablaDeTransiciones {
 		// Por cada columna de la cabecera corresponden dos columnas de la tabla de
 		// transiciones por eso hay que multiplicar por dos el valor de la coluna
 		int columna = getColumna(caracter + "") * 2;
+
+		if (columna == -2) {
+			// TODO Gestor de errores
+			System.out.println(caracter);
+			return null;
+		}
+
 		// Primero obtengo el estado destino
 		String estadoDestino = tablaDeTransiciones[estado][columna];
 		// Luego las acciones semanticas correspondientes
@@ -126,5 +137,13 @@ public class TablaDeTransiciones {
 		}
 
 		return campos;
+	}
+	
+	private static void sustituirNotacionesEspeciales() {
+		for(int i = 0; i<cabeceras.length;i++) {
+			if(cabeceras[i].equals("punto y coma")) {
+				cabeceras[i] = ";";
+			}
+		}
 	}
 }

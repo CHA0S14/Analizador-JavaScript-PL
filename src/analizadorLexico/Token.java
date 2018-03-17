@@ -36,4 +36,10 @@ public class Token {
 	public String getAtributoCadena() {
 		return atributoCadena;
 	}
+
+	@Override
+	public String toString() {
+		return "<" + codigo + ", " + (atributo != -1 ? atributo : atributoCadena)  + ">";
+	}
+	
 }
