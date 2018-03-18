@@ -68,6 +68,7 @@ public class AnalizadorLexico {
 		// Reseteo los valores de las variables auxiliares
 		numero = -1;
 		cadena = null;
+		estado = 0;
 
 		return token;
 	}
@@ -117,7 +118,7 @@ public class AnalizadorLexico {
 			leerCaracter();
 			break;
 		case "C": // Concatenar caracter y leer
-			cadena.concat(caracter + "");
+			cadena = cadena.concat(caracter + "");
 			leerCaracter();
 			break;
 		case "P": // Comprobar si identificador es una palabra reservada y generar token

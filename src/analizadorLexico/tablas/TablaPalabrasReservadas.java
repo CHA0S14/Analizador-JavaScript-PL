@@ -8,7 +8,7 @@ package analizadorLexico.tablas;
  */
 public class TablaPalabrasReservadas {
 	private static final String[] palabrasReservadas = { "true", "false", "var", "int", "bool", "chars", "write", "prompt",
-			"return", "if", "else", "while", "do", "for", "switch", "case", "break", "default", "funtion" };
+			"return", "if", "else", "while", "do", "for", "switch", "case", "break", "default", "function" };
 
 	/**
 	 * Metodo que devuelve la codificacion del token para la palabra reservada o -1

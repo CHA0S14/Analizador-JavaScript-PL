@@ -15,6 +15,8 @@ public class Analizador {
 		while (token.getToken() != 52) {
 			token = analizadorLexico.getToken();
 			System.out.println(token);
+			if(token == null)
+				token = new Token(1);
 		}
 	}
 
