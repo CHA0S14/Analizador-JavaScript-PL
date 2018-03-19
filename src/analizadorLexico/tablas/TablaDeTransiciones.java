@@ -4,9 +4,11 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import analizadorLexico.AnalizadorLexico;
 import analizadorLexico.TransicionLexico;
 
 /***
@@ -37,8 +39,9 @@ public class TablaDeTransiciones {
 			// mayor legibilidad en excel
 			// split(SEPARATOR) me separa el string en un array segun el caracter de
 			// separacion en este caso ;
-			cabeceras = quitarComasDeEscape(linea.replaceAll(";;", ";").replaceAll("\";\"", "punto y coma").split(SEPARATOR));
-			
+			cabeceras = quitarComasDeEscape(
+					linea.replaceAll(";;", ";").replaceAll("\";\"", "punto y coma").split(SEPARATOR));
+
 			// metodo que sustituye las notaciones especiales
 			sustituirNotacionesEspeciales();
 
@@ -85,8 +88,9 @@ public class TablaDeTransiciones {
 
 		if (columna == -2) {
 			// TODO Gestor de errores
-			System.out.println(caracter);
-			return null;
+			System.out.println("Estado: " + estado + " " + AnalizadorLexico.getNlinea() + ": " + caracter);
+			System.out.println(Arrays.toString(cabeceras));
+			System.exit(1);
 		}
 
 		// Primero obtengo el estado destino
@@ -97,6 +101,10 @@ public class TablaDeTransiciones {
 		// de error que tendra que tratar el gestor de errores
 		if (estadoDestino.equals("")) {
 			// TODO Gestor de errores codigo Accion semantica
+			System.out.println("Estado: " + estado + " " + AnalizadorLexico.getNlinea() + ": " + caracter);
+			System.out.println(Arrays.toString(cabeceras));
+			System.exit(1);
+			// return new TransicionLexico(-1, accionSemantica);
 		}
 
 		// Creo la transicion y la devuelvo
@@ -133,14 +141,16 @@ public class TablaDeTransiciones {
 	private static String[] quitarComasDeEscape(String[] campos) {
 		for (int i = 0; i < campos.length; i++) {
 			campos[i] = campos[i].replaceAll("^" + QUOTE, "").replaceAll(QUOTE + "$", "");
+			if (campos[i].equals("\"\""))
+				campos[i] = "\"";
 		}
 
 		return campos;
 	}
-	
+
 	private static void sustituirNotacionesEspeciales() {
-		for(int i = 0; i<cabeceras.length;i++) {
-			if(cabeceras[i].equals("punto y coma")) {
+		for (int i = 0; i < cabeceras.length; i++) {
+			if (cabeceras[i].equals("punto y coma")) {
 				cabeceras[i] = ";";
 			}
 		}

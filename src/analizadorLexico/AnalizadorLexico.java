@@ -32,6 +32,7 @@ public class AnalizadorLexico {
 	private String cadena; // variable que ira guardando las cadenas para distintos tokens
 	// TODO permitir acceso a la variable desde fuera
 	private boolean zonaDeclaracion = false; // Si nos encontramos en zona de declaracion
+	private static int nlinea = 1;
 
 	public AnalizadorLexico(String fichero) {
 		try {
@@ -57,12 +58,16 @@ public class AnalizadorLexico {
 		while (estado != -1) {
 			// Obtengo la transicion de la tabla de transiciones
 			TransicionLexico transicion = TablaDeTransiciones.getTransicion(estado, caracter);
+			if(transicion == null)
 			// Actualizo el estado segun la transicion
 			this.estado = transicion.getEstado();
 			
 			// Proceso las acciones semanticas segun la transicion, si alguna accion
 			// semantica genera un token lo capturo para devolverlo
 			token = realizarAccionSemantica(transicion.getAccionSemantica());
+			
+			if(caracter == '\n')
+				nlinea++;
 		}
 
 		// Reseteo los valores de las variables auxiliares
@@ -388,5 +393,9 @@ public class AnalizadorLexico {
 
 	public void setZonaDeclaracion(boolean zonaDeclaracion) {
 		this.zonaDeclaracion = zonaDeclaracion;
+	}
+
+	public static int getNlinea() {
+		return nlinea;
 	}
 }
