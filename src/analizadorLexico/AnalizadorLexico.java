@@ -58,7 +58,6 @@ public class AnalizadorLexico {
 		while (estado != -1) {
 			// Obtengo la transicion de la tabla de transiciones
 			TransicionLexico transicion = TablaDeTransiciones.getTransicion(estado, caracter);
-			if(transicion == null)
 			// Actualizo el estado segun la transicion
 			this.estado = transicion.getEstado();
 			

@@ -65,17 +65,17 @@ function chars cadena (bool log)
 s = "El factorial ";	// Primera sentencia que se ejecutaria
 
 write (s);
-write ("\nIntroduce un 'numero'.");
+write ("\nIntroduce un 'numero'");
 prompt (num);	/* se lee un numero del teclado y se guarda en la variable global num */
 
 switch (num);
 {
 	case 1
-	case 0 write ("El factorial de ", num, " siempre es 1.\n"); break;
+	case 0 write ("El factorial de ", num, " siempre es 1\n"); break;
 	default
 		if (num < 0)
 		{
-			write ('No existe el factorial de un negativo.\n');
+			write ('No existe el factorial de un negativo\n');
 		}
 		else
 		{
@@ -104,7 +104,7 @@ function int dias (int m, int a)
 			return 30;
 		default return 0;
 	}
-} // fin de dias. Todos los return devuelven un entero y la funcion es entera
+} // fin de dias Todos los return devuelven un entero y la funcion es entera
 
 function bool esFechaCorrecta (int d, int m, int a)	
 {
@@ -144,11 +144,11 @@ function demo ()	/* definicion de la funcion demo, sin argumentos y que no devue
 	s = "El primer valor era ";
 	if (v1 != 0)
 	{
-		write (s, v1, ".\n");
+		write (s, v1, "\n");
 	}
 	else
 	{
-		write (s, 0, ".\n");	// imprime la cadena `El primer valor era 0.\n´
+		write (s, 0, "\n");	// imprime la cadena El primer valor era 0\n
 	}
 
 	potencia (v0, 4);
@@ -162,6 +162,6 @@ function demo ()	/* definicion de la funcion demo, sin argumentos y que no devue
 }
 
 demo();
-/* esto constituye la llamada a una funcion sin argumentos. 
+/* esto constituye la llamada a una funcion sin argumentos 
 Es en este instante cuando se llama a esta funcion y, por tanto, 
 cuando se ejecuta todo el codigo de dicha funcion */

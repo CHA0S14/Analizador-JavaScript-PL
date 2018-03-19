@@ -148,10 +148,17 @@ public class TablaDeTransiciones {
 		return campos;
 	}
 
+	/**
+	 * Metodo que se encarga de sustituir las notaciones especiales del csv con los
+	 * valores esperados
+	 */
 	private static void sustituirNotacionesEspeciales() {
 		for (int i = 0; i < cabeceras.length; i++) {
 			if (cabeceras[i].equals("punto y coma")) {
 				cabeceras[i] = ";";
+			}
+			if (cabeceras[i].equals("EOF")) {
+				cabeceras[i] = '\u0000' + "";
 			}
 		}
 	}
