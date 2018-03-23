@@ -21,6 +21,12 @@ public class TablaDeTransiciones {
 	private static final String QUOTE = "\"";
 	private static String[] cabeceras = null;
 	private static String[][] tablaDeTransiciones = null;
+	
+	
+	
+	// O:C imprimible es decir valor char > 32
+	
+	
 
 	/**
 	 * Este metodo funciona igual que un constructor pero para una clase estatica,

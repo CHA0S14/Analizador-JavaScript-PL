@@ -24,13 +24,12 @@ public class AnalizadorLexico {
 
 	private Reader fichero; // Fichero con el programa a analizar
 	private int estado = 0; // Estado en el que se encuentra el automata
-	private char caracter; // Caracter que se acaba de leer del fichero
+	private char caracterLeido; // Caracter que se acaba de leer del fichero
 	private TablaDeSimbolos tablaGlobal;
 	private TablaDeSimbolos tablaActiva = null;
 
 	private int numero; // variable que ira guardando el valor del token numerico
 	private String cadena; // variable que ira guardando las cadenas para distintos tokens
-	// TODO permitir acceso a la variable desde fuera
 	private boolean zonaDeclaracion = false; // Si nos encontramos en zona de declaracion
 	private static int nlinea = 1;
 
@@ -57,7 +56,7 @@ public class AnalizadorLexico {
 		Token token = null;
 		while (estado != -1) {
 			// Obtengo la transicion de la tabla de transiciones
-			TransicionLexico transicion = TablaDeTransiciones.getTransicion(estado, caracter);
+			TransicionLexico transicion = TablaDeTransiciones.getTransicion(estado, caracterLeido);
 			// Actualizo el estado segun la transicion
 			this.estado = transicion.getEstado();
 			
@@ -65,7 +64,7 @@ public class AnalizadorLexico {
 			// semantica genera un token lo capturo para devolverlo
 			token = realizarAccionSemantica(transicion.getAccionSemantica());
 			
-			if(caracter == '\n')
+			if(caracterLeido == '\n')
 				nlinea++;
 		}
 
@@ -94,35 +93,35 @@ public class AnalizadorLexico {
 			leerCaracter();
 			break;
 		case "N": // Inicializar numero y leer
-			numero = Character.getNumericValue(caracter);
+			numero = Character.getNumericValue(caracterLeido);
 			leerCaracter();
 			break;
 		case "F": // Inicializar numero hexadecimal y leer
-			numero = fromHexToDec(caracter);
+			numero = fromHexToDec(caracterLeido);
 			leerCaracter();
 			break;
 		case "D": // Calcular numero decimal y leer
-			numero = numero * 10 + Character.getNumericValue(caracter);
+			numero = numero * 10 + Character.getNumericValue(caracterLeido);
 			leerCaracter();
 			break;
 		case "O": // Calcular numero octal y leer
-			numero = numero * 8 + Character.getNumericValue(caracter);
+			numero = numero * 8 + Character.getNumericValue(caracterLeido);
 			leerCaracter();
 			break;
 		case "H": // Calcular numero hexadecimal y leer
-			numero = numero * 16 + fromHexToDec(caracter);
+			numero = numero * 16 + fromHexToDec(caracterLeido);
 			leerCaracter();
 			break;
 		case "S": // Crear cadena y leer
-			if (caracter == '"' || caracter == '\'') {
+			if (caracterLeido == '"' || caracterLeido == '\'') {
 				cadena = "";
 			} else {
-				cadena = caracter + "";
+				cadena = caracterLeido + "";
 			}
 			leerCaracter();
 			break;
 		case "C": // Concatenar caracter y leer
-			cadena = cadena.concat(caracter + "");
+			cadena = cadena.concat(caracterLeido + "");
 			leerCaracter();
 			break;
 		case "P": // Comprobar si identificador es una palabra reservada y generar token
@@ -380,9 +379,9 @@ public class AnalizadorLexico {
 			// Actualizo el caracter por el siguiente en el fichero
 			int caracterInt = this.fichero.read();
 			if (caracterInt == -1) {
-				caracter = '\u0000';
+				caracterLeido = '\u0000';
 			} else {
-				caracter = (char) caracterInt;
+				caracterLeido = (char) caracterInt;
 			}
 		} catch (IOException e) {
 			// TODO Gestor de errores
@@ -390,6 +389,10 @@ public class AnalizadorLexico {
 		}
 	}
 
+	/**
+	 * 
+	 * @param zonaDeclaracion
+	 */
 	public void setZonaDeclaracion(boolean zonaDeclaracion) {
 		this.zonaDeclaracion = zonaDeclaracion;
 	}
