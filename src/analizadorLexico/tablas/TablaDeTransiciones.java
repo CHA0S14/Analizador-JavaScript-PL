@@ -21,12 +21,8 @@ public class TablaDeTransiciones {
 	private static final String QUOTE = "\"";
 	private static String[] cabeceras = null;
 	private static String[][] tablaDeTransiciones = null;
-	
-	
-	
+
 	// O:C imprimible es decir valor char > 32
-	
-	
 
 	/**
 	 * Este metodo funciona igual que un constructor pero para una clase estatica,
@@ -94,6 +90,13 @@ public class TablaDeTransiciones {
 
 		if (columna == -2) {
 			// TODO Gestor de errores
+			System.out.println("No se ha encontrado una transicion valida");
+			System.out.println("Estado: " + estado + " " + AnalizadorLexico.getNlinea() + ": " + caracter);
+			System.out.println(Arrays.toString(cabeceras));
+			System.exit(1);
+		}else if(columna == cabeceras.length-1 && (int)caracter < 32) {
+			// TODO Gestor de errores
+			System.out.println("En la transicion con otro caracter, se ha recibido un caracter no imprimible");
 			System.out.println("Estado: " + estado + " " + AnalizadorLexico.getNlinea() + ": " + caracter);
 			System.out.println(Arrays.toString(cabeceras));
 			System.exit(1);
@@ -160,11 +163,23 @@ public class TablaDeTransiciones {
 	 */
 	private static void sustituirNotacionesEspeciales() {
 		for (int i = 0; i < cabeceras.length; i++) {
-			if (cabeceras[i].equals("punto y coma")) {
+			switch (cabeceras[i]) {
+			case "punto y coma":
 				cabeceras[i] = ";";
-			}
-			if (cabeceras[i].equals("EOF")) {
+				break;
+			case "EOF":
 				cabeceras[i] = '\u0000' + "";
+				break;
+			case "o.c.":
+				StringBuffer negacion = new StringBuffer();
+				negacion.append("[^");
+				for (int j = 0; j < cabeceras.length - 1; j++) {
+					negacion.append(cabeceras[j].replaceAll("(\\[|\\])", ""));
+					if (j < cabeceras.length - 2)
+						negacion.append("|");
+				}
+				negacion.append("]");
+				cabeceras[i] = negacion.toString();
 			}
 		}
 	}
