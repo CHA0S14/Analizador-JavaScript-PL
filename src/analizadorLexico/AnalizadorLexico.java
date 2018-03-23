@@ -12,6 +12,7 @@ import java.nio.charset.Charset;
 import analizadorLexico.tablas.TablaDeTransiciones;
 import analizadorLexico.tablas.TablaPalabrasReservadas;
 import classes.TablaDeSimbolos;
+import gestorDeErrores.GestorDeErrores;
 
 /**
  * 
@@ -42,7 +43,9 @@ public class AnalizadorLexico {
 
 			this.tablaGlobal = new TablaDeSimbolos();
 		} catch (FileNotFoundException e) {
-			// TODO Gestor de errores
+			// Envio al gestor de errore el codigo 1002 reservado a error de compilador
+			// cuando un fichero no existe
+			GestorDeErrores.gestionarError(1002);
 		}
 	}
 
@@ -59,12 +62,12 @@ public class AnalizadorLexico {
 			TransicionLexico transicion = TablaDeTransiciones.getTransicion(estado, caracterLeido);
 			// Actualizo el estado segun la transicion
 			this.estado = transicion.getEstado();
-			
+
 			// Proceso las acciones semanticas segun la transicion, si alguna accion
 			// semantica genera un token lo capturo para devolverlo
 			token = realizarAccionSemantica(transicion.getAccionSemantica());
-			
-			if(caracterLeido == '\n')
+
+			if (caracterLeido == '\n')
 				nlinea++;
 		}
 
@@ -86,7 +89,7 @@ public class AnalizadorLexico {
 	 */
 	private Token realizarAccionSemantica(String accionSemantica) {
 		Token token = null;
-		
+
 		// Dependiendo del valor realizo una accion u otra
 		switch (accionSemantica) {
 		case "L": // Leer
@@ -384,8 +387,9 @@ public class AnalizadorLexico {
 				caracterLeido = (char) caracterInt;
 			}
 		} catch (IOException e) {
-			// TODO Gestor de errores
-			e.printStackTrace();
+			// Enviado al gestor de errores el error 1003 reservado para problemas al leer
+			// un fichero
+			GestorDeErrores.gestionarError(1003);
 		}
 	}
 
