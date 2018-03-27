@@ -132,7 +132,7 @@ public class AnalizadorLexico {
 			int index = TablaPalabrasReservadas.getCodigoPalabraReservada(cadena);
 			if (index == -1) {
 				// Se aniade la accion semantica de comprobar si estamos en zona de declaracion
-				token = realizarAccionSemantica("T53");
+				token = realizarAccionSemantica("T54");
 			} else {
 				// Se aniade la accion semantica de crear el token de palabra reservada
 				// correspondiente
@@ -228,7 +228,7 @@ public class AnalizadorLexico {
 			break;
 		case "T25": // Generar token entero
 			if (numero > MAX_INT) {
-				// TODO gestor de errores
+				GestorDeErrores.gestionarError(2001);
 			}
 			token = new Token(25, numero);
 			break;
@@ -317,10 +317,14 @@ public class AnalizadorLexico {
 			token = new Token(51);
 			leerCaracter();
 			break;
-		case "T52": // Generar token fin de fichero
+		case "T52": // Generar token ;
 			token = new Token(52);
+			leerCaracter();
 			break;
-		case "T53": // Generar Token identificador
+		case "T53": // Generar token fin de fichero
+			token = new Token(53);
+			break;
+		case "T54": // Generar Token identificador
 			int indice = -1;
 			if (zonaDeclaracion && tablaActiva != null) {
 				indice = tablaActiva.insertarId(cadena) * -1;
@@ -346,7 +350,7 @@ public class AnalizadorLexico {
 			} else {
 				// TODO Gestor de errores
 			}
-			token = new Token(53, indice * -1);
+			token = new Token(54, indice * -1);
 		}
 
 		return token;

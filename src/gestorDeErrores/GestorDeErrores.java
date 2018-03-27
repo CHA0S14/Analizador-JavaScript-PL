@@ -64,7 +64,7 @@ public class GestorDeErrores {
 	private static String errorLexico(int codigo) {
 		switch (codigo) {
 		case 1:
-			break;
+			return "Se ha excedido el valor numerico maximo permitido de 32767";
 		case 2:
 			break;
 		case 3:
