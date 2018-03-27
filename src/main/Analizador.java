@@ -11,7 +11,7 @@ public class Analizador {
 		if (args.length < 1)
 			// Se envia un error 1001 reservado cuando no se han recibido suficientes
 			// argumentos
-			GestorDeErrores.gestionarError(1001);
+			GestorDeErrores.gestionarError(1001,null);
 		new Analizador(args[0]);
 	}
 

@@ -9,9 +9,9 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.Charset;
 
+import TablaDeSimbolos.GestorTablasDeSimbolos;
 import analizadorLexico.tablas.TablaDeTransiciones;
 import analizadorLexico.tablas.TablaPalabrasReservadas;
-import classes.TablaDeSimbolos;
 import gestorDeErrores.GestorDeErrores;
 
 /**
@@ -26,8 +26,6 @@ public class AnalizadorLexico {
 	private Reader fichero; // Fichero con el programa a analizar
 	private int estado = 0; // Estado en el que se encuentra el automata
 	private char caracterLeido; // Caracter que se acaba de leer del fichero
-	private TablaDeSimbolos tablaGlobal;
-	private TablaDeSimbolos tablaActiva = null;
 
 	private int numero; // variable que ira guardando el valor del token numerico
 	private String cadena; // variable que ira guardando las cadenas para distintos tokens
@@ -40,12 +38,10 @@ public class AnalizadorLexico {
 			Reader reader = new InputStreamReader(in, Charset.defaultCharset());
 			this.fichero = new BufferedReader(reader);
 			leerCaracter();
-
-			this.tablaGlobal = new TablaDeSimbolos();
 		} catch (FileNotFoundException e) {
 			// Envio al gestor de errore el codigo 1002 reservado a error de compilador
 			// cuando un fichero no existe
-			GestorDeErrores.gestionarError(1002);
+			GestorDeErrores.gestionarError(1002,null);
 		}
 	}
 
@@ -228,7 +224,9 @@ public class AnalizadorLexico {
 			break;
 		case "T25": // Generar token entero
 			if (numero > MAX_INT) {
-				GestorDeErrores.gestionarError(2001);
+				// Se envia un error 2001 al gestor de errores reservado para el valor
+				// excesivamente alto de un numero
+				GestorDeErrores.gestionarError(2001,numero+"");
 			}
 			token = new Token(25, numero);
 			break;
@@ -325,32 +323,19 @@ public class AnalizadorLexico {
 			token = new Token(53);
 			break;
 		case "T54": // Generar Token identificador
-			int indice = -1;
-			if (zonaDeclaracion && tablaActiva != null) {
-				indice = tablaActiva.insertarId(cadena) * -1;
-				if (indice == -1) {
-					// TODO Gestor de errores id ya existente
-				}
-			} else if (zonaDeclaracion && tablaActiva == null) {
-				indice = tablaGlobal.insertarId(cadena);
-				if (indice == -1) {
-					// TODO Gestor de errores id ya existente
-				}
-			} else if (!zonaDeclaracion && tablaActiva != null) {
-				indice = tablaActiva.getIndexId(cadena) * -1;
-				if (indice == -1) {
-					// TODO Gestor de errores no esta declarada
-				}
-
-			} else if (!zonaDeclaracion && tablaActiva == null) {
-				indice = tablaGlobal.getIndexId(cadena);
-				if (indice == -1) {
-					// TODO Gestor de errores no esta declarada
+			int indice = 0;
+			if (zonaDeclaracion) {
+				indice = GestorTablasDeSimbolos.insertarId(cadena);
+				// Si el indice es 0 no se ha podido insertar correctamente
+				if (indice == 0) {
+					// Se envia un error al gestor de errores 2002 reservado para cuando se intenta
+					// declara una variable con un nombre ya usado en la tabla de simbolos activa
+					GestorDeErrores.gestionarError(2002,cadena);
 				}
 			} else {
-				// TODO Gestor de errores
+				indice = GestorTablasDeSimbolos.obtenerIndiceId(cadena);
 			}
-			token = new Token(54, indice * -1);
+			token = new Token(54, indice);
 		}
 
 		return token;
@@ -393,7 +378,7 @@ public class AnalizadorLexico {
 		} catch (IOException e) {
 			// Enviado al gestor de errores el error 1003 reservado para problemas al leer
 			// un fichero
-			GestorDeErrores.gestionarError(1003);
+			GestorDeErrores.gestionarError(1003, null);
 		}
 	}
 

@@ -21,4 +21,12 @@ public class GestorTablasDeSimbolos {
 	public static void eliminarTablaActiva() {
 		tablaActiva = null;
 	}
+	
+	public static int insertarId(String id) {
+		return 0;
+	}
+	
+	public static int obtenerIndiceId(String id) {
+		return 0;
+	}
 }

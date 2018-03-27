@@ -10,9 +10,9 @@ import analizadorLexico.AnalizadorLexico;
  */
 public class GestorDeErrores {
 	private static final String ERROR_PROGRAMA = "Error de programa: ";
-	private static final String ERROR_LEXICO = "Error lexico en la linea: ";
-	private static final String ERROR_SINTACTICO = "Error sintactico en la linea: ";
-	private static final String ERROR_SEMANTICO = "Error semantico en la linea: ";
+	private static final String ERROR_LEXICO = "Error lexico: ";
+	private static final String ERROR_SINTACTICO = "Error sintactico: ";
+	private static final String ERROR_SEMANTICO = "Error semantico: ";
 
 	/**
 	 * Metodo que se encarga de segun se recibe un error, gestionarlo y mostrar lo
@@ -21,7 +21,7 @@ public class GestorDeErrores {
 	 * @param codigo
 	 *            Codigo de error a gestionar
 	 */
-	public static void gestionarError(int codigo) {
+	public static void gestionarError(int codigo, String dato) {
 		StringBuffer error = new StringBuffer();
 
 		if (codigo < 2000) {
@@ -29,16 +29,16 @@ public class GestorDeErrores {
 			error.append(errorCompilador(codigo - 1000));
 		} else if (codigo < 3000) {
 			error.append(ERROR_LEXICO);
-			error.append(": " + AnalizadorLexico.getNlinea());
-			error.append(errorLexico(codigo - 2000));
+			error.append(errorLexico(codigo - 2000, dato));
+			error.append(" -> linea " + AnalizadorLexico.getNlinea());
 		} else if (codigo < 4000) {
 			error.append(ERROR_SINTACTICO);
-			error.append(": " + AnalizadorLexico.getNlinea());
 			error.append(errorSintactico(codigo - 3000));
+			error.append(" -> linea " + AnalizadorLexico.getNlinea());
 		} else if (codigo < 5000) {
 			error.append(ERROR_SEMANTICO);
-			error.append(": " + AnalizadorLexico.getNlinea());
 			error.append(errorSemantico(codigo - 4000));
+			error.append(" -> linea " + AnalizadorLexico.getNlinea());
 		} else {
 			System.err.println("No se reconoce el error");
 		}
@@ -61,16 +61,17 @@ public class GestorDeErrores {
 		return null;
 	}
 
-	private static String errorLexico(int codigo) {
+	private static String errorLexico(int codigo, String dato) {
 		switch (codigo) {
 		case 1:
-			return "Se ha excedido el valor numerico maximo permitido de 32767";
+			return "Se ha excedido el valor numerico maximo permitido de 32767, se ha escrito un valor de " + dato;
 		case 2:
-			break;
+			return "Se ha intentado declarar una variable nueva con el nombre \"" + dato
+					+ "\" que ya esta siendo usado";
 		case 3:
-			break;
+			return "El caracter " + dato + " no pertenece al conjunto de caracteres permitidos";
 		case 4:
-			break;
+			return "Se ha leido un caracter no imprimible";
 		case 5:
 			break;
 		case 6:

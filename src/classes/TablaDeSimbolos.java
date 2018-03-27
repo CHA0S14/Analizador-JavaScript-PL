@@ -6,6 +6,6 @@ public class TablaDeSimbolos {
 	}
 	
 	public int getIndexId(String id) {
-		return 1;
+		return -1;
 	}
 }

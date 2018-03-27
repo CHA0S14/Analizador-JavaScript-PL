@@ -4,12 +4,11 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import analizadorLexico.AnalizadorLexico;
 import analizadorLexico.TransicionLexico;
+import gestorDeErrores.GestorDeErrores;
 
 /***
  * 
@@ -21,6 +20,7 @@ public class TablaDeTransiciones {
 	private static final String QUOTE = "\"";
 	private static String[] cabeceras = null;
 	private static String[][] tablaDeTransiciones = null;
+	private static int columnaOtroCaracter;
 
 	// O:C imprimible es decir valor char > 32
 
@@ -67,7 +67,9 @@ public class TablaDeTransiciones {
 			// Cierro el fichero
 			br.close();
 		} catch (IOException e) {
-			// TODO Gestor de errores
+			// Se envia un error al gestor de errores 1003 reservado a fallos al leer un
+			// fichero
+			GestorDeErrores.gestionarError(1003, null);
 		}
 	}
 
@@ -89,17 +91,13 @@ public class TablaDeTransiciones {
 		int columna = getColumna(caracter + "") * 2;
 
 		if (columna == -2) {
-			// TODO Gestor de errores
-			System.out.println("No se ha encontrado una transicion valida");
-			System.out.println("Estado: " + estado + " " + AnalizadorLexico.getNlinea() + ": " + caracter);
-			System.out.println(Arrays.toString(cabeceras));
-			System.exit(1);
-		}else if(columna == cabeceras.length-1 && (int)caracter < 32) {
-			// TODO Gestor de errores
-			System.out.println("En la transicion con otro caracter, se ha recibido un caracter no imprimible");
-			System.out.println("Estado: " + estado + " " + AnalizadorLexico.getNlinea() + ": " + caracter);
-			System.out.println(Arrays.toString(cabeceras));
-			System.exit(1);
+			// Se ha introducido un caracter no se encuentra dentro del conjunto de
+			// caracters admitidos por el automata se envia el error 2003 al gestor de
+			// errores
+			GestorDeErrores.gestionarError(2003, caracter + "");
+		} else if (columna == columnaOtroCaracter && (int) caracter < 32) {
+			// Se ha introducido un caracter no imprimible
+			GestorDeErrores.gestionarError(2004, null);
 		}
 
 		// Primero obtengo el estado destino
@@ -109,11 +107,9 @@ public class TablaDeTransiciones {
 		// Si el estado destino esta vacio, las acciones semanticas contendran un codigo
 		// de error que tendra que tratar el gestor de errores
 		if (estadoDestino.equals("")) {
-			// TODO Gestor de errores codigo Accion semantica
-			System.out.println("Estado: " + estado + " " + AnalizadorLexico.getNlinea() + ": " + caracter);
-			System.out.println(Arrays.toString(cabeceras));
-			System.exit(1);
-			// return new TransicionLexico(-1, accionSemantica);
+			// Se envia el codigo de error de la tabla de transiciones al gestor de errores
+			// que se ha guardado en la accion semantica
+			GestorDeErrores.gestionarError(Integer.parseInt(accionSemantica), caracter + "");
 		}
 
 		// Creo la transicion y la devuelvo
@@ -171,6 +167,7 @@ public class TablaDeTransiciones {
 				cabeceras[i] = '\u0000' + "";
 				break;
 			case "o.c.":
+				columnaOtroCaracter = i;
 				StringBuffer negacion = new StringBuffer();
 				negacion.append("[^");
 				for (int j = 0; j < cabeceras.length - 1; j++) {
