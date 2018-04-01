@@ -1,0 +1,28 @@
+// En este archivo se colocaran las agrupaciones de la siguiente forma
+// nombre=caracter1,caracter2,caracter3
+// Tambien se aceptan expresiones regulares de la siguiente manera
+// nombre=regex
+// Las agrupaciones se separaran por saltos de linea
+// ATENCION: NO PONER ESPACIOS A NO SER QUE SE CONSIDEREN PARTE DEL LENGUAJE
+// ATENCION: NO PONER CARACTERES NO ALFANUMERICOS COMO NOMBRE DE AGRUPACION
+// Los comentarios iran precedidos de // y no hay comentarios de bloque
+// Como las comas y el igual pertenecen a la codificacion de este archivo iran precedidos de \ siendo \, y \=
+// Por ultimo como ayuda extra el programa acepta o.c. y EOF sin necesidad de escribirlo en este documento
+
+// Digitos del 1 al 7
+d1=1,2,3,4,5,6,7
+
+// Digitos 8 y 9
+d2=8,9
+
+// Letras hexadecimales
+lh=A,B,C,D,E,F
+
+// Caracteres pertenecientes al salto de linea y la tabulacion
+st=n,t
+
+// Resto de letras que no tienen asignaciones especiales
+l=G,H,I,J,K,L,M,N,Ñ,O,P,Q,R,S,T,U,V,W,X,Y,Z,a,b,c,d,e,f,g,h,i,j,k,l,m,o,p,q,r,s,u,v,w,y,z
+
+// Caracteres omitibles
+del= ,\r,\t,\n

@@ -18,7 +18,9 @@ import gestorDeErrores.GestorDeErrores;
 public class TablaDeTransiciones {
 	private static final String SEPARATOR = ";";
 	private static final String QUOTE = "\"";
-	private static String[] cabeceras = null;
+	private static String[] cabeceras = null, agrupaciones = null;
+	private static List<String> nombreAgrupaciones = null; // Uso arrayList y no un array normal por que me es util su
+															// metodo indexOF
 	private static String[][] tablaDeTransiciones = null;
 	private static int columnaOtroCaracter;
 
@@ -43,6 +45,44 @@ public class TablaDeTransiciones {
 			// separacion en este caso ;
 			cabeceras = quitarComasDeEscape(
 					linea.replaceAll(";;", ";").replaceAll("\";\"", "punto y coma").split(SEPARATOR));
+
+			// Procedo a leer las agrupaciones del fichero de agrupaciones.txt
+			BufferedReader brAgrupaciones = new BufferedReader(new FileReader("agrupaciones.txt"));
+			// Inicio los array para ir agrupando los datos
+			List<String> agrupaciones = new ArrayList<>();
+			nombreAgrupaciones = new ArrayList<>();
+
+			// Leo la primera linea para entrar en el while
+			String agrupacion = brAgrupaciones.readLine();
+			while (null != agrupacion) {
+				// Si es un comentario o un salto de linea continuo con la siguiente linea
+				if (agrupacion.startsWith("//") || agrupacion.equals("\n") || agrupacion.equals("")) {
+					agrupacion = brAgrupaciones.readLine();
+					continue;
+				}
+				// Cambio todas las comas e iguales con su caracter de escape por palabras para
+				// hacer luego es split
+				agrupacion = agrupacion.replaceAll("\\\\,", "caracter coma").replaceAll("\\\\=", "caracter igual");
+				// Divido el String en dos segun el igual
+				String[] aux = agrupacion.split("=");
+				// Aniado la primera parte al array de nombres
+				nombreAgrupaciones.add(aux[0]);
+				// sustitullo las comas del segundo string por | y aniado corchetes, para
+				// conseguir una expresion regular del tipo [a|b|c] y cambio de vuelta el texto
+				// de la coma y el igual por su respectivo caracter
+				agrupaciones.add("["
+						+ aux[1].replaceAll(",", "|").replaceAll("caracter coma", ",").replaceAll("caracter igual", "=")
+						+ "]");
+
+				// Leo la siguiente linea
+				agrupacion = brAgrupaciones.readLine();
+			}
+
+			// Cierro el lector del archivo
+			brAgrupaciones.close();
+
+			// Asigno las agrupaciones a su array correspondiente
+			TablaDeTransiciones.agrupaciones = agrupaciones.toArray(new String[] {});
 
 			// metodo que sustituye las notaciones especiales
 			sustituirNotacionesEspeciales();
@@ -159,6 +199,14 @@ public class TablaDeTransiciones {
 	 */
 	private static void sustituirNotacionesEspeciales() {
 		for (int i = 0; i < cabeceras.length; i++) {
+			// Cambio las cabeceras por la agrupacion que tenga asignada en el fichero de
+			// agrupaciones si es que tiene
+			int index = nombreAgrupaciones.indexOf(cabeceras[i]);
+			if (index != -1)
+				cabeceras[i] = agrupaciones[index];
+
+			// Cambio las cabeceras con palabras reservadas por sus valores, esto es
+			// estatico y va por separado del fichero de agrupaciones
 			switch (cabeceras[i]) {
 			case "punto y coma":
 				cabeceras[i] = ";";
