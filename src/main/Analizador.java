@@ -11,7 +11,7 @@ public class Analizador {
 		if (args.length < 1)
 			// Se envia un error 1001 reservado cuando no se han recibido suficientes
 			// argumentos
-			GestorDeErrores.gestionarError(1001,null);
+			GestorDeErrores.gestionarError(1001, null);
 		new Analizador(args[0]);
 	}
 
@@ -19,9 +19,6 @@ public class Analizador {
 		Token token = new Token(1);
 		while (token.getToken() != 53) {
 			token = analizadorLexico.getToken();
-			System.out.println(token);
-			if (token == null)
-				token = new Token(1);
 		}
 	}
 

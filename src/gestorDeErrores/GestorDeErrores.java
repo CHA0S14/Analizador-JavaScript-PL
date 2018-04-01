@@ -26,7 +26,7 @@ public class GestorDeErrores {
 
 		if (codigo < 2000) {
 			error.append(ERROR_PROGRAMA);
-			error.append(errorCompilador(codigo - 1000));
+			error.append(errorCompilador(codigo - 1000, dato));
 		} else if (codigo < 3000) {
 			error.append(ERROR_LEXICO);
 			error.append(errorLexico(codigo - 2000, dato));
@@ -47,15 +47,15 @@ public class GestorDeErrores {
 		System.exit(1);
 	}
 
-	private static String errorCompilador(int codigo) {
+	private static String errorCompilador(int codigo, String dato) {
 		switch (codigo) {
 		case 1:
 			return "No se han recibido suficientes argumentos para el programa,"
 					+ " se necesita la ruta del fichero a analizar";
 		case 2:
-			return "No se ha encontrado el fichero del programa a analizar";
+			return "No se ha podido abrir el fichero " + dato;
 		case 3:
-			return "Ha ocurrido un error al leer el fichero del programa a analizar";
+			return "Ha ocurrido un error al leer o escribir el fichero " + dato;
 		}
 
 		return null;

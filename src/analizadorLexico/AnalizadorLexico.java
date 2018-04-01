@@ -3,9 +3,11 @@ package analizadorLexico;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.io.Reader;
 import java.nio.charset.Charset;
 
@@ -21,9 +23,11 @@ import gestorDeErrores.GestorDeErrores;
  *         Clase que simboliza el analizador lexico del lenguaje
  */
 public class AnalizadorLexico {
+	private final String FICHERO_TOKENS = "./Resultados/tokens";
 	private final int MAX_INT = 32767; // maximo valor del int en el lenguaje
 
 	private Reader fichero; // Fichero con el programa a analizar
+	private PrintWriter tokens; // Fichero en el cual ir escribiendo los tokens
 	private int estado = 0; // Estado en el que se encuentra el automata
 	private char caracterLeido; // Caracter que se acaba de leer del fichero
 
@@ -37,11 +41,16 @@ public class AnalizadorLexico {
 			InputStream in = new FileInputStream(fichero);
 			Reader reader = new InputStreamReader(in, Charset.defaultCharset());
 			this.fichero = new BufferedReader(reader);
+			this.tokens = new PrintWriter(new FileWriter(FICHERO_TOKENS));
 			leerCaracter();
 		} catch (FileNotFoundException e) {
 			// Envio al gestor de errore el codigo 1002 reservado a error de compilador
-			// cuando un fichero no existe
-			GestorDeErrores.gestionarError(1002,null);
+			// cuando un fichero no se puede abrir
+			GestorDeErrores.gestionarError(1002, fichero);
+		} catch (IOException e) {
+			// Envio al gestor de errore el codigo 1002 reservado a error de compilador
+			// cuando un fichero no se puede abrir
+			GestorDeErrores.gestionarError(1002, FICHERO_TOKENS);
 		}
 	}
 
@@ -71,6 +80,10 @@ public class AnalizadorLexico {
 		numero = -1;
 		cadena = null;
 		estado = 0;
+		
+		// Escribo el token en el archivo
+		tokens.println(token);
+		tokens.flush();
 
 		return token;
 	}
@@ -226,7 +239,7 @@ public class AnalizadorLexico {
 			if (numero > MAX_INT) {
 				// Se envia un error 2001 al gestor de errores reservado para el valor
 				// excesivamente alto de un numero
-				GestorDeErrores.gestionarError(2001,numero+"");
+				GestorDeErrores.gestionarError(2001, numero + "");
 			}
 			token = new Token(25, numero);
 			break;
@@ -330,7 +343,7 @@ public class AnalizadorLexico {
 				if (indice == 0) {
 					// Se envia un error al gestor de errores 2002 reservado para cuando se intenta
 					// declara una variable con un nombre ya usado en la tabla de simbolos activa
-					GestorDeErrores.gestionarError(2002,cadena);
+					GestorDeErrores.gestionarError(2002, cadena);
 				}
 			} else {
 				indice = GestorTablasDeSimbolos.obtenerIndiceId(cadena);
