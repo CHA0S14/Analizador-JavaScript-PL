@@ -71,24 +71,18 @@ public class GestorDeErrores {
 		case 3:
 			return "El caracter " + dato + " no pertenece al conjunto de caracteres permitidos";
 		case 4:
-			return "Se ha leido un caracter no imprimible";
+			return "No se esperaba el caracter '" + dato + "'";
 		case 5:
-			break;
+			return "Se ha leido un caracter no imprimible";
 		case 6:
-			break;
+			return "Se esperaba la inicializacion de un numero hexadecimal pero se ha recibido el caracter '" + dato
+					+ "'";
 		case 7:
-			break;
+			return "Se esperaba una n o una t para formar \\n o \\t pero se ha recibido el caracter '" + dato + "'";
 		case 8:
-			break;
+			return "Se esperaba un & o un = para formar && o &= pero se ha recibido el caracter '" + dato + "'";
 		case 9:
-			break;
-		case 10:
-			break;
-		case 11:
-			break;
-		case 12:
-			break;
-
+			return "Se esperaba un | o un = para formar || o |= pero se ha recibido el caracter '" + dato + "'";
 		}
 
 		return null;

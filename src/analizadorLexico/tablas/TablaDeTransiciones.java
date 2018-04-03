@@ -137,7 +137,7 @@ public class TablaDeTransiciones {
 			GestorDeErrores.gestionarError(2003, caracter + "");
 		} else if (columna == columnaOtroCaracter && (int) caracter < 32) {
 			// Se ha introducido un caracter no imprimible
-			GestorDeErrores.gestionarError(2004, null);
+			GestorDeErrores.gestionarError(2005, null);
 		}
 
 		// Primero obtengo el estado destino
