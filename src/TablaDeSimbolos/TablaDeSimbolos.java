@@ -13,7 +13,7 @@ public class TablaDeSimbolos {
 	private final int TAMANIO_FILA = 10;
 
 	private int id, nParams;
-	private String nombreFuncion;
+	private String nombreFuncion; // Solamente tiene valor si no es la tabla general
 	private List<String[]> operandos;
 
 	public TablaDeSimbolos(int id) {
@@ -94,7 +94,36 @@ public class TablaDeSimbolos {
 
 	@Override
 	/**
-	 * Metodo que imprime de una manera clara la tabla de simbolos
+	 * Metodo que imprime de una manera clara la tabla de simbolos de la siguiente
+	 * forma
+	 * 
+	 * <pre>
+	 * TABLA PRINCIPAL #1:
+	 * * LEXEMA : 'lexema'
+	 * 		+ tipo: 'tipo del identificador'
+	 * 		+ desplazamiento: 'desplazamiento del identificador
+	 * * LEXEMA : 'lexema2'
+	 * 		+ tipo: 'tipo del identificador2'
+	 * 		+ desplazamiento: 'desplazamiento del identificador2
+	 * * LEXEMA : 'lexema'
+	 * 		+ tipo: 'funcion'
+	 * 		+ parametros: 'n_parametros'
+	 * 		+ parametro1: 'tipo del parametro 1'	
+	 * 		+ parametro2: 'tipo del parametro 2'
+	 * 		+ ....
+	 * 		+ idTabla: 'id de la tabla'
+	 * 		+ tiporetorno: 'tipo de retorno de la funcion'
+	 * 
+	 * 	---------------SI NO ES LA TABLA GENERAL---------------
+	 * 
+	 * TABLA de la FUNCIÓN 'nombre de la funcion' #'id de la funcion':
+	 * * LEXEMA : 'lexema'
+	 * 		+ tipo: 'tipo del identificador'
+	 * 		+ desplazamiento: 'desplazamiento del identificador'
+	 * * LEXEMA : 'lexema2'
+	 * 		+ tipo: 'tipo del identificador2'
+	 * 		+ desplazamiento: 'desplazamiento del identificador2'
+	 * </pre>
 	 */
 	public String toString() {
 		StringBuffer tabla = new StringBuffer();
