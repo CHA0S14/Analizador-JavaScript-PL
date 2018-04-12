@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -69,10 +70,15 @@ public class TablaDeTransiciones {
 				nombreAgrupaciones.add(aux[0]);
 				// sustitullo las comas del segundo string por | y aniado corchetes, para
 				// conseguir una expresion regular del tipo [a|b|c] y cambio de vuelta el texto
-				// de la coma y el igual por su respectivo caracter
-				agrupaciones.add("["
-						+ aux[1].replaceAll(",", "|").replaceAll("caracter coma", ",").replaceAll("caracter igual", "=")
-						+ "]");
+				// de la coma y el igual por su respectivo caracter, ademas escapo todos los
+				// caracteres especiales para que no de error la expresion regular
+				agrupaciones.add("[" + aux[1].replaceAll("\\|", "\\\\|").replaceAll(",", "|")
+						.replaceAll("caracter coma", ",").replaceAll("caracter igual", "=").replaceAll("\\[", "\\\\[")
+						.replaceAll("\\]", "\\\\]").replaceAll("\\(", "\\\\(").replaceAll("\\)", "\\\\)").replaceAll("\\*", "\\\\*")
+						.replaceAll("\\.", "\\\\.").replaceAll("\\?", "\\\\?").replaceAll("\\+", "\\\\+").replaceAll("\\{", "\\\\{")
+						.replaceAll("\\}", "\\\\}") + "]");
+				
+				System.out.println(agrupaciones.get(agrupaciones.size()-1));
 
 				// Leo la siguiente linea
 				agrupacion = brAgrupaciones.readLine();
@@ -225,7 +231,23 @@ public class TablaDeTransiciones {
 				}
 				negacion.append("]");
 				cabeceras[i] = negacion.toString();
+				break;
+			case "|":
+			case "[":
+			case "]":
+			case "(":
+			case ")":
+			case "*":
+			case ".":
+			case "?":
+			case "+":
+			case "{":
+			case "}":
+				cabeceras[i] = "\\" + cabeceras[i];
+				break;
 			}
 		}
+		
+		System.out.println(Arrays.toString(cabeceras));
 	}
 }

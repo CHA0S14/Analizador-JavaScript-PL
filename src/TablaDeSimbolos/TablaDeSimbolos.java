@@ -111,7 +111,6 @@ public class TablaDeSimbolos {
 	 * 		+ parametro1: 'tipo del parametro 1'	
 	 * 		+ parametro2: 'tipo del parametro 2'
 	 * 		+ ....
-	 * 		+ idTabla: 'id de la tabla'
 	 * 		+ tiporetorno: 'tipo de retorno de la funcion'
 	 * 
 	 * 	---------------SI NO ES LA TABLA GENERAL---------------
@@ -167,7 +166,6 @@ public class TablaDeSimbolos {
 				for (int i = 2; i < operando.length - 4; i++) {
 					tabla.append("\t\t+ parametro" + (i - 1) + ": " + operando[i] + "\n");
 				}
-				tabla.append("\t+ idtabla: " + operando[operando.length - 2] + "\n");
 				tabla.append("\t+ tiporetorno" + operando[operando.length - 1] + "\n\n");
 			}
 

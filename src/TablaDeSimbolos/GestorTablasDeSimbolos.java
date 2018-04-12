@@ -9,8 +9,22 @@ package TablaDeSimbolos;
  */
 public class GestorTablasDeSimbolos {
 	private static TablaDeSimbolos tablaGlobal;
-	private static TablaDeSimbolos tablaActiva;
+	private static TablaDeSimbolos tablaActiva; // Esta tabla puede ser la tabla local o la global dependiendo del punto
+												// del codigo
 	private static int idTabla = 2; // Se inicia a 2 porque la tabla general tiene el valor 1
+	
+	/**
+	 * crear tabla
+	 * destruir tabla
+	 * buscar lexema
+	 * insertar lexema
+	 * insertar atributo
+	 * consultar atributo
+	 * 
+	 * 1 funcion distinta para insertar o buscar cada atributo
+	 * 
+	 * imprimir tabla reciba el nombre del fichero
+	 */
 
 	static {
 		tablaGlobal = new TablaDeSimbolos(1);
