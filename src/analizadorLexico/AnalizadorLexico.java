@@ -11,7 +11,7 @@ import java.io.PrintWriter;
 import java.io.Reader;
 import java.nio.charset.Charset;
 
-import TablaDeSimbolos.GestorTablasDeSimbolos;
+import TablaDeSimbolos.TablaDeSimbolos;
 import analizadorLexico.tablas.TablaDeTransiciones;
 import analizadorLexico.tablas.TablaPalabrasReservadas;
 import gestorDeErrores.GestorDeErrores;
@@ -80,7 +80,7 @@ public class AnalizadorLexico {
 		numero = -1;
 		cadena = null;
 		estado = 0;
-		
+
 		// Escribo el token en el archivo
 		tokens.println(token);
 		tokens.flush();
@@ -124,12 +124,11 @@ public class AnalizadorLexico {
 			numero = numero * 16 + fromHexToDec(caracterLeido);
 			leerCaracter();
 			break;
+		case "R": // Crear cadena vacia y leer
+			cadena = "";
+			leerCaracter();
 		case "S": // Crear cadena y leer
-			if (caracterLeido == '"' || caracterLeido == '\'') {
-				cadena = "";
-			} else {
-				cadena = caracterLeido + "";
-			}
+			cadena = caracterLeido + "";
 			leerCaracter();
 			break;
 		case "C": // Concatenar caracter y leer
@@ -338,7 +337,7 @@ public class AnalizadorLexico {
 		case "T54": // Generar Token identificador
 			int indice = 0;
 			if (zonaDeclaracion) {
-				indice = GestorTablasDeSimbolos.insertarId(cadena);
+				indice = TablaDeSimbolos.insertarId(cadena);
 				// Si el indice es 0 no se ha podido insertar correctamente
 				if (indice == 0) {
 					// Se envia un error al gestor de errores 2002 reservado para cuando se intenta
@@ -346,7 +345,7 @@ public class AnalizadorLexico {
 					GestorDeErrores.gestionarError(2002, cadena);
 				}
 			} else {
-				indice = GestorTablasDeSimbolos.obtenerIndiceId(cadena);
+				indice = TablaDeSimbolos.buscarId(cadena);
 			}
 			token = new Token(54, indice);
 		}

@@ -56,6 +56,8 @@ public class GestorDeErrores {
 			return "No se ha podido abrir el fichero " + dato;
 		case 3:
 			return "Ha ocurrido un error al leer o escribir el fichero " + dato;
+		case 4:
+			return "Ha ocurrido algun error con el indice de la tabla de simbolos " + dato;
 		}
 
 		return null;
