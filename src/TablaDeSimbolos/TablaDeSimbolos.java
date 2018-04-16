@@ -125,6 +125,9 @@ public class TablaDeSimbolos {
 	 * 
 	 * @param valor
 	 *            valor del atributo a modificar
+	 * 
+	 * @param numParametro
+	 *            numero del parametro a modificar
 	 */
 	public static void insetarAtributoId(int indice, String atributo, String valor, int numParametro) {
 		switch (atributo) {
@@ -132,12 +135,19 @@ public class TablaDeSimbolos {
 			insertarAtributoTipo(indice, valor);
 			break;
 		case DESP:
+			insertarAtributoDesplazamiento(indice, valor);
 			break;
 		case PARAM:
+			insertarAtributoParametro(indice, valor, numParametro);
 			break;
 		case RET:
+			insertarAtributoRetorno(indice, valor);
 			break;
 		case TAG:
+			insertarAtributoEtiqueta(indice, valor);
+			break;
+		default:
+			// TODO No se ha escogido un atributo a modificar valido
 			break;
 		}
 	}
@@ -149,7 +159,7 @@ public class TablaDeSimbolos {
 	 * @param indice
 	 *            Indice del identificador a modificar
 	 * @param valor
-	 *            Valor del indice a modificar a elegir entre:
+	 *            Valor del tipo a elegir entre:
 	 * 
 	 *            <pre>
 	 * 			  	TablaDeSimbolos.CHARS
@@ -170,6 +180,48 @@ public class TablaDeSimbolos {
 			// TODO No se a introducido un tipo valido
 			break;
 		}
+	}
+
+	/**
+	 * Metodo que se encarga de aniadir el atributo desplazamiento en la fila de un
+	 * identificador que no sea funcion
+	 * 
+	 * @param indice
+	 *            Indice del identificador a modificar
+	 * @param valor
+	 *            Valor del desplazamiento
+	 */
+	public static void insertarAtributoDesplazamiento(int indice, String valor) {
+		String[] identificador = obtenerTablaSegunIndice(indice).obtenerIdentificador(indice);
+
+		if (identificador[2].equals(FUNC)) {
+			// TODO No se puede aniadir un desplazamiento a una funcion
+		}
+
+		identificador[3] = valor;
+	}
+
+	/**
+	 * Metodo que se encarga de aniadir un parametro al la fila de el identificador
+	 * de una funcion
+	 * 
+	 * @param indice
+	 *            Indice del identificador a modificar
+	 * @param valor
+	 *            Valor del parametro
+	 * @param numParametro
+	 *            Numero del parametro a modificar
+	 */
+	public static void insertarAtributoParametro(int indice, String valor, int numParametro) {
+		// TODO Generar el metodo
+	}
+	
+	public static void insertarAtributoRetorno(int indice, String valor) {
+		// TODO Generar el metodo
+	}
+	
+	public static void insertarAtributoEtiqueta(int indice, String valor) {
+		// TODO Generar el metodo
 	}
 
 	/**
