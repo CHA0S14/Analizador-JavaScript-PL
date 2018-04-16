@@ -1,5 +1,9 @@
 package TablaDeSimbolos;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import gestorDeErrores.GestorDeErrores;
 
 /**
@@ -19,6 +23,11 @@ public class TablaDeSimbolos {
 	public static final String BOOL = "bool";
 	public static final String INT = "int";
 	public static final String FUNC = "funcion";
+	private static final String FICHERO_TABLA_DE_SIMBOLOS = "./Resultados/tablaDeSimbolos",
+			SEPARATOR = "--------------------------------------------";
+
+	private static PrintWriter tablaDeSimbolos;
+
 	private static DatosDeLaTablaDeSimbolos tablaGlobal;
 	private static DatosDeLaTablaDeSimbolos tablaActiva; // Esta tabla puede ser la tabla local o la global dependiendo
 															// del punto
@@ -36,6 +45,14 @@ public class TablaDeSimbolos {
 	static {
 		tablaGlobal = new DatosDeLaTablaDeSimbolos(1);
 		tablaActiva = tablaGlobal;
+
+		try {
+			tablaDeSimbolos = new PrintWriter(new FileWriter(FICHERO_TABLA_DE_SIMBOLOS));
+		} catch (IOException e) {
+			// Envio al gestor de errore el codigo 1002 reservado a error de compilador
+			// cuando un fichero no se puede abrir
+			GestorDeErrores.gestionarError(1002, FICHERO_TABLA_DE_SIMBOLOS);
+		}
 	}
 
 	/**
@@ -50,11 +67,28 @@ public class TablaDeSimbolos {
 	 * Metodo que elimina la tabla de simbolos activa y la sustituye por la global
 	 */
 	public static void eliminarTablaActiva() {
+		escribirTablaActivaEnFichero();
 		tablaActiva = tablaGlobal;
 		if (tablaActiva.equals(tablaGlobal))
 			tablaGlobal = null;
 		System.gc(); // Ejecuto el colector de basura para eliminar la tabla que ya no tiene punteros
 						// de la memoria
+	}
+
+	/**
+	 * Metodo que se encarga de escribir la tabla activa en un fichero
+	 */
+	private static void escribirTablaActivaEnFichero() {
+		tablaDeSimbolos.println(tablaActiva.toString());
+		
+		// Si no es la tabla global escribimos un separador en el archivo
+		if (!tablaActiva.equals(tablaGlobal)) {
+			tablaDeSimbolos.println();
+			tablaDeSimbolos.println(SEPARATOR);
+			tablaDeSimbolos.println();
+		}
+
+		tablaDeSimbolos.flush();
 	}
 
 	/**
@@ -208,20 +242,86 @@ public class TablaDeSimbolos {
 	 * @param indice
 	 *            Indice del identificador a modificar
 	 * @param valor
-	 *            Valor del parametro
+	 *            Valor del parametro el cual solo puede ser uno de los siguientes:
+	 * 
+	 *            <pre>
+	 * 			  	TablaDeSimbolos.CHARS
+	 * 				TablaDeSimbolos.INT
+	 * 				TablaDeSimbolos.BOOL
+	 *            </pre>
+	 * 
 	 * @param numParametro
 	 *            Numero del parametro a modificar
 	 */
 	public static void insertarAtributoParametro(int indice, String valor, int numParametro) {
-		// TODO Generar el metodo
+		String[] identificador = obtenerTablaSegunIndice(indice).obtenerIdentificador(indice);
+		if (!identificador[2].equals(FUNC)) {
+			// TODO No se puede aniadir retorno a un identificador que no es una funcion
+		}
+
+		switch (valor) {
+		case CHARS:
+		case INT:
+		case BOOL:
+			// Guardo el valor de retorno en el penultimo espacio del array
+			identificador[numParametro + 2] = valor;
+			break;
+		default:
+			// TODO No se a introducido un tipo valido
+			break;
+		}
 	}
-	
+
+	/**
+	 * Metodo que se encarga de insertar el atributo de retorno para un
+	 * identificador de funcion
+	 * 
+	 * @param indice
+	 *            Indice de la fila de la tabla de simbolos
+	 * @param valor
+	 *            Valor de retorno siendo un tipo de los siguientes:
+	 * 
+	 *            <pre>
+	 * 			  	TablaDeSimbolos.CHARS
+	 * 				TablaDeSimbolos.INT
+	 * 				TablaDeSimbolos.BOOL
+	 *            </pre>
+	 */
 	public static void insertarAtributoRetorno(int indice, String valor) {
-		// TODO Generar el metodo
+		String[] identificador = obtenerTablaSegunIndice(indice).obtenerIdentificador(indice);
+		if (!identificador[2].equals(FUNC)) {
+			// TODO No se puede aniadir retorno a un identificador que no es una funcion
+		}
+
+		switch (valor) {
+		case CHARS:
+		case INT:
+		case BOOL:
+			// Guardo el valor de retorno en el penultimo espacio del array
+			identificador[identificador.length - 2] = valor;
+			break;
+		default:
+			// TODO No se a introducido un tipo valido
+			break;
+		}
 	}
-	
+
+	/**
+	 * Metodo que se encarga de insertar un atributo etiqueta en un identificador de
+	 * tipo funcion
+	 * 
+	 * @param indice
+	 *            Indice de la linea de la tabla de simbolos
+	 * @param valor
+	 *            Valor de la etiqueta
+	 */
 	public static void insertarAtributoEtiqueta(int indice, String valor) {
-		// TODO Generar el metodo
+		String[] identificador = obtenerTablaSegunIndice(indice).obtenerIdentificador(indice);
+		if (!identificador[2].equals(FUNC)) {
+			// TODO No se puede aniadir retorno a un identificador que no es una funcion
+		}
+
+		identificador[identificador.length - 1] = valor;
 	}
 
 	/**
