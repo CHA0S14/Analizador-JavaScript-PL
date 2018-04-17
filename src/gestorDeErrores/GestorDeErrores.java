@@ -67,7 +67,7 @@ public class GestorDeErrores {
 		case 8:
 			return "Se esta intentando aniadir un atributo " + dato + " que es de funcion a una variable";
 		}
-
+		
 		return null;
 	}
 
