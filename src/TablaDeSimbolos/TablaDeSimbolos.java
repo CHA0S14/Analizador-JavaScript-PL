@@ -24,14 +24,13 @@ public class TablaDeSimbolos {
 	public static final String INT = "int";
 	public static final String FUNC = "funcion";
 	private static final String FICHERO_TABLA_DE_SIMBOLOS = "./Resultados/tablaDeSimbolos",
-			SEPARATOR = "--------------------------------------------";
+			SEPARADOR = "--------------------------------------------";
 
 	private static PrintWriter tablaDeSimbolos;
 
 	private static DatosDeLaTablaDeSimbolos tablaGlobal;
 	private static DatosDeLaTablaDeSimbolos tablaActiva; // Esta tabla puede ser la tabla local o la global dependiendo
-															// del punto
-	// del codigo
+															// del punto del codigo
 	private static int idTabla = 2; // Se inicia a 2 porque la tabla general tiene el valor 1
 
 	/**
@@ -80,11 +79,11 @@ public class TablaDeSimbolos {
 	 */
 	private static void escribirTablaActivaEnFichero() {
 		tablaDeSimbolos.println(tablaActiva.toString());
-		
+
 		// Si no es la tabla global escribimos un separador en el archivo
 		if (!tablaActiva.equals(tablaGlobal)) {
 			tablaDeSimbolos.println();
-			tablaDeSimbolos.println(SEPARATOR);
+			tablaDeSimbolos.println(SEPARADOR);
 			tablaDeSimbolos.println();
 		}
 
@@ -150,11 +149,11 @@ public class TablaDeSimbolos {
 	 *            Atributo que se quiere modificar pueden ser:
 	 * 
 	 *            <pre>
-	 *            TablaDeSimbolos.TIPO = tipo del identificador
-	 *            TablaDeSimbolos.DESP = desplazamiento del identificador
-	 *            TablaDeSimbolos.PARAM = parametro de la funcion
-	 *            TablaDeSimbolos.RET = tipo de retorno de la funcion
-	 *            TablaDeSimbolos.TAG = etiqueta de la funcion
+	 *            	TablaDeSimbolos.TIPO = tipo del identificador
+	 *            	TablaDeSimbolos.DESP = desplazamiento del identificador
+	 *            	TablaDeSimbolos.PARAM = parametro de la funcion
+	 *            	TablaDeSimbolos.RET = tipo de retorno de la funcion
+	 *            	TablaDeSimbolos.TAG = etiqueta de la funcion
 	 *            </pre>
 	 * 
 	 * @param valor
@@ -181,7 +180,7 @@ public class TablaDeSimbolos {
 			insertarAtributoEtiqueta(indice, valor);
 			break;
 		default:
-			// TODO No se ha escogido un atributo a modificar valido
+			GestorDeErrores.gestionarError(1005, atributo);
 			break;
 		}
 	}
@@ -211,7 +210,7 @@ public class TablaDeSimbolos {
 			obtenerTablaSegunIndice(indice).obtenerIdentificador(indice)[2] = valor;
 			break;
 		default:
-			// TODO No se a introducido un tipo valido
+			GestorDeErrores.gestionarError(1006, valor);
 			break;
 		}
 	}
@@ -229,7 +228,7 @@ public class TablaDeSimbolos {
 		String[] identificador = obtenerTablaSegunIndice(indice).obtenerIdentificador(indice);
 
 		if (identificador[2].equals(FUNC)) {
-			// TODO No se puede aniadir un desplazamiento a una funcion
+			GestorDeErrores.gestionarError(1007, null);
 		}
 
 		identificador[3] = valor;
@@ -256,7 +255,7 @@ public class TablaDeSimbolos {
 	public static void insertarAtributoParametro(int indice, String valor, int numParametro) {
 		String[] identificador = obtenerTablaSegunIndice(indice).obtenerIdentificador(indice);
 		if (!identificador[2].equals(FUNC)) {
-			// TODO No se puede aniadir retorno a un identificador que no es una funcion
+			GestorDeErrores.gestionarError(1008, PARAM);
 		}
 
 		switch (valor) {
@@ -267,7 +266,7 @@ public class TablaDeSimbolos {
 			identificador[numParametro + 2] = valor;
 			break;
 		default:
-			// TODO No se a introducido un tipo valido
+			GestorDeErrores.gestionarError(1006, valor);
 			break;
 		}
 	}
@@ -290,7 +289,7 @@ public class TablaDeSimbolos {
 	public static void insertarAtributoRetorno(int indice, String valor) {
 		String[] identificador = obtenerTablaSegunIndice(indice).obtenerIdentificador(indice);
 		if (!identificador[2].equals(FUNC)) {
-			// TODO No se puede aniadir retorno a un identificador que no es una funcion
+			GestorDeErrores.gestionarError(1008, RET);
 		}
 
 		switch (valor) {
@@ -301,7 +300,7 @@ public class TablaDeSimbolos {
 			identificador[identificador.length - 2] = valor;
 			break;
 		default:
-			// TODO No se a introducido un tipo valido
+			GestorDeErrores.gestionarError(1006, valor);
 			break;
 		}
 	}
@@ -318,7 +317,7 @@ public class TablaDeSimbolos {
 	public static void insertarAtributoEtiqueta(int indice, String valor) {
 		String[] identificador = obtenerTablaSegunIndice(indice).obtenerIdentificador(indice);
 		if (!identificador[2].equals(FUNC)) {
-			// TODO No se puede aniadir retorno a un identificador que no es una funcion
+			GestorDeErrores.gestionarError(1008, TAG);
 		}
 
 		identificador[identificador.length - 1] = valor;
@@ -340,7 +339,6 @@ public class TablaDeSimbolos {
 		} else if (indice < 0 && !tablaActiva.equals(tablaGlobal)) {
 			tabla = tablaActiva;
 		} else {
-			// TODO Gestor de errores, algo raro ha sucedido con el indice
 			GestorDeErrores.gestionarError(1004, "El indice buscado es " + indice + " y la tabla activa es "
 					+ ((!tablaActiva.equals(tablaGlobal)) ? "Una tabla local" : "La tabla global"));
 		}

@@ -58,6 +58,14 @@ public class GestorDeErrores {
 			return "Ha ocurrido un error al leer o escribir el fichero " + dato;
 		case 4:
 			return "Ha ocurrido algun error con el indice de la tabla de simbolos " + dato;
+		case 5:
+			return "Se ha insertado un nombre de atributo invalido " + dato;
+		case 6:
+			return "Se ha insertado un tipo de atributo invalido " + dato;
+		case 7:
+			return "Se esta intentando añadir desplazamiento a una funcion";
+		case 8:
+			return "Se esta intentando aniadir un atributo " + dato + " que es de funcion a una variable";
 		}
 
 		return null;
