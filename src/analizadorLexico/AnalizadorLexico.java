@@ -124,11 +124,12 @@ public class AnalizadorLexico {
 			numero = numero * 16 + fromHexToDec(caracterLeido);
 			leerCaracter();
 			break;
-		case "R": // Crear cadena vacia y leer
-			cadena = "";
-			leerCaracter();
-		case "S": // Crear cadena y leer
+		case "R": // Crear cadena con caracter y leer
 			cadena = caracterLeido + "";
+			leerCaracter();
+			break;
+		case "S": // Crear cadena vacia y leer
+			cadena = "";
 			leerCaracter();
 			break;
 		case "C": // Concatenar caracter y leer

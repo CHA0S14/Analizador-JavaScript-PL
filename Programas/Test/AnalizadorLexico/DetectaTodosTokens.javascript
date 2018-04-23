@@ -1,0 +1,1 @@
++ - * / % == != < > <= >= && || ! ++ -- = += -= *= /= %= &= |= 123 0123 0x12AF "Cadena\n" 'Cadena\n' true false var int bool chars write prompt return if else while do for switch case break default function ( ) { } , ; : identificador

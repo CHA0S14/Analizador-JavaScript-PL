@@ -8,7 +8,7 @@
 // Por ultimo como ayuda extra el programa acepta o.c. y EOF sin necesidad de escribirlo en este documento
 
 // Digitos del 1 al 7
-digitosDe1A7=1,2,3,4,5,6,7,|
+digitosDe1A7=1,2,3,4,5,6,7
 
 // Digitos 8 y 9
 digitosDe8A9=8,9

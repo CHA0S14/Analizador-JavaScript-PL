@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -72,13 +71,11 @@ public class TablaDeTransiciones {
 				// conseguir una expresion regular del tipo [a|b|c] y cambio de vuelta el texto
 				// de la coma y el igual por su respectivo caracter, ademas escapo todos los
 				// caracteres especiales para que no de error la expresion regular
-				agrupaciones.add("[" + aux[1].replaceAll("\\|", "\\\\|").replaceAll(",", "|")
+				agrupaciones.add("(" + aux[1].replaceAll("\\|", "\\\\|").replaceAll(",", "|")
 						.replaceAll("caracter coma", ",").replaceAll("caracter igual", "=").replaceAll("\\[", "\\\\[")
 						.replaceAll("\\]", "\\\\]").replaceAll("\\(", "\\\\(").replaceAll("\\)", "\\\\)").replaceAll("\\*", "\\\\*")
 						.replaceAll("\\.", "\\\\.").replaceAll("\\?", "\\\\?").replaceAll("\\+", "\\\\+").replaceAll("\\{", "\\\\{")
-						.replaceAll("\\}", "\\\\}") + "]");
-				
-				System.out.println(agrupaciones.get(agrupaciones.size()-1));
+						.replaceAll("\\}", "\\\\}") + ")");
 
 				// Leo la siguiente linea
 				agrupacion = brAgrupaciones.readLine();
@@ -247,7 +244,5 @@ public class TablaDeTransiciones {
 				break;
 			}
 		}
-		
-		System.out.println(Arrays.toString(cabeceras));
 	}
 }
