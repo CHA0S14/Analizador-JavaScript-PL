@@ -11,10 +11,10 @@ import java.io.PrintWriter;
 import java.io.Reader;
 import java.nio.charset.Charset;
 
-import TablaDeSimbolos.TablaDeSimbolos;
 import analizadorLexico.tablas.TablaDeTransiciones;
 import analizadorLexico.tablas.TablaPalabrasReservadas;
 import gestorDeErrores.GestorDeErrores;
+import tablaDeSimbolos.TablaDeSimbolos;
 
 /**
  * 

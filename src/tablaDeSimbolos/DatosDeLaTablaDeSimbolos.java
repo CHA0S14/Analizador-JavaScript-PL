@@ -1,4 +1,4 @@
-package TablaDeSimbolos;
+package tablaDeSimbolos;
 
 import java.util.ArrayList;
 import java.util.List;

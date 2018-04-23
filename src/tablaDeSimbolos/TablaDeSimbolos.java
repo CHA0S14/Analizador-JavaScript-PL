@@ -1,4 +1,4 @@
-package TablaDeSimbolos;
+package tablaDeSimbolos;
 
 import java.io.FileWriter;
 import java.io.IOException;
