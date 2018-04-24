@@ -1,3 +1,72 @@
+/* Programa de ejemplo  */
+/******* José Luis Fuertes, 5, enero, 2018 *********/
+/* El ejemplo incorpora elementos del lenguaje opcionales y elementos que no hay que implementar */
+
+var chars s;	/* variable global cadena */
+
+function int FactorialRecursivo (int n)	/* n: parámetro formal de la función entera */
+{
+	if (n == 0)	return 1;
+	return n * FactorialRecursivo (n - 1);	/* llamada recursiva */
+}
+
+function int FactorialDo (int n)
+{
+	var int factorial = 1;	// variable local inicializada a uno
+	do
+	{
+		factorial *= n--;	// equivale a: factorial = factorial * n; n = n - 1;
+	} while (n);		// mientras n no sea 0
+	return factorial;	// devuelve el valor entero de la variable factorial
+}
+
+function int FactorialWhile ()
+{
+	var int factorial = 1, i;	// variables locales: factorial inicializada a 1 e i inicializada a 0 por omisión
+	while (i < num)			// num es variable global entera sin declarar
+	{
+		factorial *= ++i;	// equivale a: i = i + 1; factorial = factorial * i;
+	}
+	return factorial;
+}
+
+function int FactorialFor (int n)
+{
+	var int i, factorial = 1;	/* variables locales */
+	for (i = 1; i <= n; i++)
+	{
+		factorial *= i;
+	}
+	return factorial;
+}
+
+var int For, Do, While;	// tres variables globales
+
+function imprime (chars s, chars msg, int f)	/* función que recibe 3 argumentos */
+{
+	write (s); write (msg); write (f);
+	write ("\n");	// imprime un salto de línea */
+	return;	/* finaliza la ejecución de la función (en este caso, se podría omitir) */
+}
+
+function chars cadena (bool log)
+{
+	if (!log)
+	{
+		return s;
+	}
+	else
+	{
+		return "Fin";
+	}
+}	// fin cadena: función que devuelve una cadena
+
+// Parte del programa principal:
+s = "El factorial ";	// Primera sentencia que se ejecutaría
+
+write (s);
+write ("\nIntroduce un 'número'.");
+prompt (num);	/* se lee un número del teclado y se guarda en la variable global num */
 
 switch (num);
 {
@@ -33,7 +102,7 @@ function int dias (int m, int a)
 			return 31; break;
 		case 4: case 6: case 9: case 11:
 			return 30;
-		case 2: return 29;
+		case 2: return (bisiesto (a))? (29): (28);
 			break;
 		default: return 0;
 	}
@@ -72,7 +141,7 @@ function demo ()	/* definición de la función demo, sin argumentos y que no devue
 	{
 		write ('Escriba su nombre: ');
 		prompt (s);
-		v0 = v3;	/* si v2<v3, v0=v2; en otro caso v0=v3 */
+		v0 = (v2 < v3) ? (v2): (v3);	/* si v2<v3, v0=v2; en otro caso v0=v3 */
 		write (s);
 	}
 	s = "El primer valor era ";

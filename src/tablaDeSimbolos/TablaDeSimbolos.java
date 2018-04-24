@@ -42,6 +42,14 @@ public class TablaDeSimbolos {
 	 */
 
 	static {
+		resetTablaDeSimbolos();
+	}
+
+	/**
+	 * Metodo que resetea las tablas de simbolos para el testing y para llamar desde
+	 * static
+	 */
+	public static void resetTablaDeSimbolos() {
 		tablaGlobal = new DatosDeLaTablaDeSimbolos(1);
 		tablaActiva = tablaGlobal;
 
@@ -67,9 +75,9 @@ public class TablaDeSimbolos {
 	 */
 	public static void eliminarTablaActiva() {
 		escribirTablaActivaEnFichero();
-		tablaActiva = tablaGlobal;
 		if (tablaActiva.equals(tablaGlobal))
 			tablaGlobal = null;
+		tablaActiva = tablaGlobal;
 		System.gc(); // Ejecuto el colector de basura para eliminar la tabla que ya no tiene punteros
 						// de la memoria
 	}

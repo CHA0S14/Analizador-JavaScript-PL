@@ -7,7 +7,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +17,7 @@ import org.junit.Test;
 
 import analizadorLexico.AnalizadorLexico;
 import analizadorLexico.Token;
+import tablaDeSimbolos.TablaDeSimbolos;
 
 public class TestAnalizadorLéxico {
 	private final String CARPETA_PROGRAMAS_LEXICO = "Programas/Test/AnalizadorLexico/";
@@ -25,32 +25,33 @@ public class TestAnalizadorLéxico {
 	private final String SEPARATOR = "***************************************************";
 	private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
 
-	private final String[] FILENAMES = { "DetectaTodosTokens" };
+	private final String[] FILENAMES = { "DetectaTodosTokens", "ProgramaBasico", "ProgramaBucles",
+			"ProgramaFunciones" };
 
-	private int contFilenames = 0;
+	private static int contFilenames = 0;
 	private AnalizadorLexico analizador;
 
-	@Before
 	/**
 	 * Metodo que se ejecuta antes de cada test, se encarga de preparar el terreno
 	 */
+	@Before
 	public void prePrueba() {
 		// Inicio el analizador lexico de la prueba
 		analizador = new AnalizadorLexico(
 				Paths.get(CARPETA_PROGRAMAS_LEXICO, FILENAMES[contFilenames] + ".javascript").toString());
 
 		// Cambio la salida de error a errContent para poder tratarlo
-		System.setErr(new PrintStream(errContent));
+		//System.setErr(new PrintStream(errContent));
 
 		// Imprimo un separador para que los output de las pruebas sean mas claros
 		System.out.println(SEPARATOR);
 	}
 
-	@After
 	/**
 	 * Metodo que se ejecuta despues de cada test, limpia los cambios hecho por
 	 * before y por el test
 	 */
+	@After
 	public void postPrueba() {
 		// Cambio la salida de error a la de por defecto
 		System.setErr(System.err);
@@ -61,19 +62,22 @@ public class TestAnalizadorLéxico {
 
 		// Borro el analizador usado anteriormente
 		analizador = null;
+		
+		// Limpio las tablas de simbolos
+		TablaDeSimbolos.resetTablaDeSimbolos();
 
 		// Imprimo mensajes de finalizacion de test
-		System.out.println("  -> Prueba finalizada con exito");
+		System.out.println("\n  -> Prueba finalizada con exito");
 		System.out.println(SEPARATOR + "\n");
 	}
 
-	@Test
 	/**
 	 * Prueba que el analizador lexico es capaz de encontrar todos los tipos de
 	 * tokens
 	 */
-	public void AnalizadorLexicoDetectaTokens() {
-		System.out.println("Probando que el analizador lexico es capaz de detectar todos los tokens");
+	@Test
+	public void AnalizadorLexicoDetectaTiposTokens() {
+		System.out.println("Probando que el analizador lexico es capaz de\ndetectar todos los tokens");
 
 		List<String> tokens = getTokens();
 		List<String> resultado = getResultados(FILENAMES[contFilenames]);
@@ -81,7 +85,49 @@ public class TestAnalizadorLéxico {
 		assertEquals(tokens, resultado);
 	}
 
+	/**
+	 * Prueba que el analizador lexico es capaz de detectar todos los tokens de un
+	 * programa basico
+	 */
 	@Test
+	public void AnalizadorLexicoDetectaTokensProgramaBasico() {
+		System.out.println("Probando que el analizador lexico es capaz de\ndetectar los tokens de un programa basico");
+		
+		List<String> tokens = getTokens();		
+		List<String> resultado = getResultados(FILENAMES[contFilenames]);
+
+		assertEquals(tokens, resultado);
+	}
+
+	/**
+	 * Prueba que el analizador lexico es capaz de detectar todos los tokens de un
+	 * programa basico
+	 */
+	@Test
+	public void AnalizadorLexicoDetectaTokensProgramaBucles() {
+		System.out.println(
+				"Probando que el analizador lexico es capaz de\ndetectar los tokens de un programa con bucles");
+
+		List<String> tokens = getTokens();
+		List<String> resultado = getResultados(FILENAMES[contFilenames]);
+
+		assertEquals(tokens, resultado);
+	}
+
+	/**
+	 * Prueba que el analizador lexico es capaz de detectar todos los tokens de un
+	 * programa basico
+	 */
+	public void AnalizadorLexicoDetectaTokensProgramaFunciones() {
+		System.out.println(
+				"Probando que el analizador lexico es capaz de\ndetectar los tokens de un programa con funciones");
+
+		List<String> tokens = getTokens();
+		List<String> resultado = getResultados(FILENAMES[contFilenames]);
+
+		assertEquals(tokens, resultado);
+	}
+
 	public void err() {
 		System.err.print("hello again");
 		assertEquals("hello again", errContent.toString());

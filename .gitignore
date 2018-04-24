@@ -1,6 +1,7 @@
 /bin/
 /.settings/
-/Resultados/
+/Resultados/tokens
+/Resultados/tablaDeSimbolos
 .classpath
 .project
 
