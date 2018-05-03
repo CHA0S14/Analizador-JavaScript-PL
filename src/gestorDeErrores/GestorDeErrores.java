@@ -44,7 +44,7 @@ public class GestorDeErrores {
 		}
 
 		System.err.println(error);
-		System.exit(1);
+		System.exit(codigo);
 	}
 
 	private static String errorCompilador(int codigo, String dato) {
