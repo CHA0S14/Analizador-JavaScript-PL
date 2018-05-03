@@ -33,8 +33,8 @@ public class TestAnalizadorLéxico {
 	private final String CARPETA_RESULTADOS_LEXICO = "Resultados/Test/AnalizadorLexico/";
 	private final String SEPARATOR = "***************************************************";
 	private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
-	private final String[] caracteresNoValidos = { "_", "\\", "¡", "á", "é", "í", "ó", "ú", "// algo", "/* algo",
-			"/* algo *", "\"algo", "\"algo \n", "' algo", "' algo \n", "identificador" };
+	private final String[] caracteresNoValidos2006 = { "_", "\\", "¡", "á", "é", "í", "ó", "ú", "// algo", "/* algo",
+			"/* algo *", "\"algo", "\"algo \n", "' algo", "' algo \n", "identificador"};
 
 	private static int contCaracteresNoValidos = 0;
 
@@ -159,8 +159,8 @@ public class TestAnalizadorLéxico {
 	 * @throws IOException
 	 *             Excepcion que puede darse cuando trabajas con ficheros
 	 */
-	private void contenidoFalloLeerCaracterNoValido() throws IOException {
-		String caracter = caracteresNoValidos[contCaracteresNoValidos];
+	private void contenidofalloLeerCaracterNoValido() throws IOException {
+		String caracter = caracteresNoValidos2006[contCaracteresNoValidos];
 		System.out.println(
 				"Probando que el analizador lexico es capaz de\ndetectar errores con caracteres no valido " + caracter);
 
@@ -177,9 +177,9 @@ public class TestAnalizadorLéxico {
 	 * @throws IOException
 	 *             Excepcion que se puede dar al trabajar con ficheros
 	 */
-	public void FalloLeerCaracterNoValido1() throws IOException {
+	public void falloLeerCaracterNoValido1() throws IOException {
 		exit.expectSystemExitWithStatus(2004);
-		contenidoFalloLeerCaracterNoValido();
+		contenidofalloLeerCaracterNoValido();
 	}
 
 	@Test
@@ -189,9 +189,9 @@ public class TestAnalizadorLéxico {
 	 * @throws IOException
 	 *             Excepcion que se puede dar al trabajar con ficheros
 	 */
-	public void FalloLeerCaracterNoValido2() throws IOException {
+	public void falloLeerCaracterNoValido2() throws IOException {
 		exit.expectSystemExitWithStatus(2004);
-		contenidoFalloLeerCaracterNoValido();
+		contenidofalloLeerCaracterNoValido();
 	}
 
 	@Test
@@ -201,9 +201,9 @@ public class TestAnalizadorLéxico {
 	 * @throws IOException
 	 *             Excepcion que se puede dar al trabajar con ficheros
 	 */
-	public void FalloLeerCaracterNoValido3() throws IOException {
+	public void falloLeerCaracterNoValido3() throws IOException {
 		exit.expectSystemExitWithStatus(2004);
-		contenidoFalloLeerCaracterNoValido();
+		contenidofalloLeerCaracterNoValido();
 	}
 
 	@Test
@@ -213,9 +213,9 @@ public class TestAnalizadorLéxico {
 	 * @throws IOException
 	 *             Excepcion que se puede dar al trabajar con ficheros
 	 */
-	public void FalloLeerCaracterNoValido4() throws IOException {
+	public void falloLeerCaracterNoValido4() throws IOException {
 		exit.expectSystemExitWithStatus(2004);
-		contenidoFalloLeerCaracterNoValido();
+		contenidofalloLeerCaracterNoValido();
 	}
 
 	@Test
@@ -225,9 +225,9 @@ public class TestAnalizadorLéxico {
 	 * @throws IOException
 	 *             Excepcion que se puede dar al trabajar con ficheros
 	 */
-	public void FalloLeerCaracterNoValido5() throws IOException {
+	public void falloLeerCaracterNoValido5() throws IOException {
 		exit.expectSystemExitWithStatus(2004);
-		contenidoFalloLeerCaracterNoValido();
+		contenidofalloLeerCaracterNoValido();
 	}
 
 	@Test
@@ -237,9 +237,9 @@ public class TestAnalizadorLéxico {
 	 * @throws IOException
 	 *             Excepcion que se puede dar al trabajar con ficheros
 	 */
-	public void FalloLeerCaracterNoValido6() throws IOException {
+	public void falloLeerCaracterNoValido6() throws IOException {
 		exit.expectSystemExitWithStatus(2004);
-		contenidoFalloLeerCaracterNoValido();
+		contenidofalloLeerCaracterNoValido();
 	}
 
 	@Test
@@ -249,9 +249,9 @@ public class TestAnalizadorLéxico {
 	 * @throws IOException
 	 *             Excepcion que se puede dar al trabajar con ficheros
 	 */
-	public void FalloLeerCaracterNoValido7() throws IOException {
+	public void falloLeerCaracterNoValido7() throws IOException {
 		exit.expectSystemExitWithStatus(2004);
-		contenidoFalloLeerCaracterNoValido();
+		contenidofalloLeerCaracterNoValido();
 	}
 
 	@Test
@@ -261,9 +261,9 @@ public class TestAnalizadorLéxico {
 	 * @throws IOException
 	 *             Excepcion que se puede dar al trabajar con ficheros
 	 */
-	public void FalloLeerCaracterNoValido8() throws IOException {
+	public void falloLeerCaracterNoValido8() throws IOException {
 		exit.expectSystemExitWithStatus(2004);
-		contenidoFalloLeerCaracterNoValido();
+		contenidofalloLeerCaracterNoValido();
 	}
 
 	@Test
@@ -273,9 +273,9 @@ public class TestAnalizadorLéxico {
 	 * @throws IOException
 	 *             Excepcion que se puede dar al trabajar con ficheros
 	 */
-	public void FalloLeerCaracterNoValido9() throws IOException {
+	public void falloLeerCaracterNoValido9() throws IOException {
 		exit.expectSystemExitWithStatus(2004);
-		contenidoFalloLeerCaracterNoValido();
+		contenidofalloLeerCaracterNoValido();
 	}
 
 	@Test
@@ -285,9 +285,9 @@ public class TestAnalizadorLéxico {
 	 * @throws IOException
 	 *             Excepcion que se puede dar al trabajar con ficheros
 	 */
-	public void FalloLeerCaracterNoValido10() throws IOException {
+	public void falloLeerCaracterNoValido10() throws IOException {
 		exit.expectSystemExitWithStatus(2004);
-		contenidoFalloLeerCaracterNoValido();
+		contenidofalloLeerCaracterNoValido();
 	}
 
 	@Test
@@ -297,9 +297,9 @@ public class TestAnalizadorLéxico {
 	 * @throws IOException
 	 *             Excepcion que se puede dar al trabajar con ficheros
 	 */
-	public void FalloLeerCaracterNoValido11() throws IOException {
+	public void falloLeerCaracterNoValido11() throws IOException {
 		exit.expectSystemExitWithStatus(2004);
-		contenidoFalloLeerCaracterNoValido();
+		contenidofalloLeerCaracterNoValido();
 	}
 
 	@Test
@@ -309,9 +309,9 @@ public class TestAnalizadorLéxico {
 	 * @throws IOException
 	 *             Excepcion que se puede dar al trabajar con ficheros
 	 */
-	public void FalloLeerCaracterNoValido12() throws IOException {
+	public void falloLeerCaracterNoValido12() throws IOException {
 		exit.expectSystemExitWithStatus(2004);
-		contenidoFalloLeerCaracterNoValido();
+		contenidofalloLeerCaracterNoValido();
 	}
 
 	@Test
@@ -321,9 +321,9 @@ public class TestAnalizadorLéxico {
 	 * @throws IOException
 	 *             Excepcion que se puede dar al trabajar con ficheros
 	 */
-	public void FalloLeerCaracterNoValido13() throws IOException {
+	public void falloLeerCaracterNoValido13() throws IOException {
 		exit.expectSystemExitWithStatus(2004);
-		contenidoFalloLeerCaracterNoValido();
+		contenidofalloLeerCaracterNoValido();
 	}
 
 	@Test
@@ -333,9 +333,9 @@ public class TestAnalizadorLéxico {
 	 * @throws IOException
 	 *             Excepcion que se puede dar al trabajar con ficheros
 	 */
-	public void FalloLeerCaracterNoValido14() throws IOException {
+	public void falloLeerCaracterNoValido14() throws IOException {
 		exit.expectSystemExitWithStatus(2004);
-		contenidoFalloLeerCaracterNoValido();
+		contenidofalloLeerCaracterNoValido();
 	}
 
 	@Test
@@ -345,9 +345,9 @@ public class TestAnalizadorLéxico {
 	 * @throws IOException
 	 *             Excepcion que se puede dar al trabajar con ficheros
 	 */
-	public void FalloLeerCaracterNoValido15() throws IOException {
+	public void falloLeerCaracterNoValido15() throws IOException {
 		exit.expectSystemExitWithStatus(2004);
-		contenidoFalloLeerCaracterNoValido();
+		contenidofalloLeerCaracterNoValido();
 	}
 
 	@Test
@@ -357,9 +357,134 @@ public class TestAnalizadorLéxico {
 	 * @throws IOException
 	 *             Excepcion que se puede dar al trabajar con ficheros
 	 */
-	public void FalloLeerCaracterNoValido16() throws IOException {
+	public void falloLeerCaracterNoValido16() throws IOException {
 		exit.expectSystemExitWithStatus(2004);
-		contenidoFalloLeerCaracterNoValido();
+		contenidofalloLeerCaracterNoValido();
+	}
+	
+	@Test
+	/**
+	 * Test que comprueba que se adminte un programa con un numero al limite maximo 32767
+	 * 
+	 * @throws IOException Excepcion que se puede dar al trabajar con ficheros
+	 */
+	public void valorNumericoMaximoValido() throws IOException {
+		String caracter = "32767";
+		System.out.println(
+				"Probando que el analizador lexico es capaz de\ndetectar un valor numerico excesivo = " + caracter);
+
+		AnalizadorLexico analizador = new AnalizadorLexico(crearFicheroTemporal(caracter).getAbsolutePath());
+
+		List<String> respuesta = new ArrayList<>();
+		respuesta.add("<25, 32767>");
+		respuesta.add("<53, null>");
+		
+		List<String> tokens = getTokens(analizador);
+
+		assertEquals(tokens, respuesta);
+	}
+	
+	@Test
+	/**
+	 * Test que comprueba que se genera un error 2001 de fallo  de limite de numero
+	 * 
+	 * @throws IOException Excepcion que se puede dar al trabajar con ficheros
+	 */
+	public void valorNumericoExcedido() throws IOException {
+		String caracter = "32768";
+		System.out.println(
+				"Probando que el analizador lexico es capaz de\ndetectar un valor numerico excesivo = " + caracter);
+
+		AnalizadorLexico analizador = new AnalizadorLexico(crearFicheroTemporal(caracter).getAbsolutePath());
+
+		exit.expectSystemExitWithStatus(2001);
+		getTokens(analizador);
+	}
+
+	@Test
+	/**
+	 * Test que comprueba que se genera un error 2006 de fallo de inicializacion de
+	 * un numero hexadecimal
+	 * 
+	 * @throws IOException Excepcion que se puede dar al trabajar con ficheros
+	 */
+	public void falloInicializacionHexadecimal() throws IOException {
+		String caracter = "0xz";
+		System.out.println(
+				"Probando que el analizador lexico es capaz de\ndetectar errores con caracteres no valido " + caracter);
+
+		AnalizadorLexico analizador = new AnalizadorLexico(crearFicheroTemporal(caracter).getAbsolutePath());
+
+		exit.expectSystemExitWithStatus(2006);
+		getTokens(analizador);
+	}
+	
+	@Test
+	/**
+	 * Test que comprueba que se genera un error 2007 de fallo, caracter invalido tras \ en un string
+	 * 
+	 * @throws IOException Excepcion que se puede dar al trabajar con ficheros
+	 */
+	public void caracterEspeciaStringErroneoSimple() throws IOException {
+		String caracter = "\" \\z \"";
+		System.out.println(
+				"Probando que el analizador lexico es capaz de\ndetectar un caracter invalido " + caracter);
+
+		AnalizadorLexico analizador = new AnalizadorLexico(crearFicheroTemporal(caracter).getAbsolutePath());
+
+		exit.expectSystemExitWithStatus(2007);
+		getTokens(analizador);
+	}
+	
+	@Test
+	/**
+	 * Test que comprueba que se genera un error 2008 de fallo, caracter invalido tras &
+	 * 
+	 * @throws IOException Excepcion que se puede dar al trabajar con ficheros
+	 */
+	public void caracterAndErroneo() throws IOException {
+		String caracter = "&a";
+		System.out.println(
+				"Probando que el analizador lexico es capaz de\ndetectar un caracter invalido " + caracter);
+
+		AnalizadorLexico analizador = new AnalizadorLexico(crearFicheroTemporal(caracter).getAbsolutePath());
+
+		exit.expectSystemExitWithStatus(2008);
+		getTokens(analizador);
+	}
+	
+	@Test
+	/**
+	 * Test que comprueba que se genera un error 2009 de fallo, caracter invalido tras |
+	 * 
+	 * @throws IOException Excepcion que se puede dar al trabajar con ficheros
+	 */
+	public void caracterOrErroneo() throws IOException {
+		String caracter = "|a";
+		System.out.println(
+				"Probando que el analizador lexico es capaz de\ndetectar un caracter invalido " + caracter);
+
+		AnalizadorLexico analizador = new AnalizadorLexico(crearFicheroTemporal(caracter).getAbsolutePath());
+
+		exit.expectSystemExitWithStatus(2009);
+		getTokens(analizador);
+	}
+	 
+	@Test
+	/**
+	 * Test que comprueba que se genera un error 2007 de fallo, caracter invalido tras \ en un string
+	 * 
+	 * @throws IOException Excepcion que se puede dar al trabajar con ficheros
+	 */
+	public void caracterEspeciaStringErroneoDoble() throws IOException {
+		String caracter = "' \\z '";
+		System.out.println(
+				"Probando que el analizador lexico es capaz de\ndetectar un caracter invalido " + caracter);
+
+		AnalizadorLexico analizador = new AnalizadorLexico(crearFicheroTemporal(caracter).getAbsolutePath());
+
+		exit.expectSystemExitWithStatus(2007);
+		getTokens(analizador);
 	}
 
 	/**
