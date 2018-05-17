@@ -2,6 +2,7 @@ package analizadorSintactico;
 
 import analizadorLexico.AnalizadorLexico;
 import analizadorLexico.Token;
+import gestorDeErrores.GestorDeErrores;
 
 public class AnalizadorSintactico {
 	private Token sigToken = null;
@@ -45,7 +46,7 @@ public class AnalizadorSintactico {
 			equip(53);
 			break;
 		default:
-			// TODO Gestor de errores
+			GestorDeErrores.gestionarError(3001, null);
 		}
 	}
 
@@ -130,7 +131,7 @@ public class AnalizadorSintactico {
 			equip(49); // }
 			break;
 		default:
-			// TODO Gestor de errores
+			GestorDeErrores.gestionarError(3001, null);
 		}
 	}
 
@@ -190,9 +191,8 @@ public class AnalizadorSintactico {
 		case 54: // identificador
 			initForCont();
 			break;
-
 		default:
-			// TODO Gestor de errores
+			GestorDeErrores.gestionarError(3002, null);
 		}
 	}
 
@@ -232,7 +232,7 @@ public class AnalizadorSintactico {
 			}
 			e();
 		} else {
-			// TODO Gestor de errores
+			GestorDeErrores.gestionarError(3002, null);
 		}
 	}
 
@@ -307,7 +307,7 @@ public class AnalizadorSintactico {
 			equip(16);
 			break;
 		default:
-			// TODO Gestor de errores
+			GestorDeErrores.gestionarError(3003, null);
 		}
 	}
 
@@ -383,7 +383,7 @@ public class AnalizadorSintactico {
 			c1();
 			case2();
 		} else {
-			// TODO Gestor de errores
+			GestorDeErrores.gestionarError(3004, null);
 		}
 	}
 
@@ -406,24 +406,11 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * CASE3 -> CASE4
+	 * 		CASE3 -> case CTE_Entera : CASE3
+	 * 		CASE3 -> lambda
 	 * </pre>
 	 */
 	private void case3() {
-		if (sigToken.getToken() == 42) { // case
-			case4();
-		} else {
-			// TODO Gestor de errores
-		}
-	}
-
-	/**
-	 * <pre>
-	 * 		CASE4 -> case CTE_Entera : CASE3
-	 * 		CASE4 -> lambda
-	 * </pre>
-	 */
-	private void case4() {
 		if (sigToken.getToken() == 42) { // case
 			equip(42); // case
 			equip(25); // entero
@@ -465,7 +452,7 @@ public class AnalizadorSintactico {
 			equip(32);
 			break;
 		default:
-			// TODO Gestor de errores
+			GestorDeErrores.gestionarError(3005, null);
 		}
 	}
 
@@ -490,7 +477,7 @@ public class AnalizadorSintactico {
 			e2();
 			break;
 		default:
-			// TODO Gestor de errores
+			GestorDeErrores.gestionarError(3006, null);
 		}
 	}
 
@@ -546,7 +533,7 @@ public class AnalizadorSintactico {
 			r2();
 			break;
 		default:
-			// TODO Gestor de errores
+			GestorDeErrores.gestionarError(3006, null);
 		}
 	}
 
@@ -610,7 +597,7 @@ public class AnalizadorSintactico {
 			u2();
 			break;
 		default:
-			// TODO Gestor de errores
+			GestorDeErrores.gestionarError(3006, null);
 		}
 	}
 
@@ -693,7 +680,7 @@ public class AnalizadorSintactico {
 			equip(54); // identificador
 			break;
 		default:
-			// TODO Gestor de errores
+			GestorDeErrores.gestionarError(3007, null);
 		}
 	}
 
@@ -803,7 +790,7 @@ public class AnalizadorSintactico {
 			equip(43);
 			break;
 		default:
-			// TODO Gestor de errores
+			GestorDeErrores.gestionarError(3008, null);
 		}
 	}
 
@@ -860,7 +847,7 @@ public class AnalizadorSintactico {
 			equip(16);
 			break;
 		default:
-			// TODO Gestor de errores
+			GestorDeErrores.gestionarError(3009, null);
 		}
 	}
 
@@ -903,7 +890,7 @@ public class AnalizadorSintactico {
 			c();
 			equip(49);
 		} else {
-			// TODO Gestor de errores
+			GestorDeErrores.gestionarError(3010, null);
 		}
 	}
 
@@ -964,7 +951,7 @@ public class AnalizadorSintactico {
 			c();
 			break;
 		default:
-			// TODO Gestor de errores
+			GestorDeErrores.gestionarError(3001, null);
 		}
 	}
 
@@ -1022,7 +1009,7 @@ public class AnalizadorSintactico {
 		if (sigToken.getToken() == token) {
 			sigToken = lexico.getToken();
 		} else {
-			// TODO Gestor de errores
+			GestorDeErrores.gestionarError(3011, null);
 		}
 	}
 }

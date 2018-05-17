@@ -33,7 +33,7 @@ public class GestorDeErrores {
 			error.append(" -> linea " + AnalizadorLexico.getNlinea());
 		} else if (codigo < 4000) {
 			error.append(ERROR_SINTACTICO);
-			error.append(errorSintactico(codigo - 3000));
+			error.append(errorSintactico(codigo - 3000, dato));
 			error.append(" -> linea " + AnalizadorLexico.getNlinea());
 		} else if (codigo < 5000) {
 			error.append(ERROR_SEMANTICO);
@@ -67,7 +67,7 @@ public class GestorDeErrores {
 		case 8:
 			return "Se esta intentando aniadir un atributo " + dato + " que es de funcion a una variable";
 		}
-		
+
 		return null;
 	}
 
@@ -98,33 +98,35 @@ public class GestorDeErrores {
 		return null;
 	}
 
-	private static String errorSintactico(int codigo) {
+	private static String errorSintactico(int codigo, String dato) {
 		switch (codigo) {
 		case 1:
-			break;
+			return "Se esperaba la creacion de una variable, su incremento o decremento, "
+					+ "declaracion de una funcion o un bloque de codigo";
 		case 2:
-			break;
+			return "En el primer parametro de un for se espera la asignacion de una variable";
 		case 3:
-			break;
+			return "En el ultimo parametro de un for se espera la modificacion de una variable o nada";
 		case 4:
-			break;
+			return "En un switch se espera por lo menos un case";
 		case 5:
-			break;
+			return "Los unicos tipos aceptados son int, bool y chars";
 		case 6:
-			break;
+			return "Las expresiones solo pueden comenzar por !, (, una operacion de incremento o decremento,"
+					+ " identificador, tipo cadena, true, false o entero";
 		case 7:
-			break;
+			return "Se esperaba un valor ya sea por identificador, entero, cadena, true, false, "
+					+ "una expresion entre parentesis o el autoincremento o decremento de una variable";
 		case 8:
-			break;
+			return "Se esperaba una sentencia ya sea una llamada a un identificador, un write, "
+					+ "prompt, return, autoincremento o decremento o un break";
 		case 9:
-			break;
+			return "Tras una sentencia con un identificador se espera una asignacion, los parametros de"
+					+ " una funcion o un postdecremento o incremento";
 		case 10:
-			break;
+			return "Se esperaba la generacion de una funcion con su palabra resevada 'function'";
 		case 11:
-			break;
-		case 12:
-			break;
-
+			return "No se esperaba el token " + dato;
 		}
 
 		return null;
