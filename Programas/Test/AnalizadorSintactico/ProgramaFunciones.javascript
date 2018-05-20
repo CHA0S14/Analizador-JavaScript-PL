@@ -102,7 +102,7 @@ function int dias (int m, int a)
 			return 31; break;
 		case 4: case 6: case 9: case 11:
 			return 30;
-		case 2: return 0;
+		case 2: return 1;
 			break;
 		default: return 0;
 	}

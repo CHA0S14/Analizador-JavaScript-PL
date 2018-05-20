@@ -38,6 +38,7 @@ public class AnalizadorLexico {
 
 	public AnalizadorLexico(String fichero) {
 		try {
+			setNLinea(1);
 			InputStream in = new FileInputStream(fichero);
 			Reader reader = new InputStreamReader(in, Charset.defaultCharset());
 			this.fichero = new BufferedReader(reader);
@@ -405,5 +406,9 @@ public class AnalizadorLexico {
 
 	public static int getNlinea() {
 		return nlinea;
+	}
+	
+	public static void setNLinea(int nLinea) {
+		AnalizadorLexico.nlinea = nLinea;
 	}
 }

@@ -1009,7 +1009,7 @@ public class AnalizadorSintactico {
 		if (sigToken.getToken() == token) {
 			sigToken = lexico.getToken();
 		} else {
-			GestorDeErrores.gestionarError(3011, null);
+			GestorDeErrores.gestionarError(3011, sigToken.getToken()+"");
 		}
 	}
 }
