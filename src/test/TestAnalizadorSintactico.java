@@ -55,7 +55,6 @@ public class TestAnalizadorSintactico {
 	@Before
 	@BeforeEach
 	public void prePrueba() {
-
 		// Cambio la salida de error a errContent para poder tratarlo
 		System.setErr(new PrintStream(errContent));
 
@@ -147,7 +146,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_1() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -160,7 +159,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_2() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -173,7 +172,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_3() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -186,7 +185,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_4() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -199,7 +198,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_5() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -212,7 +211,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_6() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -225,7 +224,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_7() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -238,7 +237,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_8() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -251,7 +250,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_9() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -264,7 +263,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_10() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -277,7 +276,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_11() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -290,7 +289,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_12() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -303,7 +302,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_13() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -316,7 +315,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_14() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -329,7 +328,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_15() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -342,7 +341,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_16() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -355,7 +354,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_17() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -368,7 +367,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_18() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -381,7 +380,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_19() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -394,7 +393,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_20() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -407,7 +406,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_21() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -420,7 +419,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_22() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -433,7 +432,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_23() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -446,7 +445,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_24() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -459,7 +458,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_25() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -472,7 +471,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_26() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -485,7 +484,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_27() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -498,7 +497,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_28() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -511,7 +510,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_29() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -524,7 +523,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_30() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -537,7 +536,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_31() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -550,7 +549,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_32() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -563,7 +562,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_33() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -576,7 +575,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_34() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -589,7 +588,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_35() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -602,7 +601,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_36() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -615,7 +614,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_37() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -628,7 +627,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_38() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -641,7 +640,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_39() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -654,7 +653,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_40() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -667,7 +666,7 @@ public class TestAnalizadorSintactico {
 	public void error3001_41() throws IOException {
 		contCaracteres3001++;
 		exit.expectSystemExitWithStatus(3001);
-		generarError(caracteres3001, contCaracteres3001);
+		generarError(caracteres3001, contCaracteres3001, 3001);
 	}
 
 	/**
@@ -680,7 +679,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_1() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -693,7 +692,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_2() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -706,7 +705,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_3() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -719,7 +718,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_4() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -732,7 +731,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_5() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -745,7 +744,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_6() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -758,7 +757,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_7() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -771,7 +770,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_8() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -784,7 +783,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_9() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -797,7 +796,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_10() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -810,7 +809,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_11() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -823,7 +822,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_12() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -836,7 +835,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_13() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -849,7 +848,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_14() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -862,7 +861,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_15() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -875,7 +874,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_16() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -888,7 +887,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_17() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -901,7 +900,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_18() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -914,7 +913,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_19() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -927,7 +926,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_20() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -940,7 +939,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_21() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -953,7 +952,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_22() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -966,7 +965,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_23() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -979,7 +978,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_24() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -992,7 +991,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_25() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -1005,7 +1004,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_26() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -1018,7 +1017,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_27() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -1031,7 +1030,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_28() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -1044,7 +1043,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_29() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -1057,7 +1056,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_30() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -1070,7 +1069,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_31() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -1083,7 +1082,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_32() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -1096,7 +1095,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_33() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -1109,7 +1108,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_34() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -1122,7 +1121,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_35() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -1135,7 +1134,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_36() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -1148,7 +1147,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_37() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -1161,7 +1160,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_38() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -1174,7 +1173,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_39() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -1187,7 +1186,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_40() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -1200,7 +1199,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_41() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -1213,7 +1212,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_42() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -1226,7 +1225,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_43() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -1239,7 +1238,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_44() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -1252,7 +1251,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_45() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -1265,7 +1264,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_46() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -1278,7 +1277,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_47() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -1291,7 +1290,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_48() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -1304,7 +1303,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_49() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -1317,7 +1316,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_50() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -1330,7 +1329,7 @@ public class TestAnalizadorSintactico {
 	public void error3002_51() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
 	}
 
 	/**
@@ -1343,7 +1342,19 @@ public class TestAnalizadorSintactico {
 	public void error3002_52() throws IOException {
 		contCaracteres3002++;
 		exit.expectSystemExitWithStatus(3002);
-		generarError(caracteres3002, contCaracteres3002);
+		generarError(caracteres3002, contCaracteres3002, 3002);
+	}
+
+	/**
+	 * Metodo que prueba que se lanza correctamente un error 3004
+	 * 
+	 * @throws IOException
+	 *             Error que puede dar cuando hacer manejo de ficheros
+	 */
+	@Test
+	public void error3004() throws IOException {
+		exit.expectSystemExitWithStatus(3004);
+		generarError(new String[] { "switch(identificador){}" }, 0, 3004);
 	}
 
 	/**
@@ -1353,10 +1364,10 @@ public class TestAnalizadorSintactico {
 	 * @throws IOException
 	 *             Excepcion que se puede dar al trabajar con ficheros
 	 */
-	public void generarError(String[] caracteres, int contador) throws IOException {
+	public void generarError(String[] caracteres, int contador, int error) throws IOException {
 		String caracter = caracteres[contador];
 
-		System.out.println("Probando que el analizador sintactico es capaz de\ndetectar un error 3001 con el caracter "
+		System.out.println("Probando que el analizador sintactico es capaz de\ndetectar un error " + error + " con el caracter "
 				+ caracter);
 
 		AnalizadorLexico lexico = new AnalizadorLexico(crearFicheroTemporal(caracter).getAbsolutePath());
