@@ -170,7 +170,7 @@ public class TablaDeSimbolos {
 	 * @param numParametro
 	 *            numero del parametro a modificar
 	 */
-	public static void insetarAtributoId(int indice, String atributo, String valor, int numParametro) {
+	public static void insetarAtributoId(int indice, String atributo, String valor, String modo, int numParametro) {
 		switch (atributo) {
 		case TIPO:
 			insertarAtributoTipo(indice, valor);
@@ -179,7 +179,7 @@ public class TablaDeSimbolos {
 			insertarAtributoDesplazamiento(indice, valor);
 			break;
 		case PARAM:
-			insertarAtributoParametro(indice, valor, numParametro);
+			insertarAtributoParametro(indice, valor, modo, numParametro);
 			break;
 		case RET:
 			insertarAtributoRetorno(indice, valor);
@@ -215,7 +215,7 @@ public class TablaDeSimbolos {
 		case INT:
 		case BOOL:
 		case FUNC:
-			obtenerTablaSegunIndice(indice).obtenerIdentificador(indice)[2] = valor;
+			obtenerTablaSegunIndice(indice).obtenerOperando(indice).setTipo(valor);
 			break;
 		default:
 			GestorDeErrores.gestionarError(1006, valor);
@@ -233,18 +233,22 @@ public class TablaDeSimbolos {
 	 *            Valor del desplazamiento
 	 */
 	public static void insertarAtributoDesplazamiento(int indice, String valor) {
-		String[] identificador = obtenerTablaSegunIndice(indice).obtenerIdentificador(indice);
+		Operando operando = obtenerTablaSegunIndice(indice).obtenerOperando(indice);
 
-		if (identificador[2].equals(FUNC)) {
+		if (operando.getTipo().equals(FUNC)) {
 			GestorDeErrores.gestionarError(1007, null);
 		}
 
-		identificador[3] = valor;
+		try {
+			operando.setDespl(Integer.parseInt(valor));
+		} catch (NumberFormatException e) {
+			// TODO no se ha puesto un formato de numero correcto, añadir al gestor de
+			// errores
+		}
 	}
 
 	/**
-	 * Metodo que se encarga de aniadir un parametro al la fila de el identificador
-	 * de una funcion
+	 * Metodo que se encarga de aniadir un parametro a la funcion
 	 * 
 	 * @param indice
 	 *            Indice del identificador a modificar
@@ -260,9 +264,9 @@ public class TablaDeSimbolos {
 	 * @param numParametro
 	 *            Numero del parametro a modificar
 	 */
-	public static void insertarAtributoParametro(int indice, String valor, int numParametro) {
-		String[] identificador = obtenerTablaSegunIndice(indice).obtenerIdentificador(indice);
-		if (!identificador[2].equals(FUNC)) {
+	public static void insertarAtributoParametro(int indice, String valor, String modo, int numParametro) {
+		Operando operando = obtenerTablaSegunIndice(indice).obtenerOperando(indice);
+		if (!operando.getTipo().equals(FUNC)) {
 			GestorDeErrores.gestionarError(1008, PARAM);
 		}
 
@@ -271,7 +275,8 @@ public class TablaDeSimbolos {
 		case INT:
 		case BOOL:
 			// Guardo el valor de retorno en el penultimo espacio del array
-			identificador[numParametro + 2] = valor;
+			operando.addTipoParam(numParametro, valor);
+			operando.addModoParam(numParametro, modo);
 			break;
 		default:
 			GestorDeErrores.gestionarError(1006, valor);
@@ -295,8 +300,8 @@ public class TablaDeSimbolos {
 	 *            </pre>
 	 */
 	public static void insertarAtributoRetorno(int indice, String valor) {
-		String[] identificador = obtenerTablaSegunIndice(indice).obtenerIdentificador(indice);
-		if (!identificador[2].equals(FUNC)) {
+		Operando operando = obtenerTablaSegunIndice(indice).obtenerOperando(indice);
+		if (!operando.getTipo().equals(FUNC)) {
 			GestorDeErrores.gestionarError(1008, RET);
 		}
 
@@ -305,7 +310,7 @@ public class TablaDeSimbolos {
 		case INT:
 		case BOOL:
 			// Guardo el valor de retorno en el penultimo espacio del array
-			identificador[identificador.length - 2] = valor;
+			operando.setTipoRetorno(valor);
 			break;
 		default:
 			GestorDeErrores.gestionarError(1006, valor);
@@ -323,12 +328,12 @@ public class TablaDeSimbolos {
 	 *            Valor de la etiqueta
 	 */
 	public static void insertarAtributoEtiqueta(int indice, String valor) {
-		String[] identificador = obtenerTablaSegunIndice(indice).obtenerIdentificador(indice);
-		if (!identificador[2].equals(FUNC)) {
+		Operando operando = obtenerTablaSegunIndice(indice).obtenerOperando(indice);
+		if (!operando.getTipo().equals(FUNC)) {
 			GestorDeErrores.gestionarError(1008, TAG);
 		}
 
-		identificador[identificador.length - 1] = valor;
+		operando.setEtiqFuncion(valor);
 	}
 
 	/**
