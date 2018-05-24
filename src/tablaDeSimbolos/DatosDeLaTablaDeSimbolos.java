@@ -128,7 +128,7 @@ public class DatosDeLaTablaDeSimbolos {
 		for (Operando operando : operandos) {
 			// Si no es una funcion va a tener 3 campos, si es una funcion tendra 4 campos
 			// mas un campo por cada parametro
-			if (!operando.getTipo().equals(TablaDeSimbolos.FUNC)) {
+			if (!operando.getTipo().equals(Operando.FUNC)) {
 				String tipoEntrada = "variable";
 
 				// Si el contador menor que el numero de parametros de la funcion el tipo de la
@@ -137,7 +137,7 @@ public class DatosDeLaTablaDeSimbolos {
 					tipoEntrada = "parámetro";
 
 				// Si el tipo es chars en vez de una variable se trata de un puntero
-				if (operando.getTipo().equals(TablaDeSimbolos.CHARS))
+				if (operando.getTipo().equals(Operando.CHARS))
 					tipoEntrada = "puntero";
 
 				tabla.append("* LEXEMA: '" + operando.getLexema() + "' (tipo de entrada'" + tipoEntrada + "')\n");

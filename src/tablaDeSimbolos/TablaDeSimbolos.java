@@ -14,15 +14,6 @@ import gestorDeErrores.GestorDeErrores;
  *         global
  */
 public class TablaDeSimbolos {
-	public static final String TIPO = "tipo";
-	public static final String DESP = "desplazamiento";
-	public static final String PARAM = "parametro";
-	public static final String RET = "retorno";
-	public static final String TAG = "etiqueta";
-	public static final String CHARS = "chars";
-	public static final String BOOL = "bool";
-	public static final String INT = "int";
-	public static final String FUNC = "funcion";
 	private static final String FICHERO_TABLA_DE_SIMBOLOS = "./Resultados/tablaDeSimbolos",
 			SEPARADOR = "--------------------------------------------";
 
@@ -172,19 +163,19 @@ public class TablaDeSimbolos {
 	 */
 	public static void insetarAtributoId(int indice, String atributo, String valor, String modo, int numParametro) {
 		switch (atributo) {
-		case TIPO:
+		case Operando.TIPO:
 			insertarAtributoTipo(indice, valor);
 			break;
-		case DESP:
+		case Operando.DESP:
 			insertarAtributoDesplazamiento(indice, valor);
 			break;
-		case PARAM:
+		case Operando.PARAM:
 			insertarAtributoParametro(indice, valor, modo, numParametro);
 			break;
-		case RET:
+		case Operando.RET:
 			insertarAtributoRetorno(indice, valor);
 			break;
-		case TAG:
+		case Operando.TAG:
 			insertarAtributoEtiqueta(indice, valor);
 			break;
 		default:
@@ -210,17 +201,7 @@ public class TablaDeSimbolos {
 	 *            </pre>
 	 */
 	public static void insertarAtributoTipo(int indice, String valor) {
-		switch (valor) {
-		case CHARS:
-		case INT:
-		case BOOL:
-		case FUNC:
-			obtenerTablaSegunIndice(indice).obtenerOperando(indice).setTipo(valor);
-			break;
-		default:
-			GestorDeErrores.gestionarError(1006, valor);
-			break;
-		}
+		obtenerTablaSegunIndice(indice).obtenerOperando(indice).setTipo(valor);
 	}
 
 	/**
@@ -233,14 +214,8 @@ public class TablaDeSimbolos {
 	 *            Valor del desplazamiento
 	 */
 	public static void insertarAtributoDesplazamiento(int indice, String valor) {
-		Operando operando = obtenerTablaSegunIndice(indice).obtenerOperando(indice);
-
-		if (operando.getTipo().equals(FUNC)) {
-			GestorDeErrores.gestionarError(1007, null);
-		}
-
 		try {
-			operando.setDespl(Integer.parseInt(valor));
+			obtenerTablaSegunIndice(indice).obtenerOperando(indice).setDespl(Integer.parseInt(valor));
 		} catch (NumberFormatException e) {
 			// TODO no se ha puesto un formato de numero correcto, añadir al gestor de
 			// errores
@@ -266,22 +241,9 @@ public class TablaDeSimbolos {
 	 */
 	public static void insertarAtributoParametro(int indice, String valor, String modo, int numParametro) {
 		Operando operando = obtenerTablaSegunIndice(indice).obtenerOperando(indice);
-		if (!operando.getTipo().equals(FUNC)) {
-			GestorDeErrores.gestionarError(1008, PARAM);
-		}
 
-		switch (valor) {
-		case CHARS:
-		case INT:
-		case BOOL:
-			// Guardo el valor de retorno en el penultimo espacio del array
-			operando.addTipoParam(numParametro, valor);
-			operando.addModoParam(numParametro, modo);
-			break;
-		default:
-			GestorDeErrores.gestionarError(1006, valor);
-			break;
-		}
+		operando.addTipoParam(numParametro, valor);
+		operando.addModoParam(numParametro, modo);
 	}
 
 	/**
@@ -300,22 +262,7 @@ public class TablaDeSimbolos {
 	 *            </pre>
 	 */
 	public static void insertarAtributoRetorno(int indice, String valor) {
-		Operando operando = obtenerTablaSegunIndice(indice).obtenerOperando(indice);
-		if (!operando.getTipo().equals(FUNC)) {
-			GestorDeErrores.gestionarError(1008, RET);
-		}
-
-		switch (valor) {
-		case CHARS:
-		case INT:
-		case BOOL:
-			// Guardo el valor de retorno en el penultimo espacio del array
-			operando.setTipoRetorno(valor);
-			break;
-		default:
-			GestorDeErrores.gestionarError(1006, valor);
-			break;
-		}
+		obtenerTablaSegunIndice(indice).obtenerOperando(indice).setTipoRetorno(valor);
 	}
 
 	/**
@@ -328,12 +275,7 @@ public class TablaDeSimbolos {
 	 *            Valor de la etiqueta
 	 */
 	public static void insertarAtributoEtiqueta(int indice, String valor) {
-		Operando operando = obtenerTablaSegunIndice(indice).obtenerOperando(indice);
-		if (!operando.getTipo().equals(FUNC)) {
-			GestorDeErrores.gestionarError(1008, TAG);
-		}
-
-		operando.setEtiqFuncion(valor);
+		obtenerTablaSegunIndice(indice).obtenerOperando(indice).setEtiqFuncion(valor);
 	}
 
 	/**
