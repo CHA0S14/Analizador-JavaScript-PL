@@ -120,7 +120,7 @@ public class Operando {
 		if (!getTipo().equals(FUNC)) {
 			GestorDeErrores.gestionarError(1008, PARAM);
 		} else if (!modo.equals(VAL) && !modo.equals(REF)) {
-			GestorDeErrores.gestionarError(1006, modo);
+			GestorDeErrores.gestionarError(1011, modo);
 		}
 
 		if ((tipoParam.get(numParam - 1).equals(INT) || tipoParam.get(numParam - 1).equals(BOOL))

@@ -47,11 +47,6 @@ public class TestTablaDeSimbolos {
 		// Cambio la salida de error a la de por defecto
 		System.setErr(System.err);
 
-		if (errContent.size() != 0) {
-			System.out.println(errContent.toString());
-			errContent.reset();
-		}
-
 		// Limpio las tablas de simbolos
 		TablaDeSimbolos.resetTablaDeSimbolos();
 
@@ -272,7 +267,7 @@ public class TestTablaDeSimbolos {
 	@Test
 	public void insertarAtributosDeVariableFuncionReturnCharsParametrosCorrectos() {
 		System.out.println(
-				"Probando que se insertan atributos de funcion \ncon return de tipo chars y parametros correctos");
+				"Probando que se detecta atributos de funcion \ncon return de tipo chars y parametros correctos");
 
 		Operando op = new Operando("lexema");
 		op.setTipo(Operando.FUNC);
@@ -305,7 +300,7 @@ public class TestTablaDeSimbolos {
 	 */
 	@Test
 	public void insertarTipoInvalido() {
-		System.out.println("Probando que se inserta un atributo tipo invalido");
+		System.out.println("Probando que se detecta un atributo tipo invalido");
 
 		int indice = TablaDeSimbolos.insertarId("lexema");
 
@@ -319,7 +314,7 @@ public class TestTablaDeSimbolos {
 	 */
 	@Test
 	public void insertarTipoRetornoAVariable() {
-		System.out.println("Probando que se inserta un tipo retorno a una variable");
+		System.out.println("Probando que se detecta un tipo retorno a una variable");
 
 		int indice = TablaDeSimbolos.insertarId("lexema");
 		TablaDeSimbolos.insetarAtributo(indice, Operando.TIPO, Operando.INT, null);
@@ -334,7 +329,7 @@ public class TestTablaDeSimbolos {
 	 */
 	@Test
 	public void insertarEtiquetaAVariable() {
-		System.out.println("Probando que se inserta una etiqueta a una variable");
+		System.out.println("Probando que se detecta una etiqueta a una variable");
 
 		int indice = TablaDeSimbolos.insertarId("lexema");
 		TablaDeSimbolos.insetarAtributo(indice, Operando.TIPO, Operando.INT, null);
@@ -349,7 +344,7 @@ public class TestTablaDeSimbolos {
 	 */
 	@Test
 	public void insertarParametroAVariable() {
-		System.out.println("Probando que se inserta un parametro a una variable");
+		System.out.println("Probando que se detecta un parametro a una variable");
 
 		int indice = TablaDeSimbolos.insertarId("lexema");
 		TablaDeSimbolos.insetarAtributo(indice, Operando.TIPO, Operando.INT, null);
@@ -359,18 +354,47 @@ public class TestTablaDeSimbolos {
 	}
 
 	/**
-	 * Prueba que comprueba que se envia un error cuando el tipo es funcion y que se
-	 * le intenta aniadir un desplazamiento
+	 * Prueba que comprueba que se envia un error cuando el tipo de retorno de una
+	 * funcion no es valido
 	 */
 	@Test
-	public void insertarDespAFuncion() {
-		// TODO Editar esa funcion para que haga lo que tiene que hacer
-		System.out.println("Probando que se inserta un parametro a una variable");
+	public void insertarTipoRetornoErroneoFuncion() {
+		System.out.println("Probando que se detecta un tipo de retorno invalido \na una funcion");
 
 		int indice = TablaDeSimbolos.insertarId("lexema");
-		TablaDeSimbolos.insetarAtributo(indice, Operando.TIPO, Operando.INT, null);
+		TablaDeSimbolos.insetarAtributo(indice, Operando.TIPO, Operando.FUNC, null);
 
-		exit.expectSystemExitWithStatus(1008);
-		TablaDeSimbolos.insetarAtributo(indice, Operando.PARAM, Operando.INT, Operando.VAL);
+		exit.expectSystemExitWithStatus(1006);
+		TablaDeSimbolos.insetarAtributo(indice, Operando.RET, "ASDASD", null);
+	}
+
+	/**
+	 * Prueba que comprueba que se envia un error cuando el tipo de un parametro no
+	 * es valido
+	 */
+	@Test
+	public void insertarTipoParamErroneoFuncion() {
+		System.out.println("Probando que se detecta un tipo de parametro invalido \na una funcion");
+
+		int indice = TablaDeSimbolos.insertarId("lexema");
+		TablaDeSimbolos.insetarAtributo(indice, Operando.TIPO, Operando.FUNC, null);
+
+		exit.expectSystemExitWithStatus(1006);
+		TablaDeSimbolos.insetarAtributo(indice, Operando.PARAM, "ASDASD", Operando.VAL);
+	}
+
+	/**
+	 * Prueba que comprueba que se envia un error cuando el modo de un parametro no
+	 * es valido
+	 */
+	@Test
+	public void insertarModoParamErroneoFuncion() {
+		System.out.println("Probando que se detecta un modo de parametro invlaido");
+
+		int indice = TablaDeSimbolos.insertarId("lexema");
+		TablaDeSimbolos.insetarAtributo(indice, Operando.TIPO, Operando.FUNC, null);
+
+		exit.expectSystemExitWithStatus(1011);
+		TablaDeSimbolos.insetarAtributo(indice, Operando.PARAM, Operando.INT, "ASDASD");
 	}
 }

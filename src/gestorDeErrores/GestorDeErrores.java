@@ -70,6 +70,8 @@ public class GestorDeErrores {
 			return "Se esta intentando aniadir un modo de paso de parametro " + dato + " que es invalido";
 		case 10:
 			return "Se ha introducido un modo de paso de variable incorrecto " + dato;
+		case 11:
+			return "Se ha insertado un modo de parametro invalido " + dato;
 		}
 
 		return null;
