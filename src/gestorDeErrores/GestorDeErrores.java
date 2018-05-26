@@ -66,6 +66,10 @@ public class GestorDeErrores {
 			return "Se esta intentando añadir desplazamiento a una funcion";
 		case 8:
 			return "Se esta intentando aniadir un atributo " + dato + " que es de funcion a una variable";
+		case 9:
+			return "Se esta intentando aniadir un modo de paso de parametro " + dato + " que es invalido";
+		case 10:
+			return "Se ha introducido un modo de paso de variable incorrecto " + dato;
 		}
 
 		return null;

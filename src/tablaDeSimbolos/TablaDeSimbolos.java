@@ -106,6 +106,10 @@ public class TablaDeSimbolos {
 		return tablaActiva.equals(tablaGlobal) ? indice : indice * -1;
 	}
 
+	public static Operando obtenerOperando(int indice) {
+		return tablaActiva.obtenerOperando(indice);
+	}
+
 	/**
 	 * Obtiene el indice del identificador en la tabla de simbolos, si es negativo,
 	 * es en la tabla activa, si es positivo es en la tabla global, si no esta el
@@ -161,7 +165,7 @@ public class TablaDeSimbolos {
 	 * @param numParametro
 	 *            numero del parametro a modificar
 	 */
-	public static void insetarAtributoId(int indice, String atributo, String valor, String modo, int numParametro) {
+	public static void insetarAtributo(int indice, String atributo, String valor, String modo) {
 		switch (atributo) {
 		case Operando.TIPO:
 			insertarAtributoTipo(indice, valor);
@@ -170,7 +174,7 @@ public class TablaDeSimbolos {
 			insertarAtributoDesplazamiento(indice, valor);
 			break;
 		case Operando.PARAM:
-			insertarAtributoParametro(indice, valor, modo, numParametro);
+			insertarAtributoParametro(indice, valor, modo);
 			break;
 		case Operando.RET:
 			insertarAtributoRetorno(indice, valor);
@@ -239,11 +243,11 @@ public class TablaDeSimbolos {
 	 * @param numParametro
 	 *            Numero del parametro a modificar
 	 */
-	public static void insertarAtributoParametro(int indice, String valor, String modo, int numParametro) {
+	public static void insertarAtributoParametro(int indice, String valor, String modo) {
 		Operando operando = obtenerTablaSegunIndice(indice).obtenerOperando(indice);
 
-		operando.addTipoParam(numParametro, valor);
-		operando.addModoParam(numParametro, modo);
+		operando.addTipoParam(valor);
+		operando.addModoParam(modo);
 	}
 
 	/**

@@ -20,8 +20,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.ExpectedSystemExit;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.rules.TemporaryFolder;
 
 import analizadorLexico.AnalizadorLexico;
@@ -52,7 +50,6 @@ public class TestAnalizadorLéxico {
 	 * Metodo que se ejecuta antes de cada test, se encarga de preparar el terreno
 	 */
 	@Before
-	@BeforeEach
 	public void prePrueba() {
 
 		// Cambio la salida de error a errContent para poder tratarlo
@@ -67,7 +64,6 @@ public class TestAnalizadorLéxico {
 	 * before y por el test
 	 */
 	@After
-	@AfterEach
 	public void postPrueba() {
 		// Cambio la salida de error a la de por defecto
 		System.setErr(System.err);
