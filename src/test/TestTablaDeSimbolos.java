@@ -128,6 +128,20 @@ public class TestTablaDeSimbolos {
 	}
 
 	/**
+	 * Metodo que comprueba que se detecta un error cuando el desplazamiento no es
+	 * un numero
+	 */
+	@Test
+	public void insertarDespIncorrectos() {
+		System.out.println("Probando que se detecta un error cuand el \ndesp es incorrectos");
+
+		int indice = TablaDeSimbolos.insertarId("lexema");
+
+		exit.expectSystemExitWithStatus(1012);
+		TablaDeSimbolos.insetarAtributo(indice, Operando.DESP, "ASDASD", null);
+	}
+
+	/**
 	 * Metodo que comprueba que se aniaden atributos de funcion correctos
 	 */
 	@Test
@@ -396,5 +410,20 @@ public class TestTablaDeSimbolos {
 
 		exit.expectSystemExitWithStatus(1011);
 		TablaDeSimbolos.insetarAtributo(indice, Operando.PARAM, Operando.INT, "ASDASD");
+	}
+
+	/**
+	 * Prueba que comprueba que se envia un error cuando se inserta un
+	 * desplazamiento a una funcion
+	 */
+	@Test
+	public void insertarDespFuncion() {
+		System.out.println("Probando que se detecta un desplazamiento en una funcion");
+
+		int indice = TablaDeSimbolos.insertarId("lexema");
+		TablaDeSimbolos.insetarAtributo(indice, Operando.TIPO, Operando.FUNC, null);
+
+		exit.expectSystemExitWithStatus(1007);
+		TablaDeSimbolos.insetarAtributo(indice, Operando.DESP, "4", null);
 	}
 }

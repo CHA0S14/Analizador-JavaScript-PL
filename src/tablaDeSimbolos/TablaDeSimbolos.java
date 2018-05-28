@@ -221,8 +221,7 @@ public class TablaDeSimbolos {
 		try {
 			obtenerTablaSegunIndice(indice).obtenerOperando(indice).setDespl(Integer.parseInt(valor));
 		} catch (NumberFormatException e) {
-			// TODO no se ha puesto un formato de numero correcto, añadir al gestor de
-			// errores
+			GestorDeErrores.gestionarError(1012, null);
 		}
 	}
 

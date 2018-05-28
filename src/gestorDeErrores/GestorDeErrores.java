@@ -72,6 +72,8 @@ public class GestorDeErrores {
 			return "Se ha introducido un modo de paso de variable incorrecto " + dato;
 		case 11:
 			return "Se ha insertado un modo de parametro invalido " + dato;
+		case 12:
+			return "El tipo de desplazamiento no es int";
 		}
 
 		return null;
