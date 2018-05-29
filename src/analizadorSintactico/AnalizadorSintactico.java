@@ -52,13 +52,13 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		B -> var T Identificador B2 ID ;
+	 * 		B -> var T identificador B2 ID ;
 	 * 		B -> if ( E ) IF
 	 * 		B -> S ;
 	 * 		B -> switch ( E ) { CASE }
 	 * 		B -> while ( E ) { C }
 	 * 		B -> do { C } while ( E ) ;
-	 * 		B -> for ( FOR ; E ; FOR2 ) { C }
+	 * 		B -> for ( INICIALIZACION ; E ; ACTUALIZACION ) iniBloq  C endBloq
 	 * </pre>
 	 */
 	private void b() {
@@ -120,11 +120,11 @@ public class AnalizadorSintactico {
 		case 40: // for
 			equip(40); // for
 			equip(46); // (
-			initFor();
+			inicializacion();
 			equip(51); // ;
 			e();
 			equip(51); // ;
-			endFor();
+			actualizacion();
 			equip(47); // )
 			equip(48); // {
 			c();
@@ -137,42 +137,21 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		B2 -> Op_Asignacion E
+	 * 		B2 -> ASIGNACION E
 	 * 		B2 -> lambda
 	 * </pre>
 	 */
 	private void b2() {
 		switch (sigToken.getToken()) {
 		case 17: // =
-			equip(17);
-			e();
-			break;
 		case 18: // +=
-			equip(18);
-			e();
-			break;
 		case 19: // -=
-			equip(19);
-			e();
-			break;
 		case 20: // *=
-			equip(20);
-			e();
-			break;
 		case 21: // /=
-			equip(21);
-			e();
-			break;
 		case 22: // %=
-			equip(22);
-			e();
-			break;
 		case 23: // &=
-			equip(23);
-			e();
-			break;
 		case 24: // |=
-			equip(24);
+			asignacion();
 			e();
 			break;
 		}
@@ -180,74 +159,31 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		FOR -> var T FOR4
-	 * 		FOR -> FOR4
+	 * 		INICIALIZACION  -> identificador ASIGNACION E
+	 * 		INICIALIZACION  -> lambda
 	 * </pre>
 	 */
-	private void initFor() {
+	private void inicializacion() {
 		switch (sigToken.getToken()) {
-		case 29: // var
-			equip(29); // var
 		case 54: // identificador
-			initForCont();
-			break;
-		default:
-			GestorDeErrores.gestionarError(3002, null);
-		}
-	}
-
-	/**
-	 * <pre>
-	 * 		FOR4 -> Identificador Op_Asignacion E
-	 * </pre>
-	 */
-	private void initForCont() {
-		if (sigToken.getToken() == 54) {
 			equip(54); // identificador
-			switch (sigToken.getToken()) { // operador de asignacion
-			case 17: // =
-				equip(17);
-				break;
-			case 18: // +=
-				equip(18);
-				break;
-			case 19: // -=
-				equip(19);
-				break;
-			case 20: // *=
-				equip(20);
-				break;
-			case 21: // /=
-				equip(21);
-				break;
-			case 22: // %=
-				equip(22);
-				break;
-			case 23: // &=
-				equip(23);
-				break;
-			case 24: // |=
-				equip(24);
-				break;
-			}
+			asignacion();
 			e();
-		} else {
-			GestorDeErrores.gestionarError(3002, null);
 		}
 	}
 
 	/**
 	 * <pre>
-	 * 		FOR2 -> Identificador FOR3
-	 * 		FOR2 -> Op_IncDec Identificador
-	 * 		FOR2 -> lambda
+	 * 		ACTUALIZACION -> identificador ACTUALIZACION2							
+	 *		ACTUALIZACION -> INCDEC identificador					
+	 *		ACTUALIZACION -> lambda
 	 * </pre>
 	 */
-	private void endFor() {
+	private void actualizacion() {
 		switch (sigToken.getToken()) {
-		case 54: // Identificador
-			equip(54); // Identificador
-			endForCont();
+		case 54: // identificador
+			equip(54); // identificador
+			actualizacion2();
 			break;
 		case 15: // ++
 			equip(15); // ++
@@ -262,32 +198,17 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		FOR3 -> Op_Asignacion E
-	 * 		FOR3 -> Op_IncDec
+	 * 		ACTUALIZACION2 -> Op_Asignacion E
+	 * 		ACTUALIZACION2 -> Op_IncDec
 	 * </pre>
 	 */
-	private void endForCont() {
+	private void actualizacion2() {
 		switch (sigToken.getToken()) {
 		case 17: // =
-			equip(17);
-			e();
-			break;
 		case 18: // +=
-			equip(18);
-			e();
-			break;
 		case 19: // -=
-			equip(19);
-			e();
-			break;
 		case 20: // *=
-			equip(20);
-			e();
-			break;
 		case 21: // /=
-			equip(21);
-			e();
-			break;
 		case 22: // %=
 			equip(22);
 			e();
@@ -308,6 +229,70 @@ public class AnalizadorSintactico {
 			break;
 		default:
 			GestorDeErrores.gestionarError(3003, null);
+		}
+	}
+
+	private void incDec() {
+		switch (sigToken.getToken()) {
+		case 15: // ++
+			equip(15);
+			break;
+		case 16: // --
+			equip(16);
+			break;
+		default:
+			// TODO Gestor de errores
+		}
+	}
+
+	/**
+	 * <pre>
+	 * 		ASIGNACION -> = 
+	 *		ASIGNACION -> ASIGNACION_OP
+	 * </pre>
+	 */
+	private void asignacion() {
+		switch (sigToken.getToken()) {
+		case 17: // =
+			equip(17);
+			break;
+		case 18: // +=
+		case 19: // -=
+		case 20: // *=
+		case 21: // /=
+		case 22: // %=
+		case 23: // &=
+		case 24: // |=
+			asignacionOp();
+			break;
+		default:
+			// TODO Gestor de errores
+		}
+	}
+
+	private void asignacionOp() {
+		switch (sigToken.getToken()) {
+		case 18: // +=
+			equip(18);
+			break;
+		case 19: // -=
+			equip(19);
+			break;
+		case 20: // *=
+			equip(20);
+			break;
+		case 21: // /=
+			equip(21);
+			break;
+		case 22: // %=
+			equip(22);
+			break;
+		case 23: // &=
+			equip(23);
+			break;
+		case 24: // |=
+			equip(24);
+			break;
 		}
 	}
 
@@ -356,7 +341,7 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		ID -> , Identificador B2 ID
+	 * 		ID -> , identificador B2 ID
 	 * 		ID -> lambda
 	 * </pre>
 	 */
@@ -371,65 +356,45 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		CASE -> case CTE_Entera : CASE3 C1 CASE2
+	 * 		CASE -> case cte_entera : C CASE									
+	 * 		CASE -> default : C CASE2
+	 *		CASE -> lambda
 	 * </pre>
 	 */
 	private void bloqueCase() {
-		if (sigToken.getToken() == 42) {
+		switch (sigToken.getToken()) {
+		case 42: // case
 			equip(42); // case
 			equip(25); // entero
 			equip(52); // :
-			case3();
-			c1();
-			case2();
-		} else {
-			GestorDeErrores.gestionarError(3004, null);
-		}
-	}
-
-	/**
-	 * <pre>
-	 * 		CASE2 -> CASE
-	 * 		CASE2 -> DEFAULT
-	 * </pre>
-	 */
-	private void case2() {
-		switch (sigToken.getToken()) {
-		case 42: // case
+			c();
 			bloqueCase();
 			break;
 		case 44: // default
-			bloqueDefault();
-			break;
-		}
-	}
-
-	/**
-	 * <pre>
-	 * 		CASE3 -> case CTE_Entera : CASE3
-	 * 		CASE3 -> lambda
-	 * </pre>
-	 */
-	private void case3() {
-		if (sigToken.getToken() == 42) { // case
-			equip(42); // case
-			equip(25); // entero
-			equip(52); // :
-			case3();
-		}
-	}
-
-	/**
-	 * <pre>
-	 * 		DEFAULT -> default : C
-	 * 		DEFAULT -> lambda
-	 * </pre>
-	 */
-	private void bloqueDefault() {
-		if (sigToken.getToken() == 44) {
 			equip(44); // default
 			equip(52); // :
 			c();
+			bloqueCase2();
+			break;
+		default:
+			// TODO Gestor de errores
+		}
+	}
+
+	/**
+	 * <pre>
+	 * 		CASE2 -> case cte_entera : C CASE2
+	 *		CASE2 -> lambda
+	 * </pre>
+	 */
+	private void bloqueCase2() {
+		switch (sigToken.getToken()) {
+		case 42: // case
+			equip(42); // case
+			equip(25); // entero
+			equip(52); // :
+			c();
+			bloqueCase2();
 		}
 	}
 
@@ -458,13 +423,12 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		E -> OPNEG R E2
+	 * 		E -> N E2
 	 * </pre>
 	 */
 	private void e() {
 		switch (sigToken.getToken()) {
 		case 14: // !
-			opneg();
 		case 54: // identificador
 		case 25: // entero
 		case 26: // cadena
@@ -473,30 +437,33 @@ public class AnalizadorSintactico {
 		case 46: // (
 		case 15: // ++
 		case 16: // --
-			r();
+		case 1: // +
+		case 2: // -
+			n();
 			e2();
 			break;
 		default:
-			GestorDeErrores.gestionarError(3006, null);
+			// TODO Gestor de errores
 		}
 	}
 
 	/**
 	 * <pre>
-	 * 		E2 -> Op_Logico R E2
-	 * 		E2 -> lambda
+	 * 		E2 -> ASIGNACION_OP N E2
+	 *		E2 -> lambda
 	 * </pre>
 	 */
 	private void e2() {
 		switch (sigToken.getToken()) {
-		case 12: // &&
-			equip(12);
-			r();
-			e2();
-			break;
-		case 13: // ||
-			equip(13);
-			r();
+		case 18: // +=
+		case 19: // -=
+		case 20: // *=
+		case 21: // /=
+		case 22: // %=
+		case 23: // &=
+		case 24: // |=
+			asignacionOp();
+			n();
 			e2();
 			break;
 		}
@@ -504,23 +471,12 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		OPNEG -> Op_Logico R E2
-	 * 		OPNEG -> lambda
+	 * 		N -> G N2
 	 * </pre>
 	 */
-	private void opneg() {
-		if (sigToken.getToken() == 14) { // !
-			equip(14); // !
-		}
-	}
-
-	/**
-	 * <pre>
-	 * 		R -> U R2
-	 * </pre>
-	 */
-	private void r() {
+	private void n() {
 		switch (sigToken.getToken()) {
+		case 14: // !
 		case 54: // identificador
 		case 25: // entero
 		case 26: // cadena
@@ -529,62 +485,130 @@ public class AnalizadorSintactico {
 		case 46: // (
 		case 15: // ++
 		case 16: // --
-			u();
-			r2();
+		case 1: // +
+		case 2: // -
+			g();
+			n2();
 			break;
 		default:
-			GestorDeErrores.gestionarError(3006, null);
+			// TODO Gestor de errores
 		}
 	}
 
 	/**
 	 * <pre>
-	 * 		R2 -> Op_Relaccion U R2
-	 * 		R2 -> lambda
+	 * 		N2 -> || G N2
+	 * 		N2 -> lambda
 	 * </pre>
 	 */
-	private void r2() {
+	private void n2() {
+		switch (sigToken.getToken()) {
+		case 13: // ||
+			equip(13);
+			g();
+			n2();
+			break;
+		}
+	}
+
+	/**
+	 * <pre>
+	 * 		G -> D G2
+	 * </pre>
+	 */
+	private void g() {
+		switch (sigToken.getToken()) {
+		case 14: // !
+		case 54: // identificador
+		case 25: // entero
+		case 26: // cadena
+		case 27: // true
+		case 28: // false
+		case 46: // (
+		case 15: // ++
+		case 16: // --
+		case 1: // +
+		case 2: // -
+			d();
+			g2();
+			break;
+		default:
+			// TODO Gestor de errores
+		}
+	}
+
+	/**
+	 * <pre>
+	 * 		G2 -> && D G2
+	 *		G2 -> lambda
+	 * </pre>
+	 */
+	private void g2() {
+		switch (sigToken.getToken()) {
+		case 12: // &&
+			equip(12);
+			d();
+			g2();
+			break;
+		}
+	}
+
+	/**
+	 * <pre>
+	 * 		D -> I D2
+	 * </pre>
+	 */
+	private void d() {
+		switch (sigToken.getToken()) {
+		case 14: // !
+		case 54: // identificador
+		case 25: // entero
+		case 26: // cadena
+		case 27: // true
+		case 28: // false
+		case 46: // (
+		case 15: // ++
+		case 16: // --
+		case 1: // +
+		case 2: // -
+			i();
+			d2();
+			break;
+		default:
+			// TODO Gestor de errores
+		}
+	}
+
+	/**
+	 * <pre>
+	 * 		D2 -> == I D2
+	 *		D2 -> != I D2
+	 *		D2 -> lambda
+	 * </pre>
+	 */
+	private void d2() {
 		switch (sigToken.getToken()) {
 		case 6: // ==
 			equip(6);
-			u();
-			r2();
+			i();
+			d2();
 			break;
 		case 7: // !=
 			equip(7);
-			u();
-			r2();
-			break;
-		case 8: // <
-			equip(8);
-			u();
-			r2();
-			break;
-		case 9: // >
-			equip(9);
-			u();
-			r2();
-			break;
-		case 10: // <=
-			equip(10);
-			u();
-			r2();
-			break;
-		case 11: // >=
-			equip(11);
-			u();
-			r2();
+			i();
+			d2();
 			break;
 		}
 	}
 
 	/**
 	 * <pre>
-	 * 		U -> V U2
+	 * 		I -> J I2
 	 * </pre>
 	 */
-	private void u() {
+	private void i() {
 		switch (sigToken.getToken()) {
+		case 14: // !
 		case 54: // identificador
 		case 25: // entero
 		case 26: // cadena
@@ -593,59 +617,163 @@ public class AnalizadorSintactico {
 		case 46: // (
 		case 15: // ++
 		case 16: // --
-			v();
-			u2();
+		case 1: // +
+		case 2: // -
+			j();
+			i2();
 			break;
 		default:
-			GestorDeErrores.gestionarError(3006, null);
+			// TODO Gestor de errores
 		}
 	}
 
 	/**
 	 * <pre>
-	 * 		U2 -> Op_Aritmetico V U2
-	 * 		U2 -> lambda
+	 *		I2 -> > J I2
+	 *		I2 -> >= J I2
+	 *		I2 -> < J I2
+	 *		I2 -> <= J I2
+	 *		I2 -> lambda
 	 * </pre>
 	 */
-	private void u2() {
+	private void i2() {
+		switch (sigToken.getToken()) {
+		case 9: // >
+			equip(9);
+			j();
+			i2();
+			break;
+		case 11: // >=
+			equip(11);
+			j();
+			i2();
+			break;
+		case 8: // <
+			equip(8);
+			j();
+			i2();
+			break;
+		case 10:
+			equip(10);
+			j();
+			i2();
+			break;
+		}
+	}
+
+	/**
+	 * <pre>
+	 * 		J -> M J2
+	 * </pre>
+	 */
+	private void j() {
+		switch (sigToken.getToken()) {
+		case 14: // !
+		case 54: // identificador
+		case 25: // entero
+		case 26: // cadena
+		case 27: // true
+		case 28: // false
+		case 46: // (
+		case 15: // ++
+		case 16: // --
+		case 1: // +
+		case 2: // -
+			m();
+			j2();
+			break;
+		default:
+			// TODO Gestor de errores
+		}
+	}
+
+	/**
+	 * <pre>
+	 * 		J2 -> + M J2
+	 *		J2 -> - M J2
+	 *		J2 -> lambda
+	 * </pre>
+	 */
+	private void j2() {
 		switch (sigToken.getToken()) {
 		case 1: // +
 			equip(1);
-			v();
-			u2();
+			m();
+			j2();
 			break;
 		case 2: // -
 			equip(2);
+			m();
+			j2();
+		}
+	}
+
+	/**
+	 * <pre>
+	 * 		M -> V M2
+	 * </pre>
+	 */
+	private void m() {
+		switch (sigToken.getToken()) {
+		case 14: // !
+		case 54: // identificador
+		case 25: // entero
+		case 26: // cadena
+		case 27: // true
+		case 28: // false
+		case 46: // (
+		case 15: // ++
+		case 16: // --
+		case 1: // +
+		case 2: // -
 			v();
-			u2();
+			m2();
 			break;
+		default:
+			// TODO Gestor de errores
+		}
+	}
+	
+	/**
+	 * <pre>
+	 * 		M2 -> * V M2
+	 *		M2 -> / V M2
+	 *		M2 -> % V M2
+	 *		M2 -> lambda
+	 * </pre>
+	 */
+	private void m2() {
+		switch (sigToken.getToken()) {
 		case 3: // *
 			equip(3);
 			v();
-			u2();
+			m2();
 			break;
-		case 4: // /
+		case 4:
 			equip(4);
 			v();
-			u2();
+			m2();
 			break;
-		case 5: // %
+		case 5:
 			equip(5);
 			v();
-			u2();
+			m2();
 			break;
 		}
 	}
 
 	/**
 	 * <pre>
-	 * 		V -> Identificador V2
+	 * 		V -> identificador V2
 	 * 		V -> CTE_Entera
 	 * 		V -> cadena
 	 * 		V -> true
 	 * 		V -> false
-	 * 		V -> ( E )
-	 * 		V -> Op_IncDec Identificador
+	 * 		V -> ( E )	
+	 * 		V -> INCDEC identificador		
+	 *		V -> + V
+	 *		V -> - V
+	 *		V -> ! V
 	 * </pre>
 	 */
 	private void v() {
@@ -672,12 +800,21 @@ public class AnalizadorSintactico {
 			equip(47); // )
 			break;
 		case 15: // ++
-			equip(15); // ++
+		case 16: // --
+			incDec();
 			equip(54); // identificador
 			break;
-		case 16: // --
-			equip(16); // --
-			equip(54); // identificador
+		case 1: // +
+			equip(1);
+			v();
+			break;
+		case 2: // -
+			equip(2);
+			v();
+			break;
+		case 14: // !
+			equip(14);
+			v();
 			break;
 		default:
 			GestorDeErrores.gestionarError(3007, null);
@@ -687,8 +824,8 @@ public class AnalizadorSintactico {
 	/**
 	 * <pre>
 	 * 		V2 -> ( L )
-	 * 		V2 -> Op_IncDec
 	 * 		V2 -> lambda
+	 * 		V2 -> INCDEC
 	 * </pre>
 	 */
 	private void v2() {
@@ -699,10 +836,8 @@ public class AnalizadorSintactico {
 			equip(47); // )
 			break;
 		case 15: // ++
-			equip(15);
-			break;
 		case 16: // --
-			equip(16);
+			incDec();
 			break;
 		}
 	}
@@ -724,6 +859,8 @@ public class AnalizadorSintactico {
 		case 46: // (
 		case 15: // ++
 		case 16: // --
+		case 1: // +
+		case 2: // -
 			e();
 			q();
 			break;
@@ -748,11 +885,11 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		S -> Identificador S2
-	 * 		S -> Op_IncDec Identificador
+	 * 		S -> identificador S2
+	 * 		S -> INCDEC identificador
 	 * 		S -> return X
 	 * 		S -> write ( L )
-	 * 		S -> prompt ( Identificador )
+	 * 		S -> prompt ( identificador )
 	 * 		S -> break
 	 * </pre>
 	 */
@@ -763,11 +900,8 @@ public class AnalizadorSintactico {
 			s2();
 			break;
 		case 15: // ++
-			equip(15);
-			equip(54);
-			break;
 		case 16: // --
-			equip(16);
+			incDec();
 			equip(54);
 			break;
 		case 35: // return
@@ -796,43 +930,22 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		S2 -> Op_Asignacion E
+	 * 		S2 -> ASIGNACION E
 	 * 		S2 -> ( L )
-	 * 		S2 -> Op_IncDec
+	 * 		S2 -> INCDEC
 	 * </pre>
 	 */
 	private void s2() {
 		switch (sigToken.getToken()) {
 		case 17: // =
-			equip(17);
-			e();
-			break;
 		case 18: // +=
-			equip(18);
-			e();
-			break;
 		case 19: // -=
-			equip(19);
-			e();
-			break;
 		case 20: // *=
-			equip(20);
-			e();
-			break;
 		case 21: // /=
-			equip(21);
-			e();
-			break;
 		case 22: // %=
-			equip(22);
-			e();
-			break;
 		case 23: // &=
-			equip(23);
-			e();
-			break;
 		case 24: // |=
-			equip(24);
+			asignacion();
 			e();
 			break;
 		case 46: // (
@@ -841,10 +954,8 @@ public class AnalizadorSintactico {
 			equip(47); // )
 			break;
 		case 15: // ++
-			equip(15);
-			break;
 		case 16: // --
-			equip(16);
+			incDec();
 			break;
 		default:
 			GestorDeErrores.gestionarError(3009, null);
@@ -868,6 +979,8 @@ public class AnalizadorSintactico {
 		case 46: // (
 		case 15: // ++
 		case 16: // --
+		case 1: // +
+		case 2: // -
 			e();
 			break;
 		}
@@ -875,7 +988,7 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		F -> function H Identificador ( A ) { C }
+	 * 		F -> function H identificador ( A ) { C }
 	 * </pre>
 	 */
 	private void f() {
@@ -896,7 +1009,7 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		A -> T Identificador K
+	 * 		A -> T identificador K
 	 * 		A -> lambda
 	 * </pre>
 	 */
@@ -914,7 +1027,7 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		K -> , T Identificador K
+	 * 		K -> , T identificador K
 	 * 		K -> lambda
 	 * </pre>
 	 */
@@ -924,34 +1037,6 @@ public class AnalizadorSintactico {
 			t();
 			equip(54); // identificador
 			k();
-		}
-	}
-
-	/**
-	 * <pre>
-	 * 		C1 -> B C
-	 * </pre>
-	 */
-	private void c1() {
-		switch (sigToken.getToken()) {
-		case 29: // var
-		case 36: // if
-		case 54: // identificador
-		case 15: // ++
-		case 16: // --
-		case 35: // return
-		case 33: // write
-		case 34: // prompt
-		case 43: // break
-		case 41: // switch
-		case 38: // while
-		case 39: // do
-		case 40: // for
-			b();
-			c();
-			break;
-		default:
-			GestorDeErrores.gestionarError(3001, null);
 		}
 	}
 
@@ -1009,7 +1094,7 @@ public class AnalizadorSintactico {
 		if (sigToken.getToken() == token) {
 			sigToken = lexico.getToken();
 		} else {
-			GestorDeErrores.gestionarError(3011, sigToken.getToken()+"");
+			GestorDeErrores.gestionarError(3011, sigToken.getToken() + "");
 		}
 	}
 }

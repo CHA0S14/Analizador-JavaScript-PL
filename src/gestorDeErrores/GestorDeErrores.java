@@ -112,7 +112,7 @@ public class GestorDeErrores {
 			return "Se esperaba la creacion de una variable, su incremento o decremento, "
 					+ "declaracion de una funcion o un bloque de codigo";
 		case 2:
-			return "En el primer parametro de un for se espera la asignacion de una variable";
+			break;
 		case 3:
 			return "En el ultimo parametro de un for se espera la modificacion de una variable o nada";
 		case 4:
