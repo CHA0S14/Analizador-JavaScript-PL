@@ -106,7 +106,7 @@ public class TablaDeSimbolos {
 		return tablaActiva.equals(tablaGlobal) ? indice : indice * -1;
 	}
 
-	public static Operando obtenerOperando(int indice) {
+	public static Entrada obtenerOperando(int indice) {
 		return tablaActiva.obtenerOperando(indice);
 	}
 
@@ -165,21 +165,21 @@ public class TablaDeSimbolos {
 	 * @param numParametro
 	 *            numero del parametro a modificar
 	 */
-	public static void insetarAtributo(int indice, String atributo, String valor, String modo) {
+	public static void insetarAtributo(int indice, String atributo, String valor, boolean modo) {
 		switch (atributo) {
-		case Operando.TIPO:
+		case Entrada.TIPO:
 			insertarAtributoTipo(indice, valor);
 			break;
-		case Operando.DESP:
+		case Entrada.DESP:
 			insertarAtributoDesplazamiento(indice, valor);
 			break;
-		case Operando.PARAM:
+		case Entrada.PARAM:
 			insertarAtributoParametro(indice, valor, modo);
 			break;
-		case Operando.RET:
+		case Entrada.RET:
 			insertarAtributoRetorno(indice, valor);
 			break;
-		case Operando.TAG:
+		case Entrada.TAG:
 			insertarAtributoEtiqueta(indice, valor);
 			break;
 		default:
@@ -242,8 +242,8 @@ public class TablaDeSimbolos {
 	 * @param numParametro
 	 *            Numero del parametro a modificar
 	 */
-	public static void insertarAtributoParametro(int indice, String valor, String modo) {
-		Operando operando = obtenerTablaSegunIndice(indice).obtenerOperando(indice);
+	public static void insertarAtributoParametro(int indice, String valor, boolean modo) {
+		Entrada operando = obtenerTablaSegunIndice(indice).obtenerOperando(indice);
 
 		operando.addTipoParam(valor);
 		operando.addModoParam(modo);

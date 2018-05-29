@@ -12,7 +12,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.ExpectedSystemExit;
 
-import tablaDeSimbolos.Operando;
+import tablaDeSimbolos.Entrada;
 import tablaDeSimbolos.TablaDeSimbolos;
 
 public class TestTablaDeSimbolos {
@@ -63,7 +63,7 @@ public class TestTablaDeSimbolos {
 	public void insertarNuevoOperando() {
 		System.out.println("Probando que se puede insertar un identificador \ncorrectamente");
 
-		Operando op = new Operando("lexema");
+		Entrada op = new Entrada("lexema");
 
 		int indice = TablaDeSimbolos.insertarId("lexema");
 
@@ -77,14 +77,14 @@ public class TestTablaDeSimbolos {
 	public void insertarAtributosDeVariableIntCorrectos() {
 		System.out.println("Probando que se insertan atributos de variable \nint correctos");
 
-		Operando op = new Operando("lexema");
-		op.setTipo(Operando.INT);
+		Entrada op = new Entrada("lexema");
+		op.setTipo(Entrada.INT);
 		op.setDespl(4);
 
 		int indice = TablaDeSimbolos.insertarId("lexema");
 
-		TablaDeSimbolos.insetarAtributo(indice, Operando.TIPO, Operando.INT, null);
-		TablaDeSimbolos.insetarAtributo(indice, Operando.DESP, "4", null);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.TIPO, Entrada.INT, false);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.DESP, "4", false);
 
 		assertEquals(TablaDeSimbolos.obtenerOperando(indice), op);
 	}
@@ -96,14 +96,14 @@ public class TestTablaDeSimbolos {
 	public void insertarAtributosDeVariableBoolCorrectos() {
 		System.out.println("Probando que se insertan atributos de variable \nbool correctos");
 
-		Operando op = new Operando("lexema");
-		op.setTipo(Operando.BOOL);
+		Entrada op = new Entrada("lexema");
+		op.setTipo(Entrada.BOOL);
 		op.setDespl(1);
 
 		int indice = TablaDeSimbolos.insertarId("lexema");
 
-		TablaDeSimbolos.insetarAtributo(indice, Operando.TIPO, Operando.BOOL, null);
-		TablaDeSimbolos.insetarAtributo(indice, Operando.DESP, "1", null);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.TIPO, Entrada.BOOL, false);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.DESP, "1", false);
 
 		assertEquals(TablaDeSimbolos.obtenerOperando(indice), op);
 	}
@@ -115,14 +115,14 @@ public class TestTablaDeSimbolos {
 	public void insertarAtributosDeVariableCharsCorrectos() {
 		System.out.println("Probando que se insertan atributos de variable \nchars correctos");
 
-		Operando op = new Operando("lexema");
-		op.setTipo(Operando.CHARS);
+		Entrada op = new Entrada("lexema");
+		op.setTipo(Entrada.CHARS);
 		op.setDespl(4);
 
 		int indice = TablaDeSimbolos.insertarId("lexema");
 
-		TablaDeSimbolos.insetarAtributo(indice, Operando.TIPO, Operando.CHARS, null);
-		TablaDeSimbolos.insetarAtributo(indice, Operando.DESP, "4", null);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.TIPO, Entrada.CHARS, false);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.DESP, "4", false);
 
 		assertEquals(TablaDeSimbolos.obtenerOperando(indice), op);
 	}
@@ -138,7 +138,7 @@ public class TestTablaDeSimbolos {
 		int indice = TablaDeSimbolos.insertarId("lexema");
 
 		exit.expectSystemExitWithStatus(1012);
-		TablaDeSimbolos.insetarAtributo(indice, Operando.DESP, "ASDASD", null);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.DESP, "ASDASD", false);
 	}
 
 	/**
@@ -148,16 +148,16 @@ public class TestTablaDeSimbolos {
 	public void insertarAtributosDeVariableFuncionReturnIntCorrectos() {
 		System.out.println("Probando que se insertan atributos de funcion \ncon return de tipo int correctos");
 
-		Operando op = new Operando("lexema");
-		op.setTipo(Operando.FUNC);
-		op.setTipoRetorno(Operando.INT);
+		Entrada op = new Entrada("lexema");
+		op.setTipo(Entrada.FUNC);
+		op.setTipoRetorno(Entrada.INT);
 		op.setEtiqFuncion("1");
 
 		int indice = TablaDeSimbolos.insertarId("lexema");
 
-		TablaDeSimbolos.insetarAtributo(indice, Operando.TIPO, Operando.FUNC, null);
-		TablaDeSimbolos.insetarAtributo(indice, Operando.RET, Operando.INT, null);
-		TablaDeSimbolos.insetarAtributo(indice, Operando.TAG, "1", null);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.TIPO, Entrada.FUNC, false);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.RET, Entrada.INT, false);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.TAG, "1", false);
 
 		assertEquals(TablaDeSimbolos.obtenerOperando(indice), op);
 	}
@@ -169,16 +169,16 @@ public class TestTablaDeSimbolos {
 	public void insertarAtributosDeVariableFuncionReturnBoolCorrectos() {
 		System.out.println("Probando que se insertan atributos de funcion \ncon return de tipo bool correctos");
 
-		Operando op = new Operando("lexema");
-		op.setTipo(Operando.FUNC);
-		op.setTipoRetorno(Operando.BOOL);
+		Entrada op = new Entrada("lexema");
+		op.setTipo(Entrada.FUNC);
+		op.setTipoRetorno(Entrada.BOOL);
 		op.setEtiqFuncion("1");
 
 		int indice = TablaDeSimbolos.insertarId("lexema");
 
-		TablaDeSimbolos.insetarAtributo(indice, Operando.TIPO, Operando.FUNC, null);
-		TablaDeSimbolos.insetarAtributo(indice, Operando.RET, Operando.BOOL, null);
-		TablaDeSimbolos.insetarAtributo(indice, Operando.TAG, "1", null);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.TIPO, Entrada.FUNC, false);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.RET, Entrada.BOOL, false);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.TAG, "1", false);
 
 		assertEquals(TablaDeSimbolos.obtenerOperando(indice), op);
 	}
@@ -190,16 +190,16 @@ public class TestTablaDeSimbolos {
 	public void insertarAtributosDeVariableFuncionReturnCharsCorrectos() {
 		System.out.println("Probando que se insertan atributos de funcion \ncon return de tipo chars correctos");
 
-		Operando op = new Operando("lexema");
-		op.setTipo(Operando.FUNC);
-		op.setTipoRetorno(Operando.CHARS);
+		Entrada op = new Entrada("lexema");
+		op.setTipo(Entrada.FUNC);
+		op.setTipoRetorno(Entrada.CHARS);
 		op.setEtiqFuncion("1");
 
 		int indice = TablaDeSimbolos.insertarId("lexema");
 
-		TablaDeSimbolos.insetarAtributo(indice, Operando.TIPO, Operando.FUNC, null);
-		TablaDeSimbolos.insetarAtributo(indice, Operando.RET, Operando.CHARS, null);
-		TablaDeSimbolos.insetarAtributo(indice, Operando.TAG, "1", null);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.TIPO, Entrada.FUNC, false);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.RET, Entrada.CHARS, false);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.TAG, "1", false);
 
 		assertEquals(TablaDeSimbolos.obtenerOperando(indice), op);
 	}
@@ -213,28 +213,28 @@ public class TestTablaDeSimbolos {
 		System.out.println(
 				"Probando que se insertan atributos de funcion \ncon return de tipo int y parametros correctos");
 
-		Operando op = new Operando("lexema");
-		op.setTipo(Operando.FUNC);
-		op.setTipoRetorno(Operando.INT);
+		Entrada op = new Entrada("lexema");
+		op.setTipo(Entrada.FUNC);
+		op.setTipoRetorno(Entrada.INT);
 		op.setEtiqFuncion("1");
-		op.addTipoParam(Operando.CHARS);
-		op.addModoParam(Operando.REF);
-		op.addTipoParam(Operando.INT);
-		op.addModoParam(Operando.VAL);
-		op.addTipoParam(Operando.BOOL);
-		op.addModoParam(Operando.VAL);
+		op.addTipoParam(Entrada.CHARS);
+		op.addModoParam(Entrada.REF);
+		op.addTipoParam(Entrada.INT);
+		op.addModoParam(Entrada.VAL);
+		op.addTipoParam(Entrada.BOOL);
+		op.addModoParam(Entrada.VAL);
 
 		if (op.getNumParam() != 3)
 			fail("El numero de parametros de la funcion no se actualiza correctamente");
 
 		int indice = TablaDeSimbolos.insertarId("lexema");
 
-		TablaDeSimbolos.insetarAtributo(indice, Operando.TIPO, Operando.FUNC, null);
-		TablaDeSimbolos.insetarAtributo(indice, Operando.RET, Operando.INT, null);
-		TablaDeSimbolos.insetarAtributo(indice, Operando.TAG, "1", null);
-		TablaDeSimbolos.insetarAtributo(indice, Operando.PARAM, Operando.CHARS, Operando.REF);
-		TablaDeSimbolos.insetarAtributo(indice, Operando.PARAM, Operando.INT, Operando.VAL);
-		TablaDeSimbolos.insetarAtributo(indice, Operando.PARAM, Operando.BOOL, Operando.VAL);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.TIPO, Entrada.FUNC, false);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.RET, Entrada.INT, false);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.TAG, "1", false);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.PARAM, Entrada.CHARS, Entrada.REF);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.PARAM, Entrada.INT, Entrada.VAL);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.PARAM, Entrada.BOOL, Entrada.VAL);
 
 		assertEquals(TablaDeSimbolos.obtenerOperando(indice), op);
 	}
@@ -248,28 +248,28 @@ public class TestTablaDeSimbolos {
 		System.out.println(
 				"Probando que se insertan atributos de funcion \ncon return de tipo bool y parametros correctos");
 
-		Operando op = new Operando("lexema");
-		op.setTipo(Operando.FUNC);
-		op.setTipoRetorno(Operando.BOOL);
+		Entrada op = new Entrada("lexema");
+		op.setTipo(Entrada.FUNC);
+		op.setTipoRetorno(Entrada.BOOL);
 		op.setEtiqFuncion("1");
-		op.addTipoParam(Operando.CHARS);
-		op.addModoParam(Operando.REF);
-		op.addTipoParam(Operando.INT);
-		op.addModoParam(Operando.VAL);
-		op.addTipoParam(Operando.BOOL);
-		op.addModoParam(Operando.VAL);
+		op.addTipoParam(Entrada.CHARS);
+		op.addModoParam(Entrada.REF);
+		op.addTipoParam(Entrada.INT);
+		op.addModoParam(Entrada.VAL);
+		op.addTipoParam(Entrada.BOOL);
+		op.addModoParam(Entrada.VAL);
 
 		if (op.getNumParam() != 3)
 			fail("El numero de parametros de la funcion no se actualiza correctamente");
 
 		int indice = TablaDeSimbolos.insertarId("lexema");
 
-		TablaDeSimbolos.insetarAtributo(indice, Operando.TIPO, Operando.FUNC, null);
-		TablaDeSimbolos.insetarAtributo(indice, Operando.RET, Operando.BOOL, null);
-		TablaDeSimbolos.insetarAtributo(indice, Operando.TAG, "1", null);
-		TablaDeSimbolos.insetarAtributo(indice, Operando.PARAM, Operando.CHARS, Operando.REF);
-		TablaDeSimbolos.insetarAtributo(indice, Operando.PARAM, Operando.INT, Operando.VAL);
-		TablaDeSimbolos.insetarAtributo(indice, Operando.PARAM, Operando.BOOL, Operando.VAL);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.TIPO, Entrada.FUNC, false);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.RET, Entrada.BOOL, false);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.TAG, "1", false);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.PARAM, Entrada.CHARS, Entrada.REF);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.PARAM, Entrada.INT, Entrada.VAL);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.PARAM, Entrada.BOOL, Entrada.VAL);
 
 		assertEquals(TablaDeSimbolos.obtenerOperando(indice), op);
 	}
@@ -283,28 +283,28 @@ public class TestTablaDeSimbolos {
 		System.out.println(
 				"Probando que se detecta atributos de funcion \ncon return de tipo chars y parametros correctos");
 
-		Operando op = new Operando("lexema");
-		op.setTipo(Operando.FUNC);
-		op.setTipoRetorno(Operando.CHARS);
+		Entrada op = new Entrada("lexema");
+		op.setTipo(Entrada.FUNC);
+		op.setTipoRetorno(Entrada.CHARS);
 		op.setEtiqFuncion("1");
-		op.addTipoParam(Operando.CHARS);
-		op.addModoParam(Operando.REF);
-		op.addTipoParam(Operando.INT);
-		op.addModoParam(Operando.VAL);
-		op.addTipoParam(Operando.BOOL);
-		op.addModoParam(Operando.VAL);
+		op.addTipoParam(Entrada.CHARS);
+		op.addModoParam(Entrada.REF);
+		op.addTipoParam(Entrada.INT);
+		op.addModoParam(Entrada.VAL);
+		op.addTipoParam(Entrada.BOOL);
+		op.addModoParam(Entrada.VAL);
 
 		if (op.getNumParam() != 3)
 			fail("El numero de parametros de la funcion no se actualiza correctamente");
 
 		int indice = TablaDeSimbolos.insertarId("lexema");
 
-		TablaDeSimbolos.insetarAtributo(indice, Operando.TIPO, Operando.FUNC, null);
-		TablaDeSimbolos.insetarAtributo(indice, Operando.RET, Operando.CHARS, null);
-		TablaDeSimbolos.insetarAtributo(indice, Operando.TAG, "1", null);
-		TablaDeSimbolos.insetarAtributo(indice, Operando.PARAM, Operando.CHARS, Operando.REF);
-		TablaDeSimbolos.insetarAtributo(indice, Operando.PARAM, Operando.INT, Operando.VAL);
-		TablaDeSimbolos.insetarAtributo(indice, Operando.PARAM, Operando.BOOL, Operando.VAL);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.TIPO, Entrada.FUNC, false);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.RET, Entrada.CHARS, false);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.TAG, "1", false);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.PARAM, Entrada.CHARS, Entrada.REF);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.PARAM, Entrada.INT, Entrada.VAL);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.PARAM, Entrada.BOOL, Entrada.VAL);
 
 		assertEquals(TablaDeSimbolos.obtenerOperando(indice), op);
 	}
@@ -319,7 +319,7 @@ public class TestTablaDeSimbolos {
 		int indice = TablaDeSimbolos.insertarId("lexema");
 
 		exit.expectSystemExitWithStatus(1006);
-		TablaDeSimbolos.insetarAtributo(indice, Operando.TIPO, "ASDASD", null);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.TIPO, "ASDASD", false);
 	}
 
 	/**
@@ -331,10 +331,10 @@ public class TestTablaDeSimbolos {
 		System.out.println("Probando que se detecta un tipo retorno a una variable");
 
 		int indice = TablaDeSimbolos.insertarId("lexema");
-		TablaDeSimbolos.insetarAtributo(indice, Operando.TIPO, Operando.INT, null);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.TIPO, Entrada.INT, false);
 
 		exit.expectSystemExitWithStatus(1008);
-		TablaDeSimbolos.insetarAtributo(indice, Operando.RET, Operando.INT, null);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.RET, Entrada.INT, false);
 	}
 
 	/**
@@ -346,10 +346,10 @@ public class TestTablaDeSimbolos {
 		System.out.println("Probando que se detecta una etiqueta a una variable");
 
 		int indice = TablaDeSimbolos.insertarId("lexema");
-		TablaDeSimbolos.insetarAtributo(indice, Operando.TIPO, Operando.INT, null);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.TIPO, Entrada.INT, false);
 
 		exit.expectSystemExitWithStatus(1008);
-		TablaDeSimbolos.insetarAtributo(indice, Operando.TAG, "1", null);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.TAG, "1", false);
 	}
 
 	/**
@@ -361,10 +361,10 @@ public class TestTablaDeSimbolos {
 		System.out.println("Probando que se detecta un parametro a una variable");
 
 		int indice = TablaDeSimbolos.insertarId("lexema");
-		TablaDeSimbolos.insetarAtributo(indice, Operando.TIPO, Operando.INT, null);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.TIPO, Entrada.INT, false);
 
 		exit.expectSystemExitWithStatus(1008);
-		TablaDeSimbolos.insetarAtributo(indice, Operando.PARAM, Operando.INT, Operando.VAL);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.PARAM, Entrada.INT, Entrada.VAL);
 	}
 
 	/**
@@ -376,10 +376,10 @@ public class TestTablaDeSimbolos {
 		System.out.println("Probando que se detecta un tipo de retorno invalido \na una funcion");
 
 		int indice = TablaDeSimbolos.insertarId("lexema");
-		TablaDeSimbolos.insetarAtributo(indice, Operando.TIPO, Operando.FUNC, null);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.TIPO, Entrada.FUNC, false);
 
 		exit.expectSystemExitWithStatus(1006);
-		TablaDeSimbolos.insetarAtributo(indice, Operando.RET, "ASDASD", null);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.RET, "ASDASD", false);
 	}
 
 	/**
@@ -391,25 +391,10 @@ public class TestTablaDeSimbolos {
 		System.out.println("Probando que se detecta un tipo de parametro invalido \na una funcion");
 
 		int indice = TablaDeSimbolos.insertarId("lexema");
-		TablaDeSimbolos.insetarAtributo(indice, Operando.TIPO, Operando.FUNC, null);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.TIPO, Entrada.FUNC, false);
 
 		exit.expectSystemExitWithStatus(1006);
-		TablaDeSimbolos.insetarAtributo(indice, Operando.PARAM, "ASDASD", Operando.VAL);
-	}
-
-	/**
-	 * Prueba que comprueba que se envia un error cuando el modo de un parametro no
-	 * es valido
-	 */
-	@Test
-	public void insertarModoParamErroneoFuncion() {
-		System.out.println("Probando que se detecta un modo de parametro invlaido");
-
-		int indice = TablaDeSimbolos.insertarId("lexema");
-		TablaDeSimbolos.insetarAtributo(indice, Operando.TIPO, Operando.FUNC, null);
-
-		exit.expectSystemExitWithStatus(1011);
-		TablaDeSimbolos.insetarAtributo(indice, Operando.PARAM, Operando.INT, "ASDASD");
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.PARAM, "ASDASD", Entrada.VAL);
 	}
 
 	/**
@@ -421,9 +406,9 @@ public class TestTablaDeSimbolos {
 		System.out.println("Probando que se detecta un desplazamiento en una funcion");
 
 		int indice = TablaDeSimbolos.insertarId("lexema");
-		TablaDeSimbolos.insetarAtributo(indice, Operando.TIPO, Operando.FUNC, null);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.TIPO, Entrada.FUNC, false);
 
 		exit.expectSystemExitWithStatus(1007);
-		TablaDeSimbolos.insetarAtributo(indice, Operando.DESP, "4", null);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.DESP, "4", false);
 	}
 }

@@ -13,7 +13,7 @@ public class DatosDeLaTablaDeSimbolos {
 
 	private int id, nParams;
 	private String nombreFuncion; // Solamente tiene valor si no es la tabla general
-	private List<Operando> operandos;
+	private List<Entrada> operandos;
 
 	public DatosDeLaTablaDeSimbolos(int id) {
 		this.operandos = new ArrayList<>();
@@ -45,7 +45,7 @@ public class DatosDeLaTablaDeSimbolos {
 			// Como los indices de la tabla de simbolos empiezan en 1 hay que sumar uno al
 			// indice obtenido
 			indice = operandos.size() + 1;
-			Operando operando = new Operando(id);
+			Entrada operando = new Entrada(id);
 			operandos.add(operando);
 		}
 
@@ -74,7 +74,7 @@ public class DatosDeLaTablaDeSimbolos {
 	 *            Indice de la tabla en el cual esta el identificador a obtener
 	 * @return identificador que se quiere obtener
 	 */
-	public Operando obtenerOperando(int indice) {
+	public Entrada obtenerOperando(int indice) {
 		// Como el 0 esta reservacdo para el error le llegara un indice desplazado en 1
 		// por eso se resta 1
 		return operandos.get(indice - 1);
@@ -125,10 +125,10 @@ public class DatosDeLaTablaDeSimbolos {
 		}
 
 		// recorro los operandos de la tabla de simbolos
-		for (Operando operando : operandos) {
+		for (Entrada operando : operandos) {
 			// Si no es una funcion va a tener 3 campos, si es una funcion tendra 4 campos
 			// mas un campo por cada parametro
-			if (!operando.getTipo().equals(Operando.FUNC)) {
+			if (!operando.getTipo().equals(Entrada.FUNC)) {
 				String tipoEntrada = "variable";
 
 				// Si el contador menor que el numero de parametros de la funcion el tipo de la
@@ -137,7 +137,7 @@ public class DatosDeLaTablaDeSimbolos {
 					tipoEntrada = "parámetro";
 
 				// Si el tipo es chars en vez de una variable se trata de un puntero
-				if (operando.getTipo().equals(Operando.CHARS))
+				if (operando.getTipo().equals(Entrada.CHARS))
 					tipoEntrada = "puntero";
 
 				tabla.append("* LEXEMA: '" + operando.getLexema() + "' (tipo de entrada'" + tipoEntrada + "')\n");

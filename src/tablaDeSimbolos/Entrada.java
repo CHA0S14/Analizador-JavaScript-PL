@@ -5,7 +5,7 @@ import java.util.List;
 
 import gestorDeErrores.GestorDeErrores;
 
-public class Operando {
+public class Entrada {
 	public static final String TIPO = "tipo";
 	public static final String DESP = "desplazamiento";
 	public static final String PARAM = "parametro";
@@ -15,15 +15,16 @@ public class Operando {
 	public static final String BOOL = "bool";
 	public static final String INT = "int";
 	public static final String FUNC = "function";
-	public static final String VAL = "valor";
-	public static final String REF = "referencia";
+	public static final boolean VAL = false;
+	public static final boolean REF = true;
 
 	private String lexema, tipo, tipoRetorno, etiqFuncion;
 	private int despl, numParam;
 	private boolean param;
-	private List<String> tipoParam, modoParam;
+	private List<String> tipoParam;
+	private List<Boolean> modoParam;
 
-	public Operando(String lexema) {
+	public Entrada(String lexema) {
 		this.lexema = lexema;
 	}
 
@@ -102,7 +103,7 @@ public class Operando {
 		return tipoParam;
 	}
 
-	public List<String> getModoParam() {
+	public List<Boolean> getModoParam() {
 		return modoParam;
 	}
 
@@ -116,17 +117,17 @@ public class Operando {
 		numParam++;
 	}
 
-	public void addModoParam(String modo) {
+	public void addModoParam(boolean modo) {
 		if (!getTipo().equals(FUNC)) {
 			GestorDeErrores.gestionarError(1008, PARAM);
-		} else if (!modo.equals(VAL) && !modo.equals(REF)) {
-			GestorDeErrores.gestionarError(1011, modo);
+		} else if (modo != VAL && modo != REF) {
+			GestorDeErrores.gestionarError(1011, modo ? "Referencia" : "Parametro");
 		}
 
 		if ((tipoParam.get(numParam - 1).equals(INT) || tipoParam.get(numParam - 1).equals(BOOL))
-				&& !modo.equals(VAL)) {
+				&& modo != VAL) {
 			GestorDeErrores.gestionarError(1010, "El tipo es " + tipo + " y el modo no es " + VAL);
-		} else if (tipoParam.get(numParam - 1).equals(CHARS) && !modo.equals(REF)) {
+		} else if (tipoParam.get(numParam - 1).equals(CHARS) && modo != REF) {
 			GestorDeErrores.gestionarError(1010, "El tipo es " + tipo + " y el modo no es " + REF);
 		}
 
@@ -135,10 +136,10 @@ public class Operando {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (!(obj instanceof Operando)) {
+		if (!(obj instanceof Entrada)) {
 			return false;
 		}
-		Operando op = (Operando) obj;
+		Entrada op = (Entrada) obj;
 
 		boolean response = op.getLexema().equals(this.lexema) && op.getDespl() == this.despl
 				&& op.getNumParam() == this.numParam && op.isParam() == this.param;
