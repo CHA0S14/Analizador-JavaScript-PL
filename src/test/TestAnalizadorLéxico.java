@@ -32,7 +32,7 @@ public class TestAnalizadorLéxico {
 	private final String SEPARATOR = "***************************************************";
 	private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
 	private final String[] caracteresNoValidos2006 = { "_", "\\", "¡", "á", "é", "í", "ó", "ú", "// algo", "/* algo",
-			"/* algo *", "\"algo", "\"algo \n", "' algo", "' algo \n", "identificador"};
+			"/* algo *", "\"algo", "\"algo \n", "' algo", "' algo \n"};
 
 	private static int contCaracteresNoValidos = 0;
 
@@ -67,6 +67,11 @@ public class TestAnalizadorLéxico {
 	public void postPrueba() {
 		// Cambio la salida de error a la de por defecto
 		System.setErr(System.err);
+		
+		// if (errContent.size() != 0) {
+		// System.out.println(errContent.toString());
+		// errContent.reset();
+		// }
 
 		// Limpio las tablas de simbolos
 		TablaDeSimbolos.resetTablaDeSimbolos();
@@ -342,18 +347,6 @@ public class TestAnalizadorLéxico {
 	 *             Excepcion que se puede dar al trabajar con ficheros
 	 */
 	public void falloLeerCaracterNoValido15() throws IOException {
-		exit.expectSystemExitWithStatus(2004);
-		contenidofalloLeerCaracterNoValido();
-	}
-
-	@Test
-	/**
-	 * Test clonico para probar un caracter no valido
-	 * 
-	 * @throws IOException
-	 *             Excepcion que se puede dar al trabajar con ficheros
-	 */
-	public void falloLeerCaracterNoValido16() throws IOException {
 		exit.expectSystemExitWithStatus(2004);
 		contenidofalloLeerCaracterNoValido();
 	}
