@@ -18,8 +18,9 @@ public class Entrada {
 	public static final boolean VAL = false;
 	public static final boolean REF = true;
 
+	// Atributos de la entrada
 	private String lexema, tipo, tipoRetorno, etiqFuncion;
-	private int despl, numParam;
+	private int ancho, numParam;
 	private boolean param;
 	private List<String> tipoParam;
 	private List<Boolean> modoParam;
@@ -41,7 +42,7 @@ public class Entrada {
 	}
 
 	public void setTipo(String tipo) {
-		if (tipo.equals(FUNC)) {
+		if (tipo.equals(FUNC)) { // Si el tipo es funcion se inican los datos correspondientes a la funcion
 			tipoParam = new ArrayList<>();
 			modoParam = new ArrayList<>();
 			numParam = 0;
@@ -57,8 +58,10 @@ public class Entrada {
 	}
 
 	public void setTipoRetorno(String tipoRetorno) {
-		if (!getTipo().equals(FUNC)) {
+		// Solo se puede poner tipo de retorno a las funciones
+		if (!this.tipo.equals(FUNC)) {
 			GestorDeErrores.gestionarError(1008, RET);
+			// Compruebo que el tipo introducido es valido
 		} else if (!tipoRetorno.equals(CHARS) && !tipoRetorno.equals(INT) && !tipoRetorno.equals(BOOL)) {
 			GestorDeErrores.gestionarError(1006, tipo);
 		}
@@ -70,21 +73,23 @@ public class Entrada {
 	}
 
 	public void setEtiqFuncion(String etiqFuncion) {
-		if (!getTipo().equals(FUNC)) {
+		// Solo se puede aniadir una etiqueta si el tipo de la entrada es una funcion
+		if (!this.tipo.equals(FUNC)) {
 			GestorDeErrores.gestionarError(1008, TAG);
 		}
 		this.etiqFuncion = etiqFuncion;
 	}
 
 	public int getDespl() {
-		return despl;
+		return ancho;
 	}
 
-	public void setDespl(int despl) {
-		if (getTipo().equals(FUNC)) {
+	public void setDespl(int ancho) {
+		// Si el tipo es funcion no se le puede aniadir ancho
+		if (this.tipo.equals(FUNC)) {
 			GestorDeErrores.gestionarError(1007, null);
 		}
-		this.despl = despl;
+		this.ancho = ancho;
 	}
 
 	public int getNumParam() {
@@ -108,8 +113,10 @@ public class Entrada {
 	}
 
 	public void addTipoParam(String tipo) {
+		// Solo se le pueden aniadir parametros a las funciones
 		if (!getTipo().equals(FUNC)) {
 			GestorDeErrores.gestionarError(1008, PARAM);
+			// Se comprueba que los tipo son validos
 		} else if (!tipo.equals(CHARS) && !tipo.equals(INT) && !tipo.equals(BOOL)) {
 			GestorDeErrores.gestionarError(1006, tipo);
 		}
@@ -118,14 +125,13 @@ public class Entrada {
 	}
 
 	public void addModoParam(boolean modo) {
+		// Solo tienen parametros las funciones
 		if (!getTipo().equals(FUNC)) {
 			GestorDeErrores.gestionarError(1008, PARAM);
-		} else if (modo != VAL && modo != REF) {
-			GestorDeErrores.gestionarError(1011, modo ? "Referencia" : "Parametro");
 		}
 
-		if ((tipoParam.get(numParam - 1).equals(INT) || tipoParam.get(numParam - 1).equals(BOOL))
-				&& modo != VAL) {
+		// Los metodos de paso de parametros van relaccionados con el tipo
+		if ((tipoParam.get(numParam - 1).equals(INT) || tipoParam.get(numParam - 1).equals(BOOL)) && modo != VAL) {
 			GestorDeErrores.gestionarError(1010, "El tipo es " + tipo + " y el modo no es " + VAL);
 		} else if (tipoParam.get(numParam - 1).equals(CHARS) && modo != REF) {
 			GestorDeErrores.gestionarError(1010, "El tipo es " + tipo + " y el modo no es " + REF);
@@ -135,13 +141,16 @@ public class Entrada {
 	}
 
 	@Override
+	/**
+	 * Dos entradas son iguales cuando los atributos son iguales
+	 */
 	public boolean equals(Object obj) {
 		if (!(obj instanceof Entrada)) {
 			return false;
 		}
 		Entrada op = (Entrada) obj;
 
-		boolean response = op.getLexema().equals(this.lexema) && op.getDespl() == this.despl
+		boolean response = op.getLexema().equals(this.lexema) && op.getDespl() == this.ancho
 				&& op.getNumParam() == this.numParam && op.isParam() == this.param;
 
 		if (this.tipo != null) {
