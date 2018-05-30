@@ -112,28 +112,20 @@ public class GestorDeErrores {
 			return "Se esperaba la creacion de una variable, su incremento o decremento, "
 					+ "declaracion de una funcion o un bloque de codigo";
 		case 2:
-			break;
+			return "La actualizacion del for es erronea";
 		case 3:
-			return "En el ultimo parametro de un for se espera la modificacion de una variable o nada";
+			return "Se esperaba un token de incremento o decremento pero se ha recibido un " + dato;
 		case 4:
-			return "En un switch se espera por lo menos un case";
+			return "Se esperaba un token de asignacion pero se ha recibido un " + dato;
 		case 5:
 			return "Los unicos tipos aceptados son int, bool y chars";
 		case 6:
-			return "Las expresiones solo pueden comenzar por !, (, una operacion de incremento o decremento,"
-					+ " identificador, tipo cadena, true, false o entero";
+			return "No se ha leido una expresion valida";
 		case 7:
-			return "Se esperaba un valor ya sea por identificador, entero, cadena, true, false, "
-					+ "una expresion entre parentesis o el autoincremento o decremento de una variable";
-		case 8:
-			return "Se esperaba una sentencia ya sea una llamada a un identificador, un write, "
-					+ "prompt, return, autoincremento o decremento o un break";
+			return "No se ha leido una sentencia valida";
 		case 9:
-			return "Tras una sentencia con un identificador se espera una asignacion, los parametros de"
-					+ " una funcion o un postdecremento o incremento";
+			return "Se ha encontrado un error en la declaracion de la funcion";
 		case 10:
-			return "Se esperaba la generacion de una funcion con su palabra resevada 'function'";
-		case 11:
 			return "No se esperaba el token " + dato;
 		}
 

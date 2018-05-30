@@ -228,7 +228,7 @@ public class AnalizadorSintactico {
 			equip(16);
 			break;
 		default:
-			GestorDeErrores.gestionarError(3003, null);
+			GestorDeErrores.gestionarError(3002, null);
 		}
 	}
 
@@ -241,7 +241,7 @@ public class AnalizadorSintactico {
 			equip(16);
 			break;
 		default:
-			// TODO Gestor de errores
+			GestorDeErrores.gestionarError(3003, sigToken.getToken() + "");
 		}
 	}
 
@@ -266,7 +266,7 @@ public class AnalizadorSintactico {
 			asignacionOp();
 			break;
 		default:
-			// TODO Gestor de errores
+			GestorDeErrores.gestionarError(3004, sigToken.getToken() + "");
 		}
 	}
 
@@ -293,6 +293,8 @@ public class AnalizadorSintactico {
 		case 24: // |=
 			equip(24);
 			break;
+		default:
+			GestorDeErrores.gestionarError(3004, sigToken.getToken() + "");
 		}
 	}
 
@@ -376,8 +378,6 @@ public class AnalizadorSintactico {
 			c();
 			bloqueCase2();
 			break;
-		default:
-			// TODO Gestor de errores
 		}
 	}
 
@@ -443,7 +443,7 @@ public class AnalizadorSintactico {
 			e2();
 			break;
 		default:
-			// TODO Gestor de errores
+			GestorDeErrores.gestionarError(3006, null);
 		}
 	}
 
@@ -491,7 +491,7 @@ public class AnalizadorSintactico {
 			n2();
 			break;
 		default:
-			// TODO Gestor de errores
+			GestorDeErrores.gestionarError(3006, null);
 		}
 	}
 
@@ -533,7 +533,7 @@ public class AnalizadorSintactico {
 			g2();
 			break;
 		default:
-			// TODO Gestor de errores
+			GestorDeErrores.gestionarError(3006, null);
 		}
 	}
 
@@ -575,7 +575,7 @@ public class AnalizadorSintactico {
 			d2();
 			break;
 		default:
-			// TODO Gestor de errores
+			GestorDeErrores.gestionarError(3006, null);
 		}
 	}
 
@@ -623,7 +623,7 @@ public class AnalizadorSintactico {
 			i2();
 			break;
 		default:
-			// TODO Gestor de errores
+			GestorDeErrores.gestionarError(3006, null);
 		}
 	}
 
@@ -653,7 +653,7 @@ public class AnalizadorSintactico {
 			j();
 			i2();
 			break;
-		case 10:
+		case 10: // <=
 			equip(10);
 			j();
 			i2();
@@ -683,7 +683,7 @@ public class AnalizadorSintactico {
 			j2();
 			break;
 		default:
-			// TODO Gestor de errores
+			GestorDeErrores.gestionarError(3006, null);
 		}
 	}
 
@@ -730,10 +730,10 @@ public class AnalizadorSintactico {
 			m2();
 			break;
 		default:
-			// TODO Gestor de errores
+			GestorDeErrores.gestionarError(3006, null);
 		}
 	}
-	
+
 	/**
 	 * <pre>
 	 * 		M2 -> * V M2
@@ -749,12 +749,12 @@ public class AnalizadorSintactico {
 			v();
 			m2();
 			break;
-		case 4:
+		case 4: // /
 			equip(4);
 			v();
 			m2();
 			break;
-		case 5:
+		case 5: // %
 			equip(5);
 			v();
 			m2();
@@ -817,7 +817,7 @@ public class AnalizadorSintactico {
 			v();
 			break;
 		default:
-			GestorDeErrores.gestionarError(3007, null);
+			GestorDeErrores.gestionarError(3006, null);
 		}
 	}
 
@@ -924,7 +924,7 @@ public class AnalizadorSintactico {
 			equip(43);
 			break;
 		default:
-			GestorDeErrores.gestionarError(3008, null);
+			GestorDeErrores.gestionarError(3007, null);
 		}
 	}
 
@@ -958,7 +958,7 @@ public class AnalizadorSintactico {
 			incDec();
 			break;
 		default:
-			GestorDeErrores.gestionarError(3009, null);
+			GestorDeErrores.gestionarError(3007, null);
 		}
 	}
 
@@ -1003,7 +1003,7 @@ public class AnalizadorSintactico {
 			c();
 			equip(49);
 		} else {
-			GestorDeErrores.gestionarError(3010, null);
+			GestorDeErrores.gestionarError(3009, null);
 		}
 	}
 
@@ -1094,7 +1094,7 @@ public class AnalizadorSintactico {
 		if (sigToken.getToken() == token) {
 			sigToken = lexico.getToken();
 		} else {
-			GestorDeErrores.gestionarError(3011, sigToken.getToken() + "");
+			GestorDeErrores.gestionarError(3010, sigToken.getToken() + "");
 		}
 	}
 }
