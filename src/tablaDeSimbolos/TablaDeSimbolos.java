@@ -218,10 +218,11 @@ public class TablaDeSimbolos {
 	 *            Valor del desplazamiento
 	 */
 	public static void insertarAtributoDesplazamiento(int indice, String valor) {
+		obtenerTablaSegunIndice(indice).obtenerOperando(indice).setDespl(tablaActiva.getDesp());
 		try {
-			obtenerTablaSegunIndice(indice).obtenerOperando(indice).setDespl(Integer.parseInt(valor));
+			tablaActiva.incrementarDesp(Integer.parseInt(valor));
 		} catch (NumberFormatException e) {
-			GestorDeErrores.gestionarError(1012, null);
+			GestorDeErrores.gestionarError(1009, valor);
 		}
 	}
 

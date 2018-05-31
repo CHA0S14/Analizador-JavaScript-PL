@@ -20,7 +20,7 @@ public class Entrada {
 
 	// Atributos de la entrada
 	private String lexema, tipo, tipoRetorno, etiqFuncion;
-	private int ancho, numParam;
+	private int desp, numParam;
 	private boolean param;
 	private List<String> tipoParam;
 	private List<Boolean> modoParam;
@@ -81,15 +81,15 @@ public class Entrada {
 	}
 
 	public int getDespl() {
-		return ancho;
+		return desp;
 	}
 
-	public void setDespl(int ancho) {
+	public void setDespl(int desp) {
 		// Si el tipo es funcion no se le puede aniadir ancho
 		if (this.tipo.equals(FUNC)) {
 			GestorDeErrores.gestionarError(1007, null);
 		}
-		this.ancho = ancho;
+		this.desp = desp;
 	}
 
 	public int getNumParam() {
@@ -130,13 +130,6 @@ public class Entrada {
 			GestorDeErrores.gestionarError(1008, PARAM);
 		}
 
-		// Los metodos de paso de parametros van relaccionados con el tipo
-		if ((tipoParam.get(numParam - 1).equals(INT) || tipoParam.get(numParam - 1).equals(BOOL)) && modo != VAL) {
-			GestorDeErrores.gestionarError(1010, "El tipo es " + tipo + " y el modo no es " + VAL);
-		} else if (tipoParam.get(numParam - 1).equals(CHARS) && modo != REF) {
-			GestorDeErrores.gestionarError(1010, "El tipo es " + tipo + " y el modo no es " + REF);
-		}
-
 		this.modoParam.add(modo);
 	}
 
@@ -150,7 +143,7 @@ public class Entrada {
 		}
 		Entrada op = (Entrada) obj;
 
-		boolean response = op.getLexema().equals(this.lexema) && op.getDespl() == this.ancho
+		boolean response = op.getLexema().equals(this.lexema) && op.getDespl() == this.desp
 				&& op.getNumParam() == this.numParam && op.isParam() == this.param;
 
 		if (this.tipo != null) {

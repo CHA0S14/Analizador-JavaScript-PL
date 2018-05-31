@@ -20,7 +20,7 @@ letrasHexadecimales=A,B,C,D,E,F,a,b,c,d,e,f
 saltoDeLineaYTabulacion=n,t
 
 // Resto de letras que no tienen asignaciones especiales
-letrasRestantes=G,H,I,J,K,L,M,N,Ñ,O,P,Q,R,S,T,U,V,W,X,Y,Z,g,h,i,j,k,l,m,ñ,o,p,q,r,s,u,v,w,y,z
+letrasRestantes=G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,g,h,i,j,k,l,m,o,p,q,r,s,u,v,w,y,z
 
 // Caracteres omitibles
 del= ,\r,\t,\n

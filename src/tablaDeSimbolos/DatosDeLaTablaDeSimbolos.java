@@ -11,13 +11,14 @@ import java.util.List;
  */
 public class DatosDeLaTablaDeSimbolos {
 
-	private int id, nParams;
+	private int id, nParams, desp;
 	private String nombreFuncion; // Solamente tiene valor si no es la tabla general
 	private List<Entrada> operandos;
 
 	public DatosDeLaTablaDeSimbolos(int id) {
 		this.operandos = new ArrayList<>();
 		this.id = id;
+		desp = 0;
 	}
 
 	public DatosDeLaTablaDeSimbolos(int id, String nombreFuncion) {
@@ -78,6 +79,20 @@ public class DatosDeLaTablaDeSimbolos {
 		// Como el 0 esta reservacdo para el error le llegara un indice desplazado en 1
 		// por eso se resta 1
 		return operandos.get(indice - 1);
+	}
+
+	/**
+	 * Metodo que modifica el desplazamiento de la tabla de simbolos
+	 * 
+	 * @param ancho
+	 *            Valor que se quiere desplazar
+	 */
+	public void incrementarDesp(int ancho) {
+		this.desp += ancho;
+	}
+	
+	public int getDesp() {
+		return desp;
 	}
 
 	@Override
@@ -152,7 +167,7 @@ public class DatosDeLaTablaDeSimbolos {
 				// elemento) hasta el antepenultimo por eso le resto 4 al length (los 2 primeros
 				// + los 2 ultimos)
 				int i = 1;
-				for (String param: operando.getTipoParam()) {
+				for (String param : operando.getTipoParam()) {
 					tabla.append("\t\t+ parametro" + (i - 1) + ": " + param + "\n");
 					i++;
 				}
