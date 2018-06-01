@@ -658,15 +658,29 @@ public class TestAnalizadorSintactico {
 	}
 
 	/**
-	 * Metodo que prueba que se lanza correctamente un error 3004
+	 * Metodo que prueba que se lanza correctamente un error 3007 de sentencia
+	 * invalida
 	 * 
 	 * @throws IOException
 	 *             Error que puede dar cuando hacer manejo de ficheros
 	 */
 	@Test
-	public void error3004() throws IOException {
-		exit.expectSystemExitWithStatus(3004);
-		generarError(new String[] { "switch(identificador){}" }, 0, 3004);
+	public void sentenciaInvalida() throws IOException {
+		exit.expectSystemExitWithStatus(3007);
+		generarError(new String[] { "identificador 1" }, 0, 3004);
+	}
+
+	/**
+	 * Metodo que prueba que se lanza correctamente un error 3006 de expresion
+	 * invalida
+	 * 
+	 * @throws IOException
+	 *             Error que puede dar cuando hacer manejo de ficheros
+	 */
+	@Test
+	public void expresionInvalida() throws IOException {
+		exit.expectSystemExitWithStatus(3006);
+		generarError(new String[] { "identificador += if" }, 0, 3004);
 	}
 
 	/**
@@ -679,8 +693,8 @@ public class TestAnalizadorSintactico {
 	public void generarError(String[] caracteres, int contador, int error) throws IOException {
 		String caracter = caracteres[contador];
 
-		System.out.println("Probando que el analizador sintactico es capaz de\ndetectar un error " + error + " con el caracter "
-				+ caracter);
+		System.out.println("Probando que el analizador sintactico es capaz de\ndetectar un error " + error
+				+ " con el caracter " + caracter);
 
 		AnalizadorLexico lexico = new AnalizadorLexico(crearFicheroTemporal(caracter).getAbsolutePath());
 		AnalizadorSintactico analizador = new AnalizadorSintactico(lexico);

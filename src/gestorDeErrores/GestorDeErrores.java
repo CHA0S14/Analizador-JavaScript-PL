@@ -103,8 +103,7 @@ public class GestorDeErrores {
 	private static String errorSintactico(int codigo, String dato) {
 		switch (codigo) {
 		case 1:
-			return "Se esperaba la creacion de una variable, su incremento o decremento, "
-					+ "declaracion de una funcion o un bloque de codigo";
+			return "La sentencia no es correcta";
 		case 2:
 			return "La actualizacion del for es erronea";
 		case 3:
