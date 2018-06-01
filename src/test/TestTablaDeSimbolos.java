@@ -469,7 +469,7 @@ public class TestTablaDeSimbolos {
 		TablaDeSimbolos.insetarAtributo(indice2, Entrada.DESP, "4", false);
 		
 		// Si el indice es mayor que cero es la tabla global no la local
-		if (indice2 >= 0)
+		if (indice2 >= 0 || indice1 <= 0)
 			fail();
 		
 		assertEquals(TablaDeSimbolos.obtenerOperando(indice1), TablaDeSimbolos.obtenerOperando(indice2));
