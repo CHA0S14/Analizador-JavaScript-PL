@@ -79,7 +79,7 @@ public class TestTablaDeSimbolos {
 
 		Entrada op = new Entrada("lexema");
 		op.setTipo(Entrada.INT);
-		op.setDespl(4);
+		op.setDespl(0);
 
 		int indice = TablaDeSimbolos.insertarId("lexema");
 
@@ -98,7 +98,7 @@ public class TestTablaDeSimbolos {
 
 		Entrada op = new Entrada("lexema");
 		op.setTipo(Entrada.BOOL);
-		op.setDespl(1);
+		op.setDespl(0);
 
 		int indice = TablaDeSimbolos.insertarId("lexema");
 
@@ -117,7 +117,7 @@ public class TestTablaDeSimbolos {
 
 		Entrada op = new Entrada("lexema");
 		op.setTipo(Entrada.CHARS);
-		op.setDespl(4);
+		op.setDespl(0);
 
 		int indice = TablaDeSimbolos.insertarId("lexema");
 
@@ -137,7 +137,8 @@ public class TestTablaDeSimbolos {
 
 		int indice = TablaDeSimbolos.insertarId("lexema");
 
-		exit.expectSystemExitWithStatus(1012);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.TIPO, Entrada.BOOL, false);
+		exit.expectSystemExitWithStatus(1009);
 		TablaDeSimbolos.insetarAtributo(indice, Entrada.DESP, "ASDASD", false);
 	}
 
@@ -410,5 +411,68 @@ public class TestTablaDeSimbolos {
 
 		exit.expectSystemExitWithStatus(1007);
 		TablaDeSimbolos.insetarAtributo(indice, Entrada.DESP, "4", false);
+	}
+
+	/**
+	 * Se prueba que el desplazamiento aumenta correctamente
+	 */
+	@Test
+	public void despFunciona() {
+		System.out.println("Probando que se aumenta el desplazamiento correctamente");
+
+		Entrada op = new Entrada("lexema2");
+		op.setTipo(Entrada.CHARS);
+		op.setDespl(4);
+
+		int indice = TablaDeSimbolos.insertarId("lexema");
+
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.TIPO, Entrada.CHARS, false);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.DESP, "4", false);
+
+		indice = TablaDeSimbolos.insertarId("lexema2");
+
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.TIPO, Entrada.CHARS, false);
+		TablaDeSimbolos.insetarAtributo(indice, Entrada.DESP, "4", false);
+
+		assertEquals(TablaDeSimbolos.obtenerOperando(indice), op);
+	}
+
+	/**
+	 * Prueba que se puede crear una tabla de simbolos activa
+	 */
+	@Test
+	public void crearNuevaTS() {
+		System.out.println("Probando que se puede crear una tabla de simbolos \n activa nueva");
+
+		TablaDeSimbolos.nuevaTablaActiva("segunda");
+		TablaDeSimbolos.eliminarTablaActiva();
+	}
+
+	/**
+	 * Prueba que se puede modificar identificadores de dos tablas de simbolos, la
+	 * global y la local
+	 */
+	@Test
+	public void controlarAtributosConDosTS() {
+		System.out.println("Probando que se pueden modificar identificadores \n de dos tablas de simbolos");
+		
+		int indice1 = TablaDeSimbolos.insertarId("lexema");
+
+		TablaDeSimbolos.nuevaTablaActiva("segunda");
+		
+		int indice2 = TablaDeSimbolos.insertarId("lexema");
+		
+		TablaDeSimbolos.insetarAtributo(indice1, Entrada.TIPO, Entrada.CHARS, false);
+		TablaDeSimbolos.insetarAtributo(indice1, Entrada.DESP, "4", false);
+		
+		TablaDeSimbolos.insetarAtributo(indice2, Entrada.TIPO, Entrada.CHARS, false);
+		TablaDeSimbolos.insetarAtributo(indice2, Entrada.DESP, "4", false);
+		
+		// Si el indice es mayor que cero es la tabla global no la local
+		if (indice2 >= 0)
+			fail();
+		
+		assertEquals(TablaDeSimbolos.obtenerOperando(indice1), TablaDeSimbolos.obtenerOperando(indice2));
+
 	}
 }

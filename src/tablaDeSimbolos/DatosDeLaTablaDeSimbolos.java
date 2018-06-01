@@ -78,7 +78,7 @@ public class DatosDeLaTablaDeSimbolos {
 	public Entrada obtenerOperando(int indice) {
 		// Como el 0 esta reservacdo para el error le llegara un indice desplazado en 1
 		// por eso se resta 1
-		return operandos.get(indice - 1);
+		return operandos.get(Math.abs(indice) - 1);
 	}
 
 	/**
