@@ -13,6 +13,8 @@ public class Analizador {
 			// argumentos
 			GestorDeErrores.gestionarError(1001, null);
 		new Analizador(args[0]);
+		
+		System.out.println("Analisis finalizado correctamente");
 	}
 
 	public Analizador(String fichero) {
@@ -24,5 +26,6 @@ public class Analizador {
 		analizadorLexico.close();
 		analizadorSintactico.close();
 		TablaDeSimbolos.close();
+		
 	}
 }
