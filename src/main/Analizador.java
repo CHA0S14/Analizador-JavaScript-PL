@@ -3,6 +3,7 @@ package main;
 import analizadorLexico.AnalizadorLexico;
 import analizadorSintactico.AnalizadorSintactico;
 import gestorDeErrores.GestorDeErrores;
+import tablaDeSimbolos.TablaDeSimbolos;
 
 public class Analizador {
 
@@ -19,5 +20,9 @@ public class Analizador {
 		AnalizadorSintactico analizadorSintactico = new AnalizadorSintactico(analizadorLexico);
 		
 		analizadorSintactico.p();
+		
+		analizadorLexico.close();
+		analizadorSintactico.close();
+		TablaDeSimbolos.close();
 	}
 }

@@ -411,4 +411,11 @@ public class AnalizadorLexico {
 	public static void setNLinea(int nLinea) {
 		AnalizadorLexico.nlinea = nLinea;
 	}
+
+	/**
+	 * Metodo que se encarga de cerrar el fichero tokens
+	 */
+	public void close() {
+		tokens.close();
+	}
 }

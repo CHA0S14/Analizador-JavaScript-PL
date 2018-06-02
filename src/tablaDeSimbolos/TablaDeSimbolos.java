@@ -76,7 +76,7 @@ public class TablaDeSimbolos {
 	/**
 	 * Metodo que se encarga de escribir la tabla activa en un fichero
 	 */
-	private static void escribirTablaActivaEnFichero() {
+	public static void escribirTablaActivaEnFichero() {
 		tablaDeSimbolos.println(tablaActiva.toString());
 
 		// Si no es la tabla global escribimos un separador en el archivo
@@ -303,5 +303,12 @@ public class TablaDeSimbolos {
 		}
 
 		return tabla;
+	}
+
+	/**
+	 * Metodo que se encarga de cerrar el fichero tablaDeSimbolos
+	 */
+	public static void close() {
+		tablaDeSimbolos.close();
 	}
 }

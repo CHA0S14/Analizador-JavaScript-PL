@@ -52,8 +52,6 @@ public class TestTablaDeSimbolos {
 
 		// Imprimo mensajes de finalizacion de test
 		System.out.println(SEPARATOR + "\n");
-
-		TablaDeSimbolos.resetTablaDeSimbolos();
 	}
 
 	/**
