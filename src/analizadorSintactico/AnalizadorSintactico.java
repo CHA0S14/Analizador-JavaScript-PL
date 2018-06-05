@@ -2,10 +2,16 @@ package analizadorSintactico;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import analizadorLexico.AnalizadorLexico;
 import analizadorLexico.Token;
+import analizadorSemantico.AnalizadorSemantico;
+import analizadorSemantico.Tipo;
 import gestorDeErrores.GestorDeErrores;
+import javafx.util.Pair;
+import tablaDeSimbolos.Entrada;
 
 public class AnalizadorSintactico {
 	private static final String FICHERO_PARSE = "./Resultados/parse.txt";
@@ -51,7 +57,7 @@ public class AnalizadorSintactico {
 		case 40: // for
 		case 36: // if
 			writeParse(1);
-			b();
+			b(false, false);
 			p();
 			break;
 		case 45: // function
@@ -62,6 +68,10 @@ public class AnalizadorSintactico {
 		case 53: // eof
 			writeParse(3);
 			equip(53);
+
+			// Acciones del analizador semantico
+			AnalizadorSemantico.cerrarTablaDeSimbolos();
+			////////////////////////////////////
 			break;
 		default:
 			GestorDeErrores.gestionarError(3001, null);
@@ -71,32 +81,82 @@ public class AnalizadorSintactico {
 	/**
 	 * <pre>
 	 * 		B -> var T identificador B2 ID ;
-	 * 		B -> if ( E ) IF
+	 * 		B -> if ( E ) THEN
 	 * 		B -> S ;
 	 * 		B -> switch ( E ) { CASE }
 	 * 		B -> while ( E ) { C }
 	 * 		B -> do { C } while ( E ) ;
 	 * 		B -> for ( INICIALIZACION ; E ; ACTUALIZACION ) iniBloq  C endBloq
 	 * </pre>
+	 * 
+	 * Correspondiente al analizador Semantico:
+	 * 
+	 * @param isReturn
+	 *            Si estamos dentro de una funcion sera true
+	 * @param isBreak
+	 *            Si estamos dentro de un switch sera true
+	 * 
+	 * @return Tipo de retorno si existe, si no devuelve TIPO_OK
 	 */
-	private void b() {
+	private String b(boolean isReturn, boolean isBreak) {
+		String tipoReturn = null;
+		Tipo tipoE = null;
+
 		switch (sigToken.getToken()) {
 		case 29: // var
 			writeParse(4);
 			equip(29); // var
-			t();
+
+			// Acciones del analizador semantico
+			AnalizadorSemantico.activarZonaDeDeclaracion();
+			////////////////////////////////////
+
+			Tipo tipoT = t();
+
+			// Accion del analizador smantico
+			Token identificador = sigToken; // reservo el identificador para despues
+			/////////////////////////////////
+
 			equip(54); // identificador
-			b2();
-			id();
+			Tipo tipoB2 = b2();
+
+			// Acciones del analizador semantico
+
+			Tipo tipoId = null;
+
+			if (tipoT.getTipo().equals(tipoB2.getTipo()) || tipoB2.equals(AnalizadorSemantico.TIPO_OK)) {
+				tipoId = new Tipo(tipoT.getTipo(), tipoT.getAncho()); // preparos los argumentos de ID
+
+				// Inserto los datos del identificador en la tabla de simbolos
+				AnalizadorSemantico.aniadirTS(identificador.getAtributo(), tipoT.getTipo(), tipoT.getAncho());
+			} else {
+				// TODO Gestor de errores
+			}
+
+			////////////////////////////////////
+
+			id(tipoId);
 			equip(51); // ;
+
+			// Acciones del analizador semantico
+			AnalizadorSemantico.desactivarZonaDeDeclaracion();
+			tipoReturn = AnalizadorSemantico.TIPO_OK;
+			////////////////////////////////////
 			break;
 		case 36: // if
 			writeParse(5);
 			equip(36); // if
 			equip(46); // (
-			e();
+			tipoE = e();
+
+			// Acciones del analizador semantico
+			if (tipoE.getTipo() != Entrada.BOOL) {
+				// TODO Gestor de errores
+			}
+			////////////////////////////////////
+
 			equip(47); // )
-			bloqueIf();
+			tipoReturn = bloqueThen(isReturn, isBreak);
 			break;
 		case 54: // identificador
 		case 15: // ++
@@ -106,38 +166,59 @@ public class AnalizadorSintactico {
 		case 34: // prompt
 		case 43: // break
 			writeParse(6);
-			s();
+			tipoReturn = s(isReturn, isBreak);
 			equip(51); // ;
 			break;
 		case 41: // switch
 			writeParse(7);
 			equip(41); // switch
 			equip(46); // (
-			e();
+			tipoE = e();
+
+			// Acciones del analizador semantico
+			if (tipoE.getTipo() != Entrada.INT) {
+				// TODO Gestor de errores
+			}
+			////////////////////////////////////
+
 			equip(47); // )
 			equip(48); // {
-			bloqueCase();
+			tipoReturn = bloqueCase(isReturn);
 			equip(49); // }
 			break;
 		case 38: // while
 			writeParse(8);
 			equip(38); // while
 			equip(46); // (
-			e();
+			tipoE = e();
+
+			// Acciones del analizador semantico
+			if (tipoE.getTipo() != Entrada.BOOL) {
+				// TODO Gestor de errores
+			}
+			////////////////////////////////////
+
 			equip(47); // )
 			equip(48); // {
-			c();
+			tipoReturn = c(isReturn, isBreak);
 			equip(49); // }
 			break;
 		case 39: // do
 			writeParse(9);
 			equip(39); // do
 			equip(48); // {
-			c();
+			tipoReturn = c(isReturn, isBreak);
 			equip(49); // }
 			equip(38); // while
 			equip(46); // (
-			e();
+			tipoE = e();
+
+			// Acciones del analizador semantico
+			if (tipoE.getTipo() != Entrada.BOOL) {
+				// TODO Gestor de errores
+			}
+			////////////////////////////////////
+
 			equip(47); // )
 			equip(51); // ;
 			break;
@@ -147,17 +228,26 @@ public class AnalizadorSintactico {
 			equip(46); // (
 			inicializacion();
 			equip(51); // ;
-			e();
+			tipoE = e();
+
+			// Acciones del analizador semantico
+			if (tipoE.getTipo() != Entrada.BOOL) {
+				// TODO Gestor de errores
+			}
+			////////////////////////////////////
+
 			equip(51); // ;
 			actualizacion();
 			equip(47); // )
 			equip(48); // {
-			c();
+			tipoReturn = c(isReturn, isBreak);
 			equip(49); // }
 			break;
 		default:
 			GestorDeErrores.gestionarError(3001, null);
 		}
+
+		return tipoReturn;
 	}
 
 	/**
@@ -165,8 +255,12 @@ public class AnalizadorSintactico {
 	 * 		B2 -> ASIGNACION E
 	 * 		B2 -> lambda
 	 * </pre>
+	 * 
+	 * Correspondiente al analizador Semantico:
+	 * 
+	 * @return tipo de la asinacion o TIPO_OK si corresponde
 	 */
-	private void b2() {
+	private Tipo b2() {
 		switch (sigToken.getToken()) {
 		case 17: // =
 		case 18: // +=
@@ -177,12 +271,20 @@ public class AnalizadorSintactico {
 		case 23: // &=
 		case 24: // |=
 			writeParse(11);
-			asignacion();
-			e();
-			break;
+			Tipo tipoAsignacion = asignacion();
+			Tipo tipoE = e();
+
+			// Acciones del analizador semantico
+			if (tipoAsignacion.getTipo().equals(tipoE.getTipo())
+					|| tipoAsignacion.getTipo().equals(AnalizadorSemantico.TIPO_OK)) {
+				return tipoE;
+			} else {
+				// TODO Gestor de errores
+			}
+			////////////////////////////////////
 		default:
 			writeParse(12);
-			break;
+			return new Tipo(AnalizadorSemantico.TIPO_OK);
 		}
 	}
 
@@ -196,9 +298,32 @@ public class AnalizadorSintactico {
 		switch (sigToken.getToken()) {
 		case 54: // identificador
 			writeParse(13);
+
+			// Acciones del analizador semantico
+			Token identificador = sigToken; // Almaceno el token para su uso posterior
+			////////////////////////////////////
+
 			equip(54); // identificador
-			asignacion();
-			e();
+			Tipo tipoAsignacion = asignacion();
+			Tipo tipoE = e();
+
+			// Acciones del analizador semantico
+			if (tipoAsignacion.getTipo().equals(tipoE.getTipo())
+					|| tipoAsignacion.getTipo().equals(AnalizadorSemantico.TIPO_OK)) {
+
+				// Si el tipo del identificador esta vacio hay que rellenarlo
+				if (AnalizadorSemantico.tipoID(identificador.getAtributo()).equals(AnalizadorSemantico.TIPO_VACIO)) {
+					AnalizadorSemantico.aniadirTS(identificador.getAtributo(), tipoE.getTipo(), tipoE.getAncho());
+
+					// Si el tipo del identificador no coincide con la de la expresion hay un error
+				} else if (!AnalizadorSemantico.tipoID(identificador.getAtributo()).equals(tipoE.getTipo())) {
+					// TODO Gestor de errores
+				}
+
+			} else {
+				// TODO Gestor de errores
+			}
+			////////////////////////////////////
 			break;
 		default:
 			writeParse(14);
@@ -214,17 +339,40 @@ public class AnalizadorSintactico {
 	 * </pre>
 	 */
 	private void actualizacion() {
+		Token identificador;
 		switch (sigToken.getToken()) {
 		case 54: // identificador
 			writeParse(15);
+
+			// Acciones del analizador semantico
+			identificador = sigToken; // Almaceno el token para su uso posterior
+			////////////////////////////////////
+
 			equip(54); // identificador
-			actualizacion2();
+			Tipo tipoActualizacion2 = actualizacion2();
+
+			// Acciones del analizador semantico
+			if (!tipoActualizacion2.getTipo().equals(AnalizadorSemantico.tipoID(identificador.getAtributo()))) {
+				// TODO Gestor de errores
+			}
+			////////////////////////////////////
 			break;
 		case 15: // ++
 		case 16: // --
 			writeParse(16);
 			incDec();
+
+			// Acciones del analizador semantico
+			identificador = sigToken; // Almaceno el token para su uso posterior
+			////////////////////////////////////
+
 			equip(54); // identificador
+
+			// Acciones del analizador semantico
+			if (!AnalizadorSemantico.tipoID(identificador.getAtributo()).equals(Entrada.INT)) {
+				// TODO Gestor de errores
+			}
+			////////////////////////////////////
 			break;
 		default:
 			writeParse(17);
@@ -237,8 +385,12 @@ public class AnalizadorSintactico {
 	 * 		ACTUALIZACION2 -> ASIGNACION E
 	 * 		ACTUALIZACION2 -> INCDEC
 	 * </pre>
+	 * 
+	 * Correspondiente al analizador Semantico:
+	 * 
+	 * @return Tipo de la asignacion o del INCDEC
 	 */
-	private void actualizacion2() {
+	private Tipo actualizacion2() {
 		switch (sigToken.getToken()) {
 		case 17: // =
 		case 18: // +=
@@ -249,17 +401,28 @@ public class AnalizadorSintactico {
 		case 23: // &=
 		case 24: // |=
 			writeParse(18);
-			asignacion();
-			e();
+			Tipo tipoAsignacion = asignacion();
+			Tipo tipoE = e();
+
+			// Acciones del analizador semantico
+			if (tipoAsignacion.getTipo().equals(tipoE.getTipo())
+					|| tipoAsignacion.getTipo().equals(AnalizadorSemantico.TIPO_OK)) {
+				return tipoE;
+			} else {
+				// TODO Gestor de errores
+			}
+			////////////////////////////////////
 			break;
 		case 15: // ++
 		case 16: // --
 			writeParse(19);
 			incDec();
-			break;
+			return new Tipo(Entrada.INT);
 		default:
 			GestorDeErrores.gestionarError(3002, null);
 		}
+
+		return null;
 	}
 
 	/**
@@ -288,13 +451,18 @@ public class AnalizadorSintactico {
 	 * 		ASIGNACION -> = 
 	 *		ASIGNACION -> ASIGNACION_OP
 	 * </pre>
+	 * 
+	 * Correspondiente al analizador Semantico:
+	 * 
+	 * @return Tipo que necesita la asignacion para funcionar
+	 * 
 	 */
-	private void asignacion() {
+	private Tipo asignacion() {
 		switch (sigToken.getToken()) {
 		case 17: // =
 			writeParse(22);
 			equip(17);
-			break;
+			return new Tipo(AnalizadorSemantico.TIPO_OK);
 		case 18: // +=
 		case 19: // -=
 		case 20: // *=
@@ -303,11 +471,11 @@ public class AnalizadorSintactico {
 		case 23: // &=
 		case 24: // |=
 			writeParse(23);
-			asignacionOp();
-			break;
+			return asignacionOp();
 		default:
 			GestorDeErrores.gestionarError(3004, sigToken.getToken() + "");
 		}
+		return null;
 	}
 
 	/**
@@ -320,56 +488,79 @@ public class AnalizadorSintactico {
 	 *		ASIGNACION_OP -> &=
 	 *		ASIGNACION_OP -> |=
 	 * </pre>
+	 * 
+	 * Correspondiente al analizador Semantico:
+	 * 
+	 * @return Tipo que necesita la asignacion para funcionar
 	 */
-	private void asignacionOp() {
+	private Tipo asignacionOp() {
 		switch (sigToken.getToken()) {
 		case 18: // +=
 			writeParse(24);
 			equip(18);
-			break;
+			return new Tipo(AnalizadorSemantico.TIPO_OK);
 		case 19: // -=
 			writeParse(25);
 			equip(19);
-			break;
+			return new Tipo(Entrada.INT);
 		case 20: // *=
 			writeParse(26);
 			equip(20);
-			break;
+			return new Tipo(Entrada.INT);
 		case 21: // /=
 			writeParse(27);
 			equip(21);
-			break;
+			return new Tipo(Entrada.INT);
 		case 22: // %=
 			writeParse(28);
 			equip(22);
-			break;
+			return new Tipo(Entrada.INT);
 		case 23: // &=
 			writeParse(29);
 			equip(23);
-			break;
+			return new Tipo(Entrada.BOOL);
 		case 24: // |=
 			writeParse(30);
 			equip(24);
-			break;
+			return new Tipo(Entrada.BOOL);
 		default:
 			GestorDeErrores.gestionarError(3004, sigToken.getToken() + "");
 		}
+		return null;
 	}
 
 	/**
 	 * <pre>
-	 * 		IF -> { C } ELSE
-	 * 		IF -> S ;
+	 * 		THEN -> { C } ELSE
+	 * 		THEN -> S ;
 	 * </pre>
+	 * 
+	 * Correspondiente al analizador Semantico:
+	 * 
+	 * @param isReturn
+	 *            Si estamos dentro de una funcion sera true
+	 * @param isBreak
+	 *            Si estamos dentro de un switch sera true
+	 * 
+	 * @return Tipo de retorno si existe, si no devuelve TIPO_OK
 	 */
-	private void bloqueIf() {
+	private String bloqueThen(boolean isReturn, boolean isBreak) {
+		String tipoReturn = null;
 		switch (sigToken.getToken()) {
 		case 48: // {
 			writeParse(31);
 			equip(48); // {
-			c();
+			String tipoC = c(isReturn, isBreak);
 			equip(49); // }
-			bloqueElse();
+			String tipoElse = bloqueElse(isReturn, isBreak);
+
+			// Acciones del analizador semantico
+			if (tipoC.equals(tipoElse) || tipoElse.equals(AnalizadorSemantico.TIPO_OK)) {
+				tipoReturn = tipoC;
+			} else {
+				// TODO Gestor de errores
+			}
+			////////////////////////////////////
 			break;
 		case 54: // identificador
 		case 15: // ++
@@ -379,10 +570,12 @@ public class AnalizadorSintactico {
 		case 34: // prompt
 		case 43: // break
 			writeParse(32);
-			s();
+			tipoReturn = s(isReturn, isBreak);
 			equip(51); // ;
 			break;
 		}
+
+		return tipoReturn;
 	}
 
 	/**
@@ -390,20 +583,33 @@ public class AnalizadorSintactico {
 	 * 		ELSE -> else { C }
 	 * 		ELSE -> lambda
 	 * </pre>
+	 * 
+	 * Correspondiente al analizador Semantico:
+	 * 
+	 * @param isReturn
+	 *            Si estamos dentro de una funcion sera true
+	 * @param isBreak
+	 *            Si estamos dentro de un switch sera true
+	 * 
+	 * @return Tipo de retorno si existe, si no devuelve TIPO_OK
 	 */
-	private void bloqueElse() {
+	private String bloqueElse(boolean isReturn, boolean isBreak) {
+		String tipoReturn;
 		switch (sigToken.getToken()) {
 		case 37: // else
 			writeParse(33);
 			equip(37); // else
 			equip(48); // {
-			c();
+			tipoReturn = c(isReturn, isBreak);
 			equip(49); // }
 			break;
 		default:
 			writeParse(34);
+			tipoReturn = AnalizadorSemantico.TIPO_OK;
 			break;
 		}
+
+		return tipoReturn;
 	}
 
 	/**
@@ -411,14 +617,33 @@ public class AnalizadorSintactico {
 	 * 		ID -> , identificador B2 ID
 	 * 		ID -> lambda
 	 * </pre>
+	 * 
+	 * Correspondiente al analizador Semantico:
+	 * 
+	 * @param tipo
+	 *            tipo del identificador que se esta declarando
 	 */
-	private void id() {
+	private void id(Tipo tipo) {
 		if (sigToken.getToken() == 50) {
 			writeParse(35);
 			equip(50); // ,
+
+			// Acciones del analizador semantico
+			Token identificador = sigToken; // Almaceno el token para su uso posterior
+			////////////////////////////////////
+
 			equip(54); // identificador
-			b2();
-			id();
+			Tipo tipoB2 = b2();
+
+			// Acciones del analizador semantico
+			if (tipo.getTipo().equals(tipoB2.getTipo()) || tipoB2.getTipo().equals(AnalizadorSemantico.TIPO_OK)) {
+				AnalizadorSemantico.aniadirTS(identificador.getAtributo(), tipo.getTipo(), tipo.getAncho());
+			} else {
+				// TODO Gestor de errores
+			}
+			////////////////////////////////////
+
+			id(tipo);
 		} else {
 			writeParse(36);
 		}
@@ -426,54 +651,51 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		CASE -> case cte_entera : C CASE									
-	 * 		CASE -> default : C CASE2
+	 * 		CASE -> case entero : C CASE									
+	 * 		CASE -> default : C
 	 *		CASE -> lambda
 	 * </pre>
+	 * 
+	 * Correspondiente al analizador Semantico:
+	 * 
+	 * @param isReturn
+	 *            Si estamos dentro de una funcion sera true
+	 * 
+	 * @return Tipo de retorno si existe, si no devuelve TIPO_OK
 	 */
-	private void bloqueCase() {
+	private String bloqueCase(boolean isReturn) {
+		String tipoReturn = null;
 		switch (sigToken.getToken()) {
 		case 42: // case
 			writeParse(37);
 			equip(42); // case
 			equip(25); // entero
 			equip(52); // :
-			c();
-			bloqueCase();
+			String tipoC = c(isReturn, true);
+			String tipoCase = bloqueCase(isReturn);
+
+			// Acciones del analizador semantico
+			if (tipoC.equals(tipoCase) || tipoCase.equals(AnalizadorSemantico.TIPO_OK)) {
+				tipoReturn = tipoC;
+			} else {
+				// TODO Gestor de errores
+			}
+			////////////////////////////////////
+
 			break;
 		case 44: // default
 			writeParse(38);
 			equip(44); // default
 			equip(52); // :
-			c();
-			bloqueCase2();
+			tipoReturn = c(isReturn, true);
 			break;
 		default:
 			writeParse(39);
+			tipoReturn = AnalizadorSemantico.TIPO_OK;
 			break;
 		}
-	}
 
-	/**
-	 * <pre>
-	 * 		CASE2 -> case cte_entera : C CASE2
-	 *		CASE2 -> lambda
-	 * </pre>
-	 */
-	private void bloqueCase2() {
-		switch (sigToken.getToken()) {
-		case 42: // case
-			writeParse(40);
-			equip(42); // case
-			equip(25); // entero
-			equip(52); // :
-			c();
-			bloqueCase2();
-			break;
-		default:
-			writeParse(41);
-			break;
-		}
+		return tipoReturn;
 	}
 
 	/**
@@ -482,85 +704,41 @@ public class AnalizadorSintactico {
 	 * 		T -> bool
 	 * 		T -> chars
 	 * </pre>
+	 * 
+	 * Correspondiente al analizador Semantico:
+	 * 
+	 * @return Tipo
 	 */
-	private void t() {
+	private Tipo t() {
 		switch (sigToken.getToken()) {
 		case 30: // int
 			writeParse(42);
 			equip(30);
-			break;
+			return new Tipo(Entrada.INT, AnalizadorSemantico.DESP_INT);
 		case 31: // bool
 			writeParse(43);
 			equip(31);
-			break;
+			return new Tipo(Entrada.BOOL, AnalizadorSemantico.DESP_BOOL);
 		case 32: // chars
 			writeParse(44);
 			equip(32);
-			break;
+			return new Tipo(Entrada.CHARS, AnalizadorSemantico.DESP_CHARS);
 		default:
 			GestorDeErrores.gestionarError(3005, null);
 		}
+		return null;
 	}
 
 	/**
 	 * <pre>
-	 * 		E -> N E2
+	 * 		E -> G E2
 	 * </pre>
+	 * 
+	 * Correspondiente al analizador Semantico:
+	 * 
+	 * @return Tipo
 	 */
-	private void e() {
-		switch (sigToken.getToken()) {
-		case 14: // !
-		case 54: // identificador
-		case 25: // entero
-		case 26: // cadena
-		case 27: // true
-		case 28: // false
-		case 46: // (
-		case 15: // ++
-		case 16: // --
-		case 1: // +
-		case 2: // -
-			writeParse(45);
-			n();
-			e2();
-			break;
-		default:
-			GestorDeErrores.gestionarError(3006, null);
-		}
-	}
-
-	/**
-	 * <pre>
-	 * 		E2 -> ASIGNACION_OP N E2
-	 *		E2 -> lambda
-	 * </pre>
-	 */
-	private void e2() {
-		switch (sigToken.getToken()) {
-		case 18: // +=
-		case 19: // -=
-		case 20: // *=
-		case 21: // /=
-		case 22: // %=
-		case 23: // &=
-		case 24: // |=
-			writeParse(46);
-			asignacionOp();
-			n();
-			e2();
-			break;
-		default:
-			writeParse(47);
-			break;
-		}
-	}
-
-	/**
-	 * <pre>
-	 * 		N -> G N2
-	 * </pre>
-	 */
-	private void n() {
+	private Tipo e() {
 		switch (sigToken.getToken()) {
 		case 14: // !
 		case 54: // identificador
@@ -574,31 +752,50 @@ public class AnalizadorSintactico {
 		case 1: // +
 		case 2: // -
 			writeParse(48);
-			g();
-			n2();
+			Tipo tipoG = g();
+			Tipo tipoE2 = e2();
+
+			// Acciones del analizador semantico
+			if (tipoE2.getTipo().equals(Entrada.BOOL) && !tipoG.getTipo().equals(Entrada.BOOL)) {
+				// TODO Gestor de errores
+			} else {
+				return tipoG;
+			}
+			////////////////////////////////////
 			break;
 		default:
 			GestorDeErrores.gestionarError(3006, null);
 		}
+		return null;
 	}
 
 	/**
 	 * <pre>
-	 * 		N2 -> || G N2
-	 * 		N2 -> lambda
+	 * 		E2 -> || G E2
+	 * 		E2 -> lambda
 	 * </pre>
+	 * 
+	 * Correspondiente al analizador Semantico:
+	 * 
+	 * @return Tipo
 	 */
-	private void n2() {
+	private Tipo e2() {
 		switch (sigToken.getToken()) {
 		case 13: // ||
 			writeParse(49);
 			equip(13);
-			g();
-			n2();
-			break;
+			Tipo tipoG = g();
+
+			// Acciones del analizador semantico
+			if (!tipoG.getTipo().equals(Entrada.BOOL)) {
+				// TODO Gestor de errores
+			}
+
+			e2();
+			return new Tipo(Entrada.BOOL, AnalizadorSemantico.DESP_BOOL);
 		default:
 			writeParse(50);
-			break;
+			return new Tipo(AnalizadorSemantico.TIPO_OK);
 		}
 	}
 
@@ -606,8 +803,12 @@ public class AnalizadorSintactico {
 	 * <pre>
 	 * 		G -> D G2
 	 * </pre>
+	 * 
+	 * Correspondiente al analizador Semantico:
+	 * 
+	 * @return Tipo
 	 */
-	private void g() {
+	private Tipo g() {
 		switch (sigToken.getToken()) {
 		case 14: // !
 		case 54: // identificador
@@ -621,12 +822,21 @@ public class AnalizadorSintactico {
 		case 1: // +
 		case 2: // -
 			writeParse(51);
-			d();
-			g2();
+			Tipo tipoD = d();
+			Tipo tipoG2 = g2();
+
+			// Acciones del analizador semantico
+			if (tipoG2.getTipo().equals(Entrada.BOOL) && !tipoD.getTipo().equals(Entrada.BOOL)) {
+				// TODO Gestor de errores
+			} else {
+				return tipoD;
+			}
+			////////////////////////////////////
 			break;
 		default:
 			GestorDeErrores.gestionarError(3006, null);
 		}
+		return null;
 	}
 
 	/**
@@ -634,18 +844,29 @@ public class AnalizadorSintactico {
 	 * 		G2 -> && D G2
 	 *		G2 -> lambda
 	 * </pre>
+	 * 
+	 * Correspondiente al analizador Semantico:
+	 * 
+	 * @return Tipo
 	 */
-	private void g2() {
+	private Tipo g2() {
 		switch (sigToken.getToken()) {
 		case 12: // &&
 			writeParse(52);
 			equip(12);
-			d();
+			Tipo tipoD = d();
+
+			// Acciones del analizador semantico
+			if (!tipoD.getTipo().equals(Entrada.BOOL)) {
+				// TODO Gestor de errores
+			}
+			////////////////////////////////////
+
 			g2();
-			break;
+			return new Tipo(Entrada.BOOL, AnalizadorSemantico.DESP_BOOL);
 		default:
 			writeParse(53);
-			break;
+			return new Tipo(AnalizadorSemantico.TIPO_OK);
 		}
 	}
 
@@ -653,8 +874,12 @@ public class AnalizadorSintactico {
 	 * <pre>
 	 * 		D -> I D2
 	 * </pre>
+	 * 
+	 * Correspondiente al analizador Semantico:
+	 * 
+	 * @return Tipo
 	 */
-	private void d() {
+	private Tipo d() {
 		switch (sigToken.getToken()) {
 		case 14: // !
 		case 54: // identificador
@@ -668,12 +893,21 @@ public class AnalizadorSintactico {
 		case 1: // +
 		case 2: // -
 			writeParse(54);
-			i();
-			d2();
-			break;
+			Tipo tipoI = i();
+			Tipo tipoD2 = d2();
+
+			// Acciones del analizador semantico
+			if (tipoD2.getTipo().equals(Entrada.BOOL)) {
+				return tipoD2;
+			} else {
+				return tipoI;
+			}
+			////////////////////////////////////
 		default:
 			GestorDeErrores.gestionarError(3006, null);
 		}
+
+		return null;
 	}
 
 	/**
@@ -682,24 +916,28 @@ public class AnalizadorSintactico {
 	 *		D2 -> != I D2
 	 *		D2 -> lambda
 	 * </pre>
+	 * 
+	 * Correspondiente al analizador Semantico:
+	 * 
+	 * @return Tipo
 	 */
-	private void d2() {
+	private Tipo d2() {
 		switch (sigToken.getToken()) {
 		case 6: // ==
 			writeParse(55);
 			equip(6);
 			i();
 			d2();
-			break;
+			return new Tipo(Entrada.BOOL, AnalizadorSemantico.DESP_BOOL);
 		case 7: // !=
 			writeParse(56);
 			equip(7);
 			i();
 			d2();
-			break;
+			return new Tipo(Entrada.BOOL, AnalizadorSemantico.DESP_BOOL);
 		default:
 			writeParse(57);
-			break;
+			return new Tipo(AnalizadorSemantico.TIPO_OK);
 		}
 	}
 
@@ -707,8 +945,12 @@ public class AnalizadorSintactico {
 	 * <pre>
 	 * 		I -> J I2
 	 * </pre>
+	 * 
+	 * Correspondiente al analizador Semantico:
+	 * 
+	 * @return Tipo
 	 */
-	private void i() {
+	private Tipo i() {
 		switch (sigToken.getToken()) {
 		case 14: // !
 		case 54: // identificador
@@ -722,12 +964,21 @@ public class AnalizadorSintactico {
 		case 1: // +
 		case 2: // -
 			writeParse(58);
-			j();
-			i2();
-			break;
+			Tipo tipoJ = j();
+			Tipo tipoI2 = i2(tipoJ);
+
+			// Acciones del analizador semantico
+			if (tipoI2.getTipo().equals(Entrada.BOOL)) {
+				return tipoI2;
+			} else {
+				return tipoJ;
+			}
+			////////////////////////////////////
 		default:
 			GestorDeErrores.gestionarError(3006, null);
 		}
+
+		return null;
 	}
 
 	/**
@@ -738,36 +989,69 @@ public class AnalizadorSintactico {
 	 *		I2 -> <= J I2
 	 *		I2 -> lambda
 	 * </pre>
+	 * 
+	 * Correspondiente al analizador Semantico:
+	 * 
+	 * @return Tipo
 	 */
-	private void i2() {
+	private Tipo i2(Tipo tipo) {
+		Tipo tipoJ = null;
 		switch (sigToken.getToken()) {
 		case 9: // >
 			writeParse(59);
 			equip(9);
-			j();
-			i2();
-			break;
+			tipoJ = j();
+
+			// Acciones del analizador semantico
+			if (!tipoJ.getTipo().equals(tipo.getTipo()) || !tipoJ.getTipo().equals(Entrada.INT)) {
+				// TODO Gestor de errores
+			}
+			////////////////////////////////////
+
+			i2(tipoJ);
+			return new Tipo(Entrada.BOOL, AnalizadorSemantico.DESP_BOOL);
 		case 11: // >=
 			writeParse(60);
 			equip(11);
-			j();
-			i2();
-			break;
+			tipoJ = j();
+
+			// Acciones del analizador semantico
+			if (!tipoJ.getTipo().equals(tipo.getTipo()) || !tipoJ.getTipo().equals(Entrada.INT)) {
+				// TODO Gestor de errores
+			}
+			////////////////////////////////////
+
+			i2(tipoJ);
+			return new Tipo(Entrada.BOOL, AnalizadorSemantico.DESP_BOOL);
 		case 8: // <
 			writeParse(61);
 			equip(8);
-			j();
-			i2();
-			break;
+			tipoJ = j();
+
+			// Acciones del analizador semantico
+			if (!tipoJ.getTipo().equals(tipo.getTipo()) || !tipoJ.getTipo().equals(Entrada.INT)) {
+				// TODO Gestor de errores
+			}
+			////////////////////////////////////
+
+			i2(tipoJ);
+			return new Tipo(Entrada.BOOL, AnalizadorSemantico.DESP_BOOL);
 		case 10: // <=
 			writeParse(62);
 			equip(10);
-			j();
-			i2();
-			break;
+			tipoJ = j();
+
+			// Acciones del analizador semantico
+			if (!tipoJ.getTipo().equals(tipo.getTipo()) || !tipoJ.getTipo().equals(Entrada.INT)) {
+				// TODO Gestor de errores
+			}
+			////////////////////////////////////
+
+			i2(tipoJ);
+			return new Tipo(Entrada.BOOL, AnalizadorSemantico.DESP_BOOL);
 		default:
 			writeParse(63);
-			break;
+			return new Tipo(AnalizadorSemantico.TIPO_OK);
 		}
 	}
 
@@ -775,8 +1059,12 @@ public class AnalizadorSintactico {
 	 * <pre>
 	 * 		J -> M J2
 	 * </pre>
+	 * 
+	 * Correspondiente al analizador Semantico:
+	 * 
+	 * @return Tipo
 	 */
-	private void j() {
+	private Tipo j() {
 		switch (sigToken.getToken()) {
 		case 14: // !
 		case 54: // identificador
@@ -790,12 +1078,20 @@ public class AnalizadorSintactico {
 		case 1: // +
 		case 2: // -
 			writeParse(64);
-			m();
-			j2();
+			Tipo tipoM = m();
+			Tipo tipoJ2 = j2();
+
+			// Acciones del analizador semantico
+			if (tipoM.getTipo().equals(tipoJ2.getTipo()) || tipoJ2.getTipo().equals(AnalizadorSemantico.TIPO_OK)) {
+				return tipoJ2;
+			}
+			////////////////////////////////////
 			break;
 		default:
 			GestorDeErrores.gestionarError(3006, null);
 		}
+
+		return null;
 	}
 
 	/**
@@ -804,33 +1100,66 @@ public class AnalizadorSintactico {
 	 *		J2 -> - M J2
 	 *		J2 -> lambda
 	 * </pre>
+	 * 
+	 * Correspondiente al analizador Semantico:
+	 * 
+	 * @return Tipo
 	 */
-	private void j2() {
+	private Tipo j2() {
+		Tipo tipoM = null, tipoJ2 = null;
 		switch (sigToken.getToken()) {
 		case 1: // +
 			writeParse(65);
 			equip(1);
-			m();
-			j2();
+			tipoM = m();
+			tipoJ2 = j2();
+
+			// Acciones del analizador semantico
+
+			// Si se estan intentando sumar ints o chars, bien si es otra cosa mal
+			if ((tipoM.getTipo().equals(Entrada.INT)
+					&& (tipoJ2.getTipo().equals(Entrada.INT) || tipoJ2.getTipo().equals(AnalizadorSemantico.TIPO_OK)))
+					|| (tipoM.getTipo().equals(Entrada.CHARS) && (tipoJ2.getTipo().equals(Entrada.CHARS)
+							|| tipoJ2.getTipo().equals(AnalizadorSemantico.TIPO_OK)))) {
+				return tipoM;
+			} else {
+				// TODO Gestor de errores
+			}
+			////////////////////////////////////
 			break;
 		case 2: // -
 			writeParse(66);
 			equip(2);
-			m();
-			j2();
+			tipoM = m();
+			tipoJ2 = j2();
+
+			// Acciones del analizador semantico
+			if (tipoM.getTipo().equals(Entrada.INT)
+					&& (tipoJ2.getTipo().equals(Entrada.INT) || tipoJ2.getTipo().equals(AnalizadorSemantico.TIPO_OK))) {
+				return tipoM;
+			} else {
+				// TODO Gestor de errores
+			}
+			////////////////////////////////////
 			break;
 		default:
 			writeParse(67);
-			break;
+			return new Tipo(AnalizadorSemantico.TIPO_OK);
 		}
+
+		return null;
 	}
 
 	/**
 	 * <pre>
 	 * 		M -> V M2
 	 * </pre>
+	 * 
+	 * Correspondiente al analizador Semantico:
+	 * 
+	 * @return Tipo
 	 */
-	private void m() {
+	private Tipo m() {
 		switch (sigToken.getToken()) {
 		case 14: // !
 		case 54: // identificador
@@ -844,12 +1173,22 @@ public class AnalizadorSintactico {
 		case 1: // +
 		case 2: // -
 			writeParse(68);
-			v();
-			m2();
+			Tipo tipoV = v();
+			Tipo tipoM2 = m2();
+
+			// Acciones del analizador semantico
+			if (tipoV.getTipo().equals(tipoM2.getTipo()) || tipoM2.getTipo().equals(AnalizadorSemantico.TIPO_OK)) {
+				return tipoV;
+			} else {
+				// TODO Gestor de errores
+			}
+			////////////////////////////////////
 			break;
 		default:
 			GestorDeErrores.gestionarError(3006, null);
 		}
+
+		return null;
 	}
 
 	/**
@@ -859,31 +1198,66 @@ public class AnalizadorSintactico {
 	 *		M2 -> % V M2
 	 *		M2 -> lambda
 	 * </pre>
+	 * 
+	 * Correspondiente al analizador Semantico:
+	 * 
+	 * @return Tipo
 	 */
-	private void m2() {
+	private Tipo m2() {
+		Tipo tipoV = null, tipoM2 = null;
+
 		switch (sigToken.getToken()) {
 		case 3: // *
 			writeParse(69);
 			equip(3);
-			v();
-			m2();
+			tipoV = v();
+			tipoM2 = m2();
+
+			// Acciones del analizador semantico
+			if (tipoV.getTipo().equals(Entrada.INT)
+					&& (tipoM2.getTipo().equals(Entrada.INT) || tipoM2.getTipo().equals(AnalizadorSemantico.TIPO_OK))) {
+				return tipoV;
+			} else {
+				// TODO Gestor de errores
+			}
+			////////////////////////////////////
 			break;
 		case 4: // /
 			writeParse(70);
 			equip(4);
-			v();
-			m2();
+			tipoV = v();
+			tipoM2 = m2();
+
+			// Acciones del analizador semantico
+			if (tipoV.getTipo().equals(Entrada.INT)
+					&& (tipoM2.getTipo().equals(Entrada.INT) || tipoM2.getTipo().equals(AnalizadorSemantico.TIPO_OK))) {
+				return tipoV;
+			} else {
+				// TODO Gestor de errores
+			}
+			////////////////////////////////////
 			break;
 		case 5: // %
 			writeParse(71);
 			equip(5);
-			v();
-			m2();
+			tipoV = v();
+			tipoM2 = m2();
+
+			// Acciones del analizador semantico
+			if (tipoV.getTipo().equals(Entrada.INT)
+					&& (tipoM2.getTipo().equals(Entrada.INT) || tipoM2.getTipo().equals(AnalizadorSemantico.TIPO_OK))) {
+				return tipoV;
+			} else {
+				// TODO Gestor de errores
+			}
+			////////////////////////////////////
 			break;
 		default:
 			writeParse(72);
-			break;
+			return new Tipo(AnalizadorSemantico.TIPO_OK);
 		}
+
+		return null;
 	}
 
 	/**
@@ -899,60 +1273,110 @@ public class AnalizadorSintactico {
 	 *		V -> - V
 	 *		V -> ! V
 	 * </pre>
+	 * 
+	 * Correspondiente al analizador Semantico:
+	 * 
+	 * @return Tipo
 	 */
-	private void v() {
+	private Tipo v() {
+
+		Token identificador = null;
+		Tipo tipoV = null;
+
 		switch (sigToken.getToken()) {
 		case 54: // identificador
 			writeParse(73);
+
+			// Acciones del analizador semantico
+			identificador = sigToken; // Almaceno el token para su uso posterior
+			////////////////////////////////////
+
 			equip(54);
-			v2();
-			break;
+			v2(identificador.getAtributo());
+			return new Tipo(AnalizadorSemantico.tipoID(identificador.getAtributo()));
 		case 25: // entero
 			writeParse(74);
 			equip(25);
-			break;
+			return new Tipo(Entrada.INT, AnalizadorSemantico.DESP_INT);
 		case 26: // cadena
 			writeParse(75);
 			equip(26);
-			break;
+			return new Tipo(Entrada.CHARS, AnalizadorSemantico.DESP_CHARS);
 		case 27: // true
 			writeParse(76);
 			equip(27);
-			break;
+			return new Tipo(Entrada.BOOL, AnalizadorSemantico.DESP_BOOL);
 		case 28: // false
 			writeParse(77);
 			equip(28);
-			break;
+			return new Tipo(Entrada.BOOL, AnalizadorSemantico.DESP_BOOL);
 		case 46: // (
 			writeParse(78);
 			equip(46); // (
-			e();
+			Tipo tipoE = e();
 			equip(47); // )
-			break;
+			return tipoE;
 		case 15: // ++
 		case 16: // --
 			writeParse(79);
 			incDec();
+
+			// Acciones del analizador semantico
+			identificador = sigToken; // Almaceno el token para su uso posterior
+			////////////////////////////////////
+
 			equip(54); // identificador
-			break;
+
+			// Acciones del analizador semantico
+			if (!AnalizadorSemantico.tipoID(identificador.getAtributo()).equals(Entrada.INT)) {
+				// TODO Gestor de errores
+			}
+			////////////////////////////////////
+			return new Tipo(Entrada.INT);
 		case 1: // +
 			writeParse(80);
 			equip(1);
-			v();
+			tipoV = v();
+
+			// Acciones del analizador semantico
+			if (tipoV.getTipo().equals(Entrada.INT)) {
+				return new Tipo(Entrada.INT, AnalizadorSemantico.DESP_INT);
+			} else {
+				// TODO Gestor de errores
+			}
+			////////////////////////////////////
 			break;
 		case 2: // -
 			writeParse(81);
 			equip(2);
-			v();
+			tipoV = v();
+
+			// Acciones del analizador semantico
+			if (tipoV.getTipo().equals(Entrada.INT)) {
+				return new Tipo(Entrada.INT, AnalizadorSemantico.DESP_INT);
+			} else {
+				// TODO Gestor de errores
+			}
+			////////////////////////////////////
 			break;
 		case 14: // !
 			writeParse(82);
 			equip(14);
-			v();
+			tipoV = v();
+
+			// Acciones del analizador semantico
+			if (tipoV.getTipo().equals(Entrada.BOOL)) {
+				return new Tipo(Entrada.BOOL, AnalizadorSemantico.DESP_BOOL);
+			} else {
+				// TODO Gestor de errores
+			}
+			////////////////////////////////////
 			break;
 		default:
 			GestorDeErrores.gestionarError(3006, null);
 		}
+
+		return null;
 	}
 
 	/**
@@ -961,24 +1385,48 @@ public class AnalizadorSintactico {
 	 * 		V2 -> lambda
 	 * 		V2 -> INCDEC
 	 * </pre>
+	 * 
+	 * Correspondiente al analizador Semantico:
+	 * 
+	 * @return Tipo
 	 */
-	private void v2() {
+	private Tipo v2(int indice) {
 		switch (sigToken.getToken()) {
 		case 46: // (
 			writeParse(83);
 			equip(46); // (
-			l();
+			List<String> param = l();
+
+			// Acciones del analizador semantico
+			if (!AnalizadorSemantico.validarParam(indice, param)) {
+				// TODO Gestor de errores
+			}
+			////////////////////////////////////
+
 			equip(47); // )
+
+			Tipo tipoReturn = new Tipo(AnalizadorSemantico.tipoID(indice));
+			// Acciones del analizador semantico
+			if (tipoReturn.getTipo().equals(Entrada.INT)) {
+				tipoReturn.setAncho(AnalizadorSemantico.DESP_INT);
+			} else if (tipoReturn.getTipo().equals(Entrada.CHARS)) {
+				tipoReturn.setAncho(AnalizadorSemantico.DESP_CHARS);
+			} else {
+				tipoReturn.setAncho(AnalizadorSemantico.DESP_BOOL);
+			}
+			////////////////////////////////////
 			break;
 		default:
 			writeParse(84);
-			break;
+			return new Tipo(AnalizadorSemantico.TIPO_OK);
 		case 15: // ++
 		case 16: // --
 			writeParse(85);
 			incDec();
-			break;
+			return new Tipo(Entrada.INT, AnalizadorSemantico.DESP_INT);
 		}
+
+		return null;
 	}
 
 	/**
@@ -986,8 +1434,13 @@ public class AnalizadorSintactico {
 	 * 		L -> E Q
 	 * 		L -> lambda
 	 * </pre>
+	 * 
+	 * Correspondiente al analizador Semantico:
+	 * 
+	 * @return Lista de los tipos de los parametros
 	 */
-	private void l() {
+	private List<String> l() {
+		List<String> param = new ArrayList<>();
 		switch (sigToken.getToken()) {
 		case 14: // !
 		case 54: // identificador
@@ -1001,13 +1454,18 @@ public class AnalizadorSintactico {
 		case 1: // +
 		case 2: // -
 			writeParse(86);
-			e();
-			q();
+			Tipo tipoE = e();
+			param.add(tipoE.getTipo());
+			List<String> paramQ = q();
+
+			param.addAll(paramQ);
 			break;
 		default:
 			writeParse(87);
 			break;
 		}
+
+		return param;
 	}
 
 	/**
@@ -1015,19 +1473,28 @@ public class AnalizadorSintactico {
 	 * 		Q -> , E Q
 	 * 		Q -> lambda
 	 * </pre>
+	 * 
+	 * Correspondiente al analizador Semantico:
+	 * 
+	 * @return Lista de los tipos de los parametros
 	 */
-	private void q() {
+	private List<String> q() {
+		List<String> param = new ArrayList<>();
 		switch (sigToken.getToken()) {
 		case 50: // ,
 			writeParse(88);
 			equip(50);
-			e();
-			q();
+			Tipo tipoE = e();
+			param.add(tipoE.getTipo());
+			List<String> paramQ = q();
+			param.addAll(paramQ);
 			break;
 		default:
 			writeParse(89);
 			break;
 		}
+
+		return param;
 	}
 
 	/**
@@ -1039,13 +1506,28 @@ public class AnalizadorSintactico {
 	 * 		S -> prompt ( identificador )
 	 * 		S -> break
 	 * </pre>
+	 * 
+	 * Correspondiente al analizador Semantico:
+	 * 
+	 * @param isReturn
+	 *            Si estamos dentro de una funcion sera true
+	 * @param isBreak
+	 *            Si estamos dentro de un switch sera true
+	 * 
+	 * @return Tipo de retorno si existe, si no devuelve TIPO_OK
 	 */
-	private void s() {
+	private String s(boolean isReturn, boolean isBreak) {
+		String tipoReturn = AnalizadorSemantico.TIPO_OK;
 		switch (sigToken.getToken()) {
 		case 54: // identificador
 			writeParse(90);
-			equip(54);
-			s2();
+
+			// Acciones del analizador semantico
+			Token identificador = sigToken; // Almaceno el token para su uso posterior
+			////////////////////////////////////
+
+			equip(54);// Identificador
+			s2(identificador.getAtributo());
 			break;
 		case 15: // ++
 		case 16: // --
@@ -1055,8 +1537,15 @@ public class AnalizadorSintactico {
 			break;
 		case 35: // return
 			writeParse(92);
+
+			// Acciones del analizador semantico
+			if (!isReturn) {
+				// TODO Gestor de errores
+			}
+			////////////////////////////////////
+
 			equip(35);
-			x();
+			tipoReturn = x();
 			break;
 		case 33: // write
 			writeParse(93);
@@ -1074,11 +1563,20 @@ public class AnalizadorSintactico {
 			break;
 		case 43: // break
 			writeParse(95);
+
+			// Acciones del analizador semantico
+			if (!isBreak) {
+				// TODO Gestor de errores
+			}
+			////////////////////////////////////
+
 			equip(43);
 			break;
 		default:
 			GestorDeErrores.gestionarError(3007, null);
 		}
+
+		return tipoReturn;
 	}
 
 	/**
@@ -1088,7 +1586,7 @@ public class AnalizadorSintactico {
 	 * 		S2 -> INCDEC
 	 * </pre>
 	 */
-	private void s2() {
+	private void s2(int indice) {
 		switch (sigToken.getToken()) {
 		case 17: // =
 		case 18: // +=
@@ -1099,18 +1597,41 @@ public class AnalizadorSintactico {
 		case 23: // &=
 		case 24: // |=
 			writeParse(96);
-			asignacion();
-			e();
+			Tipo tipoAsignacion = asignacion();
+			Tipo tipoE = e();
+
+			// Acciones del analizador semantico
+			if ((!tipoAsignacion.getTipo().equals(tipoE.getTipo())
+					|| !tipoAsignacion.getTipo().equals(AnalizadorSemantico.tipoID(indice)))
+					&& (!tipoAsignacion.getTipo().equals(tipoE.getTipo())
+							|| !tipoAsignacion.getTipo().equals(AnalizadorSemantico.TIPO_OK))) {
+				// TODO Gestor de errores
+			}
+			////////////////////////////////////
 			break;
 		case 46: // (
 			writeParse(97);
 			equip(46); // (
-			l();
+			List<String> param = l();
+
+			// Acciones del analizador semantico
+			if (!AnalizadorSemantico.validarParam(indice, param)) {
+				// TODO Gestor de errores
+			}
+			////////////////////////////////////
+
 			equip(47); // )
 			break;
 		case 15: // ++
 		case 16: // --
 			writeParse(98);
+
+			// Acciones del analizador semantico
+			if (!AnalizadorSemantico.tipoID(indice).equals(Entrada.INT)) {
+				// TODO Gestor de errores
+			}
+			////////////////////////////////////
+
 			incDec();
 			break;
 		default:
@@ -1123,8 +1644,12 @@ public class AnalizadorSintactico {
 	 * 		X -> E
 	 * 		X -> lambda
 	 * </pre>
+	 * 
+	 * Correspondiente al analizador Semantico:
+	 * 
+	 * @return Tipo de retorno si existe, si no devuelve TIPO_OK
 	 */
-	private void x() {
+	private String x() {
 		switch (sigToken.getToken()) {
 		case 14: // !
 		case 54: // identificador
@@ -1138,11 +1663,10 @@ public class AnalizadorSintactico {
 		case 1: // +
 		case 2: // -
 			writeParse(99);
-			e();
-			break;
+			return e().getTipo();
 		default:
 			writeParse(100);
-			break;
+			return AnalizadorSemantico.TIPO_VACIO;
 		}
 	}
 
@@ -1154,15 +1678,45 @@ public class AnalizadorSintactico {
 	private void f() {
 		if (sigToken.getToken() == 45) { // function
 			writeParse(101);
-			equip(45);
-			h();
-			equip(54);
-			equip(46);
-			a();
-			equip(47);
-			equip(48);
-			c();
-			equip(49);
+			equip(45); // function
+			// Acciones del analizador semantico
+			AnalizadorSemantico.activarZonaDeDeclaracion();
+			////////////////////////////////////
+			String tipoH = h();
+
+			// Acciones del analizador semantico
+			Token identificador = sigToken;
+			////////////////////////////////////
+
+			equip(54); // identificador
+
+			// Acciones del analizador semantico
+			AnalizadorSemantico.crearTablaDeSimbolos(AnalizadorSemantico.lexemaID(identificador.getAtributo()));
+			////////////////////////////////////
+
+			equip(46); // (
+			List<Pair<String, Boolean>> params = a();
+
+			// Acciones del analizador semantico
+			AnalizadorSemantico.actualizarIndiceFuncion(identificador.getAtributo(), tipoH, params);
+			AnalizadorSemantico.desactivarZonaDeDeclaracion();
+			////////////////////////////////////
+
+			equip(47); // )
+			equip(48); // {
+			String tipoC = c(true, false);
+
+			// Acciones del analizador semantico
+			if (!tipoC.equals(tipoH) && tipoC.equals(AnalizadorSemantico.TIPO_OK)) {
+				// TODO GEstor de errores
+			}
+			////////////////////////////////////
+
+			equip(49); // }
+
+			// Acciones del analizador semantico
+			AnalizadorSemantico.cerrarTablaDeSimbolos();
+			////////////////////////////////////
 		} else {
 			GestorDeErrores.gestionarError(3009, null);
 		}
@@ -1173,21 +1727,39 @@ public class AnalizadorSintactico {
 	 * 		A -> T identificador K
 	 * 		A -> lambda
 	 * </pre>
+	 * 
+	 * Correspondiente al analizador Semantico:
+	 * 
+	 * @return Tipo deLista de pares con los tipos y modos de los parametros
 	 */
-	private void a() {
+	private List<Pair<String, Boolean>> a() {
+		List<Pair<String, Boolean>> params = new ArrayList<>();
+
 		switch (sigToken.getToken()) {
 		case 30: // int
 		case 31: // bool
 		case 32: // chars
 			writeParse(102);
-			t();
+			Tipo tipoT = t();
+
+			// Acciones del analizador semantico
+			Token identificador = sigToken;
+			////////////////////////////////////
+
 			equip(54); // identificador
-			k();
+
+			// Acciones del analizador semantico
+			AnalizadorSemantico.aniadirParamTS(identificador.getAtributo(), tipoT.getTipo(), tipoT.getAncho());
+			params.add(new Pair<String, Boolean>(tipoT.getTipo(), false));
+			////////////////////////////////////
+
+			params.addAll(k());
 			break;
 		default:
 			writeParse(103);
 			break;
 		}
+		return params;
 	}
 
 	/**
@@ -1196,16 +1768,29 @@ public class AnalizadorSintactico {
 	 * 		K -> lambda
 	 * </pre>
 	 */
-	private void k() {
+	private List<Pair<String, Boolean>> k() {
+		List<Pair<String, Boolean>> params = new ArrayList<>();
 		if (sigToken.getToken() == 50) { // ,
 			writeParse(104);
 			equip(50);
-			t();
+			Tipo tipoT = t();
+
+			// Acciones del analizador semantico
+			Token identificador = sigToken;
+			////////////////////////////////////
+
 			equip(54); // identificador
-			k();
+
+			// Acciones del analizador semantico
+			AnalizadorSemantico.aniadirParamTS(identificador.getAtributo(), tipoT.getTipo(), tipoT.getAncho());
+			params.add(new Pair<String, Boolean>(tipoT.getTipo(), false));
+			////////////////////////////////////
+			
+			params.addAll(k());
 		} else {
 			writeParse(105);
 		}
+		return params;
 	}
 
 	/**
@@ -1213,8 +1798,18 @@ public class AnalizadorSintactico {
 	 * 		C -> B C
 	 * 		C -> lambda
 	 * </pre>
+	 * 
+	 * Correspondiente al analizador Semantico:
+	 * 
+	 * @param isReturn
+	 *            Si estamos dentro de una funcion sera true
+	 * @param isBreak
+	 *            Si estamos dentro de un switch sera true
+	 * 
+	 * @return Tipo de retorno si existe, si no devuelve TIPO_OK
 	 */
-	private void c() {
+	private String c(boolean isReturn, boolean isBreak) {
+		String tipoReturn = null;
 		switch (sigToken.getToken()) {
 		case 29: // var
 		case 36: // if
@@ -1230,13 +1825,24 @@ public class AnalizadorSintactico {
 		case 39: // do
 		case 40: // for
 			writeParse(106);
-			b();
-			c();
+			String tipoB = b(isReturn, isBreak);
+			String tipoC = c(isReturn, isBreak);
+
+			// Acciones del analizador semantico
+			if (tipoC.equals(tipoB) || tipoC.equals(AnalizadorSemantico.TIPO_OK)) {
+				tipoReturn = tipoB;
+			} else {
+				// TODO Gestor de errores
+			}
+			////////////////////////////////////
 			break;
 		default:
 			writeParse(107);
+			tipoReturn = AnalizadorSemantico.TIPO_OK;
 			break;
 		}
+
+		return tipoReturn;
 	}
 
 	/**
@@ -1245,17 +1851,16 @@ public class AnalizadorSintactico {
 	 * 		H -> lambda
 	 * </pre>
 	 */
-	private void h() {
+	private String h() {
 		switch (sigToken.getToken()) {
 		case 30: // int
 		case 31: // bool
 		case 32: // chars
 			writeParse(108);
-			t();
-			break;
+			return t().getTipo();
 		default:
 			writeParse(109);
-			break;
+			return AnalizadorSemantico.TIPO_VACIO;
 		}
 	}
 

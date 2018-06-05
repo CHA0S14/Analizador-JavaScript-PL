@@ -3,6 +3,7 @@ package tablaDeSimbolos;
 import java.util.ArrayList;
 import java.util.List;
 
+import analizadorSemantico.AnalizadorSemantico;
 import gestorDeErrores.GestorDeErrores;
 
 public class Entrada {
@@ -17,9 +18,10 @@ public class Entrada {
 	public static final String FUNC = "function";
 	public static final boolean VAL = false;
 	public static final boolean REF = true;
+	public static final String IS_PARAM = "isParam";
 
 	// Atributos de la entrada
-	private String lexema, tipo, tipoRetorno, etiqFuncion;
+	private String lexema, tipo = AnalizadorSemantico.TIPO_VACIO, tipoRetorno, etiqFuncion;
 	private int desp, numParam;
 	private boolean param;
 	private List<String> tipoParam;

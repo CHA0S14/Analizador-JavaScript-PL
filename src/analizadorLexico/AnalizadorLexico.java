@@ -13,6 +13,7 @@ import java.nio.charset.Charset;
 
 import analizadorLexico.tablas.TablaDeTransiciones;
 import analizadorLexico.tablas.TablaPalabrasReservadas;
+import analizadorSemantico.AnalizadorSemantico;
 import gestorDeErrores.GestorDeErrores;
 import tablaDeSimbolos.TablaDeSimbolos;
 
@@ -33,7 +34,6 @@ public class AnalizadorLexico {
 
 	private int numero; // variable que ira guardando el valor del token numerico
 	private String cadena; // variable que ira guardando las cadenas para distintos tokens
-	private boolean zonaDeclaracion = false; // Si nos encontramos en zona de declaracion
 	private static int nlinea = 1;
 
 	public AnalizadorLexico(String fichero) {
@@ -338,7 +338,7 @@ public class AnalizadorLexico {
 			break;
 		case "T54": // Generar Token identificador
 			int indice = 0;
-			if (zonaDeclaracion) {
+			if (AnalizadorSemantico.isZonaDeDeclaracion()) {
 				indice = TablaDeSimbolos.insertarId(cadena);
 				// Si el indice es 0 no se ha podido insertar correctamente
 				if (indice == 0) {
@@ -394,14 +394,6 @@ public class AnalizadorLexico {
 			// un fichero
 			GestorDeErrores.gestionarError(1003, null);
 		}
-	}
-
-	/**
-	 * 
-	 * @param zonaDeclaracion
-	 */
-	public void setZonaDeclaracion(boolean zonaDeclaracion) {
-		this.zonaDeclaracion = zonaDeclaracion;
 	}
 
 	public static int getNlinea() {

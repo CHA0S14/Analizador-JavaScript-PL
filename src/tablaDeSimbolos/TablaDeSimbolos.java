@@ -3,6 +3,7 @@ package tablaDeSimbolos;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import gestorDeErrores.GestorDeErrores;
 
@@ -171,10 +172,19 @@ public class TablaDeSimbolos {
 			insertarAtributoTipo(indice, valor);
 			break;
 		case Entrada.DESP:
-			insertarAtributoDesplazamiento(indice, valor);
+			int desp = -1;
+			try {
+				desp = Integer.parseInt(valor);
+			} catch (NumberFormatException e) {
+				GestorDeErrores.gestionarError(1009, valor);
+			}
+			insertarAtributoDesplazamiento(indice, desp);
 			break;
 		case Entrada.PARAM:
 			insertarAtributoParametro(indice, valor, modo);
+			break;
+		case Entrada.IS_PARAM:
+			insertarAtributoIsParam(indice, Boolean.parseBoolean(valor));
 			break;
 		case Entrada.RET:
 			insertarAtributoRetorno(indice, valor);
@@ -217,13 +227,24 @@ public class TablaDeSimbolos {
 	 * @param valor
 	 *            Valor del desplazamiento
 	 */
-	public static void insertarAtributoDesplazamiento(int indice, String valor) {
-		obtenerTablaSegunIndice(indice).obtenerOperando(indice).setDespl(tablaActiva.getDesp());
-		try {
-			tablaActiva.incrementarDesp(Integer.parseInt(valor));
-		} catch (NumberFormatException e) {
-			GestorDeErrores.gestionarError(1009, valor);
-		}
+	public static void insertarAtributoDesplazamiento(int indice, int valor) {
+		DatosDeLaTablaDeSimbolos tabla = obtenerTablaSegunIndice(indice);
+		tabla.obtenerOperando(indice).setDespl(tabla.getDesp());
+
+		tabla.incrementarDesp(valor);
+	}
+
+	/**
+	 * Metodo que se encarga de setear el valor que identifica un identificador como
+	 * parametro o no
+	 * 
+	 * @param indice
+	 *            Indice del identificador a modificar
+	 * @param valor
+	 */
+	public static void insertarAtributoIsParam(int indice, boolean valor) {
+		obtenerTablaSegunIndice(indice).obtenerOperando(indice).setParam(valor);
+		;
 	}
 
 	/**
@@ -280,6 +301,41 @@ public class TablaDeSimbolos {
 	 */
 	public static void insertarAtributoEtiqueta(int indice, String valor) {
 		obtenerTablaSegunIndice(indice).obtenerOperando(indice).setEtiqFuncion(valor);
+	}
+
+	/**
+	 * Metodo que devuelve el tipo de un operando de la tabla de simbolos dado su
+	 * indice
+	 * 
+	 * @param indice
+	 *            indice de la tabla de simbolo >0 si tabla global o <0 si local
+	 * @return Tipo del identificador
+	 */
+	public static String getTipoIndice(int indice) {
+		return obtenerTablaSegunIndice(indice).obtenerOperando(indice).getTipo();
+	}
+
+	/**
+	 * Metodo que devuelve la lista de parametros de un identificador dado su indice
+	 * 
+	 * @param indice
+	 *            indice de la tabla de simbolo >0 si tabla global o <0 si local
+	 * @return Lista con los parametros
+	 */
+	public static List<String> getParamID(int indice) {
+		return obtenerTablaSegunIndice(indice).obtenerOperando(indice).getTipoParam();
+	}
+
+	/**
+	 * Metodo que devuelve el lexema almacenado en una tabla de simbolos para un
+	 * identificador
+	 * 
+	 * @param indice
+	 *            indice de la tabla de simbolo >0 si tabla global o <0 si local
+	 * @return String lexema del identificador
+	 */
+	public static String getLexemaIndice(int indice) {
+		return obtenerTablaSegunIndice(indice).obtenerOperando(indice).getLexema();
 	}
 
 	/**
