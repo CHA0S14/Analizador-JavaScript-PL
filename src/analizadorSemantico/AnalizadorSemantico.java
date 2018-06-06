@@ -54,10 +54,14 @@ public class AnalizadorSemantico {
 	 *            Tipo del identificador
 	 * @param ancho
 	 *            Ancho a desplazar
+	 * @param param
+	 *            false si es una variable o un parametro pasado por valor, true si
+	 *            es un parametro pasado por referencia
 	 */
-	public static void aniadirTS(int indice, String tipo, int ancho) {
+	public static void aniadirTS(int indice, String tipo, int ancho, boolean param) {
 		TablaDeSimbolos.insertarAtributoTipo(indice, tipo);
 		TablaDeSimbolos.insertarAtributoDesplazamiento(indice, ancho);
+		TablaDeSimbolos.insertarAtributoIsParam(indice, param);
 	}
 
 	/**
@@ -137,21 +141,5 @@ public class AnalizadorSemantico {
 			TablaDeSimbolos.insertarAtributoParametro(indice, param.getKey(), param.getValue());
 		}
 
-	}
-
-	/**
-	 * Metodo que se encarga de actualizar los atributos de un identificador que es
-	 * un parametro en la tabla de simbolos local a la funcion
-	 * 
-	 * @param indice
-	 *            indice de la tabla de simbolos
-	 * @param tipo
-	 *            tipo del parametro
-	 * @param ancho
-	 *            Ancho que hay que mover el desplazamiento
-	 */
-	public static void aniadirParamTS(int indice, String tipo, int ancho) {
-		aniadirTS(indice, tipo, ancho);
-		TablaDeSimbolos.insertarAtributoIsParam(indice, true);
 	}
 }

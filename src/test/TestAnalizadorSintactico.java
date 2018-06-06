@@ -123,6 +123,8 @@ public class TestAnalizadorSintactico {
 		analizador.p();
 
 	}
+	
+	//TODO Probar que detecta error 3008 write sin parametros
 
 	/**
 	 * Metodo que prueba que se lanza correctamente un error 3001
