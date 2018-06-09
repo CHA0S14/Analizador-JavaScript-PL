@@ -129,7 +129,7 @@ public class AnalizadorSintactico {
 			// Acciones del analizador semantico
 
 			if (!tipoT.getTipo().equals(tipoB2.getTipo()) && !tipoB2.getTipo().equals(AnalizadorSemantico.TIPO_OK)) {
-				// TODO Gestor de errores
+				GestorDeErrores.gestionarError(4001, "El tipo del identificador no corresponde con el valor asignado");
 			}
 
 			////////////////////////////////////
@@ -150,7 +150,7 @@ public class AnalizadorSintactico {
 
 			// Acciones del analizador semantico
 			if (tipoE.getTipo() != Entrada.BOOL) {
-				// TODO Gestor de errores
+				GestorDeErrores.gestionarError(4001, "El tipo de una expresion detro de un If tiene que ser booleana");
 			}
 			////////////////////////////////////
 
@@ -176,7 +176,7 @@ public class AnalizadorSintactico {
 
 			// Acciones del analizador semantico
 			if (tipoE.getTipo() != Entrada.INT) {
-				// TODO Gestor de errores
+				GestorDeErrores.gestionarError(4001, "El tipo de la expresion de un Switch tiene que ser int");
 			}
 			////////////////////////////////////
 
@@ -193,7 +193,7 @@ public class AnalizadorSintactico {
 
 			// Acciones del analizador semantico
 			if (tipoE.getTipo() != Entrada.BOOL) {
-				// TODO Gestor de errores
+				GestorDeErrores.gestionarError(4001, "El tipo de una expresion de un While tiene que ser boolean");
 			}
 			////////////////////////////////////
 
@@ -216,7 +216,7 @@ public class AnalizadorSintactico {
 
 			// Acciones del analizador semantico
 			if (tipoE.getTipo() != Entrada.BOOL) {
-				// TODO Gestor de errores
+				GestorDeErrores.gestionarError(4001, "El tipo de una expresion de un do-while tiene que ser booleana");
 			}
 			////////////////////////////////////
 			break;
@@ -230,7 +230,8 @@ public class AnalizadorSintactico {
 
 			// Acciones del analizador semantico
 			if (tipoE.getTipo() != Entrada.BOOL) {
-				// TODO Gestor de errores
+				GestorDeErrores.gestionarError(4001,
+						"El tipo de la condicion de parada de un for tiene que ser booleana");
 			}
 			////////////////////////////////////
 
@@ -277,7 +278,7 @@ public class AnalizadorSintactico {
 					|| tipoAsignacion.getTipo().equals(AnalizadorSemantico.TIPO_OK)) {
 				return tipoE;
 			} else {
-				// TODO Gestor de errores
+				GestorDeErrores.gestionarError(4001, "El tipo de la variable con el valor asignado no coincide");
 			}
 			////////////////////////////////////
 		default:
@@ -316,11 +317,13 @@ public class AnalizadorSintactico {
 
 					// Si el tipo del identificador no coincide con la de la expresion hay un error
 				} else if (!AnalizadorSemantico.tipoID(identificador.getAtributo()).equals(tipoE.getTipo())) {
-					// TODO Gestor de errores
+					GestorDeErrores.gestionarError(4001,
+							"El tipo de la variable y de la asignacion no coinciden en la inicializacion del for");
 				}
 
 			} else {
-				// TODO Gestor de errores
+				GestorDeErrores.gestionarError(4001,
+						"El tipo de la asignacion y de la expresion no coinciden en la inicializacion del for");
 			}
 			////////////////////////////////////
 			break;
@@ -357,7 +360,8 @@ public class AnalizadorSintactico {
 			}
 
 			if (!tipoActualizacion2.getTipo().equals(AnalizadorSemantico.tipoID(identificador.getAtributo()))) {
-				// TODO Gestor de errores
+				GestorDeErrores.gestionarError(4001,
+						"El tipo de la variable y de la asignacion no coinciden en la actualizacion del for");
 			}
 			////////////////////////////////////
 			break;
@@ -378,7 +382,8 @@ public class AnalizadorSintactico {
 					AnalizadorSemantico.aniadirTS(identificador.getAtributo(), Entrada.INT,
 							AnalizadorSemantico.DESP_INT, false);
 				} else {
-					// TODO Gestor de errores
+					GestorDeErrores.gestionarError(4001,
+							"El tipo de la variable tiene que ser int con un incremento o decremento en la inicializacion del for");
 				}
 			}
 			////////////////////////////////////
@@ -418,7 +423,8 @@ public class AnalizadorSintactico {
 					|| tipoAsignacion.getTipo().equals(AnalizadorSemantico.TIPO_OK)) {
 				return tipoE;
 			} else {
-				// TODO Gestor de errores
+				GestorDeErrores.gestionarError(4001,
+						"El tipo de la asignacion y de la expresion no coinciden en la actualizacion del for");
 			}
 			////////////////////////////////////
 			break;
@@ -567,7 +573,7 @@ public class AnalizadorSintactico {
 			if (tipoC.equals(tipoElse) || tipoElse.equals(AnalizadorSemantico.TIPO_OK)) {
 				tipoReturn = tipoC;
 			} else {
-				// TODO Gestor de errores
+				GestorDeErrores.gestionarError(4001, "El tipo del return en el then y en el else no coinciden");
 			}
 			////////////////////////////////////
 			break;
@@ -648,7 +654,7 @@ public class AnalizadorSintactico {
 			if (tipo.getTipo().equals(tipoB2.getTipo()) || tipoB2.getTipo().equals(AnalizadorSemantico.TIPO_OK)) {
 				AnalizadorSemantico.aniadirTS(identificador.getAtributo(), tipo.getTipo(), tipo.getAncho(), false);
 			} else {
-				// TODO Gestor de errores
+				GestorDeErrores.gestionarError(4001, "El tipo de la variable y del valor asignado no coinciden");
 			}
 			////////////////////////////////////
 
@@ -687,7 +693,8 @@ public class AnalizadorSintactico {
 			if (tipoC.equals(tipoCase) || tipoCase.equals(AnalizadorSemantico.TIPO_OK)) {
 				tipoReturn = tipoC;
 			} else {
-				// TODO Gestor de errores
+				GestorDeErrores.gestionarError(4001,
+						"El tipo de return de los cases del switch no es el mismo en todos los casos");
 			}
 			////////////////////////////////////
 
@@ -766,7 +773,8 @@ public class AnalizadorSintactico {
 
 			// Acciones del analizador semantico
 			if (tipoE2.getTipo().equals(Entrada.BOOL) && !tipoG.getTipo().equals(Entrada.BOOL)) {
-				// TODO Gestor de errores
+				GestorDeErrores.gestionarError(4001,
+						"El tipo de la expresion se esperaba que fuese boolean, pero no lo es");
 			} else {
 				return tipoG;
 			}
@@ -797,7 +805,8 @@ public class AnalizadorSintactico {
 
 			// Acciones del analizador semantico
 			if (!tipoG.getTipo().equals(Entrada.BOOL)) {
-				// TODO Gestor de errores
+				GestorDeErrores.gestionarError(4001,
+						"El tipo de la expresion se esperaba que fuese boolean, pero no lo es");
 			}
 
 			e2();
@@ -836,7 +845,8 @@ public class AnalizadorSintactico {
 
 			// Acciones del analizador semantico
 			if (tipoG2.getTipo().equals(Entrada.BOOL) && !tipoD.getTipo().equals(Entrada.BOOL)) {
-				// TODO Gestor de errores
+				GestorDeErrores.gestionarError(4001,
+						"El tipo de la expresion se esperaba que fuese boolean, pero no lo es");
 			} else {
 				return tipoD;
 			}
@@ -867,7 +877,8 @@ public class AnalizadorSintactico {
 
 			// Acciones del analizador semantico
 			if (!tipoD.getTipo().equals(Entrada.BOOL)) {
-				// TODO Gestor de errores
+				GestorDeErrores.gestionarError(4001,
+						"El tipo de la expresion se esperaba que fuese boolean, pero no lo es");
 			}
 			////////////////////////////////////
 
@@ -1013,7 +1024,8 @@ public class AnalizadorSintactico {
 
 			// Acciones del analizador semantico
 			if (!tipoJ.getTipo().equals(tipo.getTipo()) || !tipoJ.getTipo().equals(Entrada.INT)) {
-				// TODO Gestor de errores
+				GestorDeErrores.gestionarError(4001,
+						"El tipo de la expresion se esperaba que fuese int, pero no lo es");
 			}
 			////////////////////////////////////
 
@@ -1026,7 +1038,8 @@ public class AnalizadorSintactico {
 
 			// Acciones del analizador semantico
 			if (!tipoJ.getTipo().equals(tipo.getTipo()) || !tipoJ.getTipo().equals(Entrada.INT)) {
-				// TODO Gestor de errores
+				GestorDeErrores.gestionarError(4001,
+						"El tipo de la expresion se esperaba que fuese int, pero no lo es");
 			}
 			////////////////////////////////////
 
@@ -1039,7 +1052,8 @@ public class AnalizadorSintactico {
 
 			// Acciones del analizador semantico
 			if (!tipoJ.getTipo().equals(tipo.getTipo()) || !tipoJ.getTipo().equals(Entrada.INT)) {
-				// TODO Gestor de errores
+				GestorDeErrores.gestionarError(4001,
+						"El tipo de la expresion se esperaba que fuese int, pero no lo es");
 			}
 			////////////////////////////////////
 
@@ -1052,7 +1066,8 @@ public class AnalizadorSintactico {
 
 			// Acciones del analizador semantico
 			if (!tipoJ.getTipo().equals(tipo.getTipo()) || !tipoJ.getTipo().equals(Entrada.INT)) {
-				// TODO Gestor de errores
+				GestorDeErrores.gestionarError(4001,
+						"El tipo de la expresion se esperaba que fuese int, pero no lo es");
 			}
 			////////////////////////////////////
 
@@ -1130,7 +1145,8 @@ public class AnalizadorSintactico {
 					&& (tipoJ2.getTipo().equals(Entrada.INT) || tipoJ2.getTipo().equals(AnalizadorSemantico.TIPO_OK))) {
 				return tipoM;
 			} else {
-				// TODO Gestor de errores
+				GestorDeErrores.gestionarError(4001,
+						"El tipo de la expresion se esperaba que fuese int, pero no lo es");
 			}
 			////////////////////////////////////
 			break;
@@ -1145,7 +1161,8 @@ public class AnalizadorSintactico {
 					&& (tipoJ2.getTipo().equals(Entrada.INT) || tipoJ2.getTipo().equals(AnalizadorSemantico.TIPO_OK))) {
 				return tipoM;
 			} else {
-				// TODO Gestor de errores
+				GestorDeErrores.gestionarError(4001,
+						"El tipo de la expresion se esperaba que fuese int, pero no lo es");
 			}
 			////////////////////////////////////
 			break;
@@ -1187,7 +1204,7 @@ public class AnalizadorSintactico {
 			if (tipoV.getTipo().equals(tipoM2.getTipo()) || tipoM2.getTipo().equals(AnalizadorSemantico.TIPO_OK)) {
 				return tipoV;
 			} else {
-				// TODO Gestor de errores
+				GestorDeErrores.gestionarError(4001, "El tipo de la expresion no es consistente");
 			}
 			////////////////////////////////////
 			break;
@@ -1225,7 +1242,8 @@ public class AnalizadorSintactico {
 					&& (tipoM2.getTipo().equals(Entrada.INT) || tipoM2.getTipo().equals(AnalizadorSemantico.TIPO_OK))) {
 				return tipoV;
 			} else {
-				// TODO Gestor de errores
+				GestorDeErrores.gestionarError(4001,
+						"El tipo de la expresion se esperaba que fuese int, pero no lo es");
 			}
 			////////////////////////////////////
 			break;
@@ -1240,7 +1258,8 @@ public class AnalizadorSintactico {
 					&& (tipoM2.getTipo().equals(Entrada.INT) || tipoM2.getTipo().equals(AnalizadorSemantico.TIPO_OK))) {
 				return tipoV;
 			} else {
-				// TODO Gestor de errores
+				GestorDeErrores.gestionarError(4001,
+						"El tipo de la expresion se esperaba que fuese int, pero no lo es");
 			}
 			////////////////////////////////////
 			break;
@@ -1255,7 +1274,8 @@ public class AnalizadorSintactico {
 					&& (tipoM2.getTipo().equals(Entrada.INT) || tipoM2.getTipo().equals(AnalizadorSemantico.TIPO_OK))) {
 				return tipoV;
 			} else {
-				// TODO Gestor de errores
+				GestorDeErrores.gestionarError(4001,
+						"El tipo de la expresion se esperaba que fuese int, pero no lo es");
 			}
 			////////////////////////////////////
 			break;
@@ -1336,7 +1356,8 @@ public class AnalizadorSintactico {
 
 			// Acciones del analizador semantico
 			if (!AnalizadorSemantico.tipoID(identificador.getAtributo()).equals(Entrada.INT)) {
-				// TODO Gestor de errores
+				GestorDeErrores.gestionarError(4001,
+						"El tipo de la expresion se esperaba que fuese int, pero no lo es");
 			}
 			////////////////////////////////////
 			return new Tipo(Entrada.INT);
@@ -1349,7 +1370,8 @@ public class AnalizadorSintactico {
 			if (tipoV.getTipo().equals(Entrada.INT)) {
 				return new Tipo(Entrada.INT, AnalizadorSemantico.DESP_INT);
 			} else {
-				// TODO Gestor de errores
+				GestorDeErrores.gestionarError(4001,
+						"El tipo de la expresion se esperaba que fuese int, pero no lo es");
 			}
 			////////////////////////////////////
 			break;
@@ -1362,7 +1384,8 @@ public class AnalizadorSintactico {
 			if (tipoV.getTipo().equals(Entrada.INT)) {
 				return new Tipo(Entrada.INT, AnalizadorSemantico.DESP_INT);
 			} else {
-				// TODO Gestor de errores
+				GestorDeErrores.gestionarError(4001,
+						"El tipo de la expresion se esperaba que fuese int, pero no lo es");
 			}
 			////////////////////////////////////
 			break;
@@ -1375,7 +1398,8 @@ public class AnalizadorSintactico {
 			if (tipoV.getTipo().equals(Entrada.BOOL)) {
 				return new Tipo(Entrada.BOOL, AnalizadorSemantico.DESP_BOOL);
 			} else {
-				// TODO Gestor de errores
+				GestorDeErrores.gestionarError(4001,
+						"El tipo de la expresion se esperaba que fuese boolean, pero no lo es");
 			}
 			////////////////////////////////////
 			break;
@@ -1406,7 +1430,7 @@ public class AnalizadorSintactico {
 
 			// Acciones del analizador semantico
 			if (!AnalizadorSemantico.validarParam(indice, param)) {
-				// TODO Gestor de errores
+				GestorDeErrores.gestionarError(4001, "El tipo de los parametros introducidos no son los esperados");
 			}
 			////////////////////////////////////
 
@@ -1600,7 +1624,8 @@ public class AnalizadorSintactico {
 					AnalizadorSemantico.aniadirTS(identificador.getAtributo(), Entrada.INT,
 							AnalizadorSemantico.DESP_INT, false);
 				} else {
-					// TODO Gestor de errores
+					GestorDeErrores.gestionarError(4001,
+							"El tipo de la expresion se esperaba que fuese int, pero no lo es");
 				}
 			}
 			////////////////////////////////////
@@ -1610,7 +1635,7 @@ public class AnalizadorSintactico {
 
 			// Acciones del analizador semantico
 			if (!isReturn) {
-				// TODO Gestor de errores
+				GestorDeErrores.gestionarError(4003, null);
 			}
 			////////////////////////////////////
 
@@ -1639,7 +1664,7 @@ public class AnalizadorSintactico {
 			// Acciones del analizador semantico
 			if (!AnalizadorSemantico.tipoID(identificador.getAtributo()).equals(Entrada.INT)
 					&& !AnalizadorSemantico.tipoID(identificador.getAtributo()).equals(Entrada.CHARS)) {
-				// TODO Gestor de errores
+				GestorDeErrores.gestionarError(4001, "Prompt solo acepta ints o chars como parametros");
 			}
 			////////////////////////////////////
 			break;
@@ -1648,7 +1673,7 @@ public class AnalizadorSintactico {
 
 			// Acciones del analizador semantico
 			if (!isBreak) {
-				// TODO Gestor de errores
+				GestorDeErrores.gestionarError(4002, null);
 			}
 			////////////////////////////////////
 
@@ -1683,11 +1708,11 @@ public class AnalizadorSintactico {
 			Tipo tipoE = e();
 
 			// Acciones del analizador semantico
-			if ((!tipoAsignacion.getTipo().equals(tipoE.getTipo())
-					|| !tipoAsignacion.getTipo().equals(AnalizadorSemantico.tipoID(indice)))
-					&& (!tipoAsignacion.getTipo().equals(tipoE.getTipo())
-							|| !tipoAsignacion.getTipo().equals(AnalizadorSemantico.TIPO_OK))) {
-				// TODO Gestor de errores
+			if (!AnalizadorSemantico.tipoID(indice).equals(tipoE.getTipo())
+					|| (!AnalizadorSemantico.tipoID(indice).equals(tipoAsignacion.getTipo())
+							&& !tipoAsignacion.getTipo().equals(AnalizadorSemantico.TIPO_OK))) {
+				GestorDeErrores.gestionarError(4001,
+						"El tipo que se esta intentando asignar al identificador no es el correcto");
 			}
 			////////////////////////////////////
 			break;
@@ -1698,7 +1723,7 @@ public class AnalizadorSintactico {
 
 			// Acciones del analizador semantico
 			if (!AnalizadorSemantico.validarParam(indice, param)) {
-				// TODO Gestor de errores
+				GestorDeErrores.gestionarError(4001, "Los tipos de los parametros pasados no son los correctos");
 			}
 			////////////////////////////////////
 
@@ -1710,7 +1735,8 @@ public class AnalizadorSintactico {
 
 			// Acciones del analizador semantico
 			if (!AnalizadorSemantico.tipoID(indice).equals(Entrada.INT)) {
-				// TODO Gestor de errores
+				GestorDeErrores.gestionarError(4001,
+						"El tipo de la expresion se esperaba que fuese int, pero no lo es");
 			}
 			////////////////////////////////////
 
@@ -1790,7 +1816,7 @@ public class AnalizadorSintactico {
 
 			// Acciones del analizador semantico
 			if (!tipoC.equals(tipoH) && tipoC.equals(AnalizadorSemantico.TIPO_OK)) {
-				// TODO GEstor de errores
+				GestorDeErrores.gestionarError(4001, "El tipo devuelto no coincide con el declarado en la funcion");
 			}
 			////////////////////////////////////
 
@@ -1914,7 +1940,7 @@ public class AnalizadorSintactico {
 			if (tipoC.equals(tipoB) || tipoC.equals(AnalizadorSemantico.TIPO_OK)) {
 				tipoReturn = tipoB;
 			} else {
-				// TODO Gestor de errores
+				GestorDeErrores.gestionarError(4001, "El tipo return no es igual en todo el bloque de codigo");
 			}
 			////////////////////////////////////
 			break;

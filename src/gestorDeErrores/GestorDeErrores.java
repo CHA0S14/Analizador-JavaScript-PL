@@ -37,7 +37,7 @@ public class GestorDeErrores {
 			error.append(" -> linea " + AnalizadorLexico.getNlinea());
 		} else if (codigo < 5000) {
 			error.append(ERROR_SEMANTICO);
-			error.append(errorSemantico(codigo - 4000));
+			error.append(errorSemantico(codigo - 4000, dato));
 			error.append(" -> linea " + AnalizadorLexico.getNlinea());
 		} else {
 			System.err.println("No se reconoce el error");
@@ -125,32 +125,14 @@ public class GestorDeErrores {
 		return null;
 	}
 
-	private static String errorSemantico(int codigo) {
+	private static String errorSemantico(int codigo, String dato) {
 		switch (codigo) {
 		case 1:
-			break;
+			return "Tipos no consistentes: " + dato;
 		case 2:
-			break;
+			return "La sentencia break solo puede ir dentro de un switch";
 		case 3:
-			break;
-		case 4:
-			break;
-		case 5:
-			break;
-		case 6:
-			break;
-		case 7:
-			break;
-		case 8:
-			break;
-		case 9:
-			break;
-		case 10:
-			break;
-		case 11:
-			break;
-		case 12:
-			break;
+			return "La sentencia return solo puede ir dentro del cuerpo de una funcion";
 
 		}
 
