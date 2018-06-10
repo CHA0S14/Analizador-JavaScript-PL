@@ -1,6 +1,7 @@
 package analizadorLexico;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -42,7 +43,16 @@ public class AnalizadorLexico {
 			InputStream in = new FileInputStream(fichero);
 			Reader reader = new InputStreamReader(in, Charset.defaultCharset());
 			this.fichero = new BufferedReader(reader);
-			this.tokens = new PrintWriter(new FileWriter(FICHERO_TOKENS));
+			
+			File tokensAux = new File(FICHERO_TOKENS);
+			if (!tokensAux.exists()) {
+				File folder = tokensAux.getParentFile();
+				if (!folder.exists()) {
+					folder.mkdirs();
+				}
+				tokensAux.createNewFile();
+			}
+			this.tokens = new PrintWriter(new FileWriter(tokensAux));
 			leerCaracter();
 		} catch (FileNotFoundException e) {
 			// Envio al gestor de errore el codigo 1002 reservado a error de compilador
@@ -52,6 +62,8 @@ public class AnalizadorLexico {
 			// Envio al gestor de errore el codigo 1002 reservado a error de compilador
 			// cuando un fichero no se puede abrir
 			GestorDeErrores.gestionarError(1002, FICHERO_TOKENS);
+
+			System.out.println(e.getMessage());
 		}
 	}
 
