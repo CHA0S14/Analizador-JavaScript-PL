@@ -106,9 +106,12 @@ public class DatosDeLaTablaDeSimbolos {
 	 * 		+ desplazamiento: 'desplazamiento del identificador2
 	 * * LEXEMA : 'lexema'
 	 * 		+ tipo: 'funcion'
+	 * 		+ etiqueta: 'etiqueta de la funcion'
 	 * 		+ parametros: 'n_parametros'
 	 * 		+ parametro1: 'tipo del parametro 1'	
+	 * 			+ modo: 'modo del parametro'
 	 * 		+ parametro2: 'tipo del parametro 2'
+	 * 			+ modo: 'modo del parametro'
 	 * 		+ ....
 	 * 		+ tiporetorno: 'tipo de retorno de la funcion'
 	 * 
@@ -147,6 +150,7 @@ public class DatosDeLaTablaDeSimbolos {
 			} else {
 				tabla.append("* LEXEMA: '" + operando.getLexema() + "' (tipo de entrada 'función')\n");
 				tabla.append("\t+ tipo: " + operando.getTipo() + "\n");
+				tabla.append("\t+ etiqueta: " + operando.getEtiqFuncion() + "\n");
 				tabla.append("\t+ parametros: " + operando.getNumParam() + "\n");
 
 				// Recorro la lista de parametros los cuales van desde el indice 2 (Tercer

@@ -144,6 +144,7 @@ public class AnalizadorSemantico {
 	public static void actualizarIndiceFuncion(int indice, String tipoRetorno, List<Pair<String, Boolean>> params) {
 		TablaDeSimbolos.insertarAtributoTipo(indice, Entrada.FUNC);
 		TablaDeSimbolos.insertarAtributoRetorno(indice, tipoRetorno.equals(TIPO_VACIO) ? Entrada.VOID : tipoRetorno);
+		TablaDeSimbolos.insertarAtributoEtiqueta(indice, "ETIQ_" + lexemaID(indice));
 
 		for (Pair<String, Boolean> param : params) {
 			TablaDeSimbolos.insertarAtributoParametro(indice, param.getKey(), param.getValue());

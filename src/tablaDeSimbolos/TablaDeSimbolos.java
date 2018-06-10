@@ -82,7 +82,6 @@ public class TablaDeSimbolos {
 
 		// Si no es la tabla global escribimos un separador en el archivo
 		if (!tablaActiva.equals(tablaGlobal)) {
-			tablaDeSimbolos.println();
 			tablaDeSimbolos.println(SEPARADOR);
 			tablaDeSimbolos.println();
 		}
