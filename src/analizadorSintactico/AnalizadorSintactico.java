@@ -353,12 +353,15 @@ public class AnalizadorSintactico {
 
 			equip(54); // identificador
 			Tipo tipoActualizacion2 = actualizacion2();
-
+			
 			// Acciones del analizador semantico
 			if (AnalizadorSemantico.tipoID(identificador.getAtributo()).equals(AnalizadorSemantico.TIPO_VACIO)) {
 				AnalizadorSemantico.aniadirTS(identificador.getAtributo(), Entrada.INT, AnalizadorSemantico.DESP_INT,
 						false);
 			}
+			////////////////////////////////////
+
+			// Acciones del analizador semantico
 
 			if (!tipoActualizacion2.getTipo().equals(AnalizadorSemantico.tipoID(identificador.getAtributo()))) {
 				GestorDeErrores.gestionarError(4001,

@@ -12,13 +12,14 @@ do
 } while (n);		// mientras n no sea 0
 
 
-var int factorial = 1, i;	// variables locales: factorial inicializada a 1 e i inicializada a 0 por omisión
+var int i;	// variables locales: factorial inicializada a 1 e i inicializada a 0 por omisión
+factorial = 1;
 while (i < num)			// num es variable global entera sin declarar
 {
 	factorial *= ++i;	// equivale a: i = i + 1; factorial = factorial * i;
 }
 
-var int i, factorial = 1;	/* variables locales */
+factorial = 1;	/* variables locales */
 for (i = 1; i <= n; i++)
 {
 	factorial *= i;
