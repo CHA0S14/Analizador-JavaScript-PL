@@ -135,12 +135,13 @@ public class AnalizadorSintactico {
 			////////////////////////////////////
 
 			id(tipoT);
-			equip(51); // ;
 
 			// Acciones del analizador semantico
 			AnalizadorSemantico.desactivarZonaDeDeclaracion();
 			tipoReturn = AnalizadorSemantico.TIPO_OK;
 			////////////////////////////////////
+
+			equip(51); // ;
 			break;
 		case 36: // if
 			writeParse(5);
@@ -149,7 +150,7 @@ public class AnalizadorSintactico {
 			tipoE = e();
 
 			// Acciones del analizador semantico
-			if (tipoE.getTipo() != Entrada.BOOL) {
+			if (!tipoE.getTipo().equals(Entrada.BOOL) && !tipoE.getTipo().equals(Entrada.INT)) {
 				GestorDeErrores.gestionarError(4001, "El tipo de una expresion detro de un If tiene que ser booleana");
 			}
 			////////////////////////////////////
@@ -192,7 +193,7 @@ public class AnalizadorSintactico {
 			tipoE = e();
 
 			// Acciones del analizador semantico
-			if (tipoE.getTipo() != Entrada.BOOL) {
+			if (!tipoE.getTipo().equals(Entrada.BOOL) && !tipoE.getTipo().equals(Entrada.INT)) {
 				GestorDeErrores.gestionarError(4001, "El tipo de una expresion de un While tiene que ser boolean");
 			}
 			////////////////////////////////////
@@ -215,7 +216,7 @@ public class AnalizadorSintactico {
 			equip(51); // ;
 
 			// Acciones del analizador semantico
-			if (tipoE.getTipo() != Entrada.BOOL) {
+			if (!tipoE.getTipo().equals(Entrada.BOOL) && !tipoE.getTipo().equals(Entrada.INT)) {
 				GestorDeErrores.gestionarError(4001, "El tipo de una expresion de un do-while tiene que ser booleana");
 			}
 			////////////////////////////////////
@@ -229,7 +230,7 @@ public class AnalizadorSintactico {
 			tipoE = e();
 
 			// Acciones del analizador semantico
-			if (tipoE.getTipo() != Entrada.BOOL) {
+			if (!tipoE.getTipo().equals(Entrada.BOOL) && !tipoE.getTipo().equals(Entrada.INT)) {
 				GestorDeErrores.gestionarError(4001,
 						"El tipo de la condicion de parada de un for tiene que ser booleana");
 			}
@@ -692,6 +693,8 @@ public class AnalizadorSintactico {
 			// Acciones del analizador semantico
 			if (tipoC.equals(tipoCase) || tipoCase.equals(AnalizadorSemantico.TIPO_OK)) {
 				tipoReturn = tipoC;
+			} else if (tipoC.equals(AnalizadorSemantico.TIPO_OK)) {
+				tipoReturn = tipoCase;
 			} else {
 				GestorDeErrores.gestionarError(4001,
 						"El tipo de return de los cases del switch no es el mismo en todos los casos");
@@ -1107,7 +1110,7 @@ public class AnalizadorSintactico {
 
 			// Acciones del analizador semantico
 			if (tipoM.getTipo().equals(tipoJ2.getTipo()) || tipoJ2.getTipo().equals(AnalizadorSemantico.TIPO_OK)) {
-				return tipoJ2;
+				return tipoM;
 			}
 			////////////////////////////////////
 			break;
@@ -1319,6 +1322,14 @@ public class AnalizadorSintactico {
 			////////////////////////////////////
 
 			equip(54);
+
+			// Acciones del analizador semantico
+			if (AnalizadorSemantico.tipoID(identificador.getAtributo()).equals(AnalizadorSemantico.TIPO_VACIO)) {
+				AnalizadorSemantico.aniadirTS(identificador.getAtributo(), Entrada.INT, AnalizadorSemantico.DESP_INT,
+						false);
+			}
+			////////////////////////////////////
+
 			v2(identificador.getAtributo());
 			return new Tipo(AnalizadorSemantico.tipoID(identificador.getAtributo()));
 		case 25: // entero
@@ -1662,6 +1673,11 @@ public class AnalizadorSintactico {
 			equip(47); // )
 
 			// Acciones del analizador semantico
+			if (AnalizadorSemantico.tipoID(identificador.getAtributo()).equals(AnalizadorSemantico.TIPO_VACIO)) {
+				AnalizadorSemantico.aniadirTS(identificador.getAtributo(), Entrada.INT, AnalizadorSemantico.DESP_INT,
+						false);
+			}
+
 			if (!AnalizadorSemantico.tipoID(identificador.getAtributo()).equals(Entrada.INT)
 					&& !AnalizadorSemantico.tipoID(identificador.getAtributo()).equals(Entrada.CHARS)) {
 				GestorDeErrores.gestionarError(4001, "Prompt solo acepta ints o chars como parametros");
@@ -1816,7 +1832,9 @@ public class AnalizadorSintactico {
 
 			// Acciones del analizador semantico
 			if (!tipoC.equals(tipoH) && tipoC.equals(AnalizadorSemantico.TIPO_OK)) {
-				GestorDeErrores.gestionarError(4001, "El tipo devuelto no coincide con el declarado en la funcion");
+				if (tipoH.equals(AnalizadorSemantico.TIPO_VACIO) && !tipoC.equals(AnalizadorSemantico.TIPO_OK)) {
+					GestorDeErrores.gestionarError(4001, "El tipo devuelto no coincide con el declarado en la funcion");
+				}
 			}
 			////////////////////////////////////
 
@@ -1825,7 +1843,9 @@ public class AnalizadorSintactico {
 			// Acciones del analizador semantico
 			AnalizadorSemantico.cerrarTablaDeSimbolos();
 			////////////////////////////////////
-		} else {
+		} else
+
+		{
 			GestorDeErrores.gestionarError(3009, null);
 		}
 	}
@@ -1939,6 +1959,8 @@ public class AnalizadorSintactico {
 			// Acciones del analizador semantico
 			if (tipoC.equals(tipoB) || tipoC.equals(AnalizadorSemantico.TIPO_OK)) {
 				tipoReturn = tipoB;
+			} else if (tipoB.equals(AnalizadorSemantico.TIPO_OK)) {
+				tipoReturn = tipoC;
 			} else {
 				GestorDeErrores.gestionarError(4001, "El tipo return no es igual en todo el bloque de codigo");
 			}

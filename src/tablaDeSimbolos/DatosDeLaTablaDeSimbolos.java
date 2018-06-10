@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class DatosDeLaTablaDeSimbolos {
 
-	private int id, nParams, desp;
+	private int id, desp;
 	private String nombreFuncion; // Solamente tiene valor si no es la tabla general
 	private List<Entrada> operandos;
 
@@ -25,10 +25,6 @@ public class DatosDeLaTablaDeSimbolos {
 		this.operandos = new ArrayList<>();
 		this.id = id;
 		this.nombreFuncion = nombreFuncion;
-	}
-
-	public void setNParams(int nParams) {
-		this.nParams = nParams;
 	}
 
 	/**
@@ -90,7 +86,7 @@ public class DatosDeLaTablaDeSimbolos {
 	public void incrementarDesp(int ancho) {
 		this.desp += ancho;
 	}
-	
+
 	public int getDesp() {
 		return desp;
 	}
@@ -135,7 +131,7 @@ public class DatosDeLaTablaDeSimbolos {
 		if (id == 1)
 			tabla.append("TABLA PRINCIPAL #1:\n");
 		else {
-			tabla.append("TABLA de la FUNCIÓN " + nombreFuncion + "#" + id + ":\n");
+			tabla.append("TABLA de la FUNCIÓN " + nombreFuncion + " #" + id + ":\n");
 			cont = 0; // Se inicia el contador a 0 para poder tener en cuenta el numero de parametros
 		}
 
@@ -144,18 +140,8 @@ public class DatosDeLaTablaDeSimbolos {
 			// Si no es una funcion va a tener 3 campos, si es una funcion tendra 4 campos
 			// mas un campo por cada parametro
 			if (!operando.getTipo().equals(Entrada.FUNC)) {
-				String tipoEntrada = "variable";
 
-				// Si el contador menor que el numero de parametros de la funcion el tipo de la
-				// entrada es parametro
-				if (cont < nParams)
-					tipoEntrada = "parámetro";
-
-				// Si el tipo es chars en vez de una variable se trata de un puntero
-				if (operando.getTipo().equals(Entrada.CHARS))
-					tipoEntrada = "puntero";
-
-				tabla.append("* LEXEMA: '" + operando.getLexema() + "' (tipo de entrada'" + tipoEntrada + "')\n");
+				tabla.append("* LEXEMA: '" + operando.getLexema() + "'\n");
 				tabla.append("\t+ tipo: " + operando.getTipo() + "\n");
 				tabla.append("\t+ desplazamiento: " + operando.getDespl() + "\n\n");
 			} else {
@@ -166,12 +152,12 @@ public class DatosDeLaTablaDeSimbolos {
 				// Recorro la lista de parametros los cuales van desde el indice 2 (Tercer
 				// elemento) hasta el antepenultimo por eso le resto 4 al length (los 2 primeros
 				// + los 2 ultimos)
-				int i = 1;
-				for (String param : operando.getTipoParam()) {
-					tabla.append("\t\t+ parametro" + (i - 1) + ": " + param + "\n");
+				for (int i = 0; i < operando.getTipoParam().size(); i++) {
+					tabla.append("\t\t+ parametro" + (i) + ": " + operando.getTipoParam().get(i) + "\n");
+					tabla.append("\t\t\t+ modo: " + (operando.getModoParam().get(i) ? "referencia" : "valor") + "\n");
 					i++;
 				}
-				tabla.append("\t+ tipo retorno" + operando.getTipoRetorno() + "\n\n");
+				tabla.append("\t+ tipo retorno: " + operando.getTipoRetorno() + "\n\n");
 			}
 
 			if (cont != -1)

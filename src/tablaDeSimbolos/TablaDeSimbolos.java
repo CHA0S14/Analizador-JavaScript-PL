@@ -337,6 +337,18 @@ public class TablaDeSimbolos {
 	public static String getLexemaIndice(int indice) {
 		return obtenerTablaSegunIndice(indice).obtenerOperando(indice).getLexema();
 	}
+	
+	/**
+	 * Metodo que devuelve el tipo return de un operando de la tabla de simbolos dado su
+	 * indice
+	 * 
+	 * @param indice
+	 *            indice de la tabla de simbolo >0 si tabla global o <0 si local
+	 * @return Tipo del identificador
+	 */
+	public static String getTipoReturnIndice(int indice) {
+		return obtenerTablaSegunIndice(indice).obtenerOperando(indice).getTipoRetorno();
+	}
 
 	/**
 	 * Metodo que se encarga de segun se recibe un indice de una tabla de simbolos,

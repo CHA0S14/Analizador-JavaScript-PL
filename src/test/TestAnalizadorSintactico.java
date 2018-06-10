@@ -61,10 +61,10 @@ public class TestAnalizadorSintactico {
 		// Cambio la salida de error a la de por defecto
 		System.setErr(System.err);
 
-		// if (errContent.size() != 0) {
-		// System.out.println(errContent.toString());
-		// errContent.reset();
-		// }
+		 if (errContent.size() != 0) {
+		 System.out.println(errContent.toString());
+		 errContent.reset();
+		 }
 
 		// Limpio las tablas de simbolos
 		TablaDeSimbolos.resetTablaDeSimbolos();

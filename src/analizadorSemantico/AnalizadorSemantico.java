@@ -73,7 +73,15 @@ public class AnalizadorSemantico {
 	 * @return Tipo del identificador
 	 */
 	public static String tipoID(int indice) {
-		return TablaDeSimbolos.getTipoIndice(indice);
+		String tipo = TablaDeSimbolos.getTipoIndice(indice);
+
+		if (tipo.equals(Entrada.FUNC)) {
+			tipo = TablaDeSimbolos.getTipoReturnIndice(indice);
+			
+			tipo = tipo.equals(Entrada.VOID) ? TIPO_VACIO : tipo;
+		}
+		
+		return tipo;
 	}
 
 	/**
@@ -135,7 +143,7 @@ public class AnalizadorSemantico {
 	 */
 	public static void actualizarIndiceFuncion(int indice, String tipoRetorno, List<Pair<String, Boolean>> params) {
 		TablaDeSimbolos.insertarAtributoTipo(indice, Entrada.FUNC);
-		TablaDeSimbolos.insertarAtributoRetorno(indice, tipoRetorno);
+		TablaDeSimbolos.insertarAtributoRetorno(indice, tipoRetorno.equals(TIPO_VACIO) ? Entrada.VOID : tipoRetorno);
 
 		for (Pair<String, Boolean> param : params) {
 			TablaDeSimbolos.insertarAtributoParametro(indice, param.getKey(), param.getValue());

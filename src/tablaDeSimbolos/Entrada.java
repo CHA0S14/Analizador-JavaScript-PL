@@ -3,6 +3,7 @@ package tablaDeSimbolos;
 import java.util.ArrayList;
 import java.util.List;
 
+import analizadorLexico.AnalizadorLexico;
 import analizadorSemantico.AnalizadorSemantico;
 import gestorDeErrores.GestorDeErrores;
 
@@ -15,6 +16,7 @@ public class Entrada {
 	public static final String CHARS = "chars";
 	public static final String BOOL = "bool";
 	public static final String INT = "int";
+	public static final String VOID = "void";
 	public static final String FUNC = "function";
 	public static final boolean VAL = false;
 	public static final boolean REF = true;
@@ -22,7 +24,7 @@ public class Entrada {
 
 	// Atributos de la entrada
 	private String lexema, tipo = AnalizadorSemantico.TIPO_VACIO, tipoRetorno, etiqFuncion;
-	private int desp, numParam;
+	private int desp;
 	private boolean param;
 	private List<String> tipoParam;
 	private List<Boolean> modoParam;
@@ -47,9 +49,8 @@ public class Entrada {
 		if (tipo.equals(FUNC)) { // Si el tipo es funcion se inican los datos correspondientes a la funcion
 			tipoParam = new ArrayList<>();
 			modoParam = new ArrayList<>();
-			numParam = 0;
 		} else if (!tipo.equals(CHARS) && !tipo.equals(INT) && !tipo.equals(BOOL) && !tipo.equals(FUNC)) {
-			GestorDeErrores.gestionarError(1006, tipo);
+			GestorDeErrores.gestionarError(1006, "Tipo " + tipo);
 		}
 
 		this.tipo = tipo;
@@ -64,8 +65,9 @@ public class Entrada {
 		if (!this.tipo.equals(FUNC)) {
 			GestorDeErrores.gestionarError(1008, RET);
 			// Compruebo que el tipo introducido es valido
-		} else if (!tipoRetorno.equals(CHARS) && !tipoRetorno.equals(INT) && !tipoRetorno.equals(BOOL)) {
-			GestorDeErrores.gestionarError(1006, tipo);
+		} else if (!tipoRetorno.equals(CHARS) && !tipoRetorno.equals(INT) && !tipoRetorno.equals(BOOL)
+				&& !tipoRetorno.equals(VOID)) {
+			GestorDeErrores.gestionarError(1006, "Tipo retorno " + tipo + AnalizadorLexico.getNlinea());
 		}
 		this.tipoRetorno = tipoRetorno;
 	}
@@ -95,7 +97,7 @@ public class Entrada {
 	}
 
 	public int getNumParam() {
-		return numParam;
+		return tipoParam.size();
 	}
 
 	public boolean isParam() {
@@ -120,10 +122,9 @@ public class Entrada {
 			GestorDeErrores.gestionarError(1008, PARAM);
 			// Se comprueba que los tipo son validos
 		} else if (!tipo.equals(CHARS) && !tipo.equals(INT) && !tipo.equals(BOOL)) {
-			GestorDeErrores.gestionarError(1006, tipo);
+			GestorDeErrores.gestionarError(1006, "Tipo de parametro " + tipo);
 		}
 		this.tipoParam.add(tipo);
-		numParam++;
 	}
 
 	public void addModoParam(boolean modo) {
@@ -146,7 +147,7 @@ public class Entrada {
 		Entrada op = (Entrada) obj;
 
 		boolean response = op.getLexema().equals(this.lexema) && op.getDespl() == this.desp
-				&& op.getNumParam() == this.numParam && op.isParam() == this.param;
+				&& op.isParam() == this.param;
 
 		if (this.tipo != null) {
 			response = response && this.tipo.equals(op.getTipo());
