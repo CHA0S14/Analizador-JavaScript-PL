@@ -69,7 +69,7 @@ public class AnalizadorSemantico {
 	 * identificador
 	 * 
 	 * @param indice
-	 *            indice de la tabla de simbolo >0 si tabla global o <0 si local
+	 *            indice de la tabla de simbolo mayor que 0 si tabla global o menor que 0 si local
 	 * @return Tipo del identificador
 	 */
 	public static String tipoID(int indice) {
@@ -77,10 +77,10 @@ public class AnalizadorSemantico {
 
 		if (tipo.equals(Entrada.FUNC)) {
 			tipo = TablaDeSimbolos.getTipoReturnIndice(indice);
-			
+
 			tipo = tipo.equals(Entrada.VOID) ? TIPO_VACIO : tipo;
 		}
-		
+
 		return tipo;
 	}
 
@@ -89,7 +89,7 @@ public class AnalizadorSemantico {
 	 * los que se pusieron al declararla
 	 * 
 	 * @param indice
-	 *            indice de la tabla de simbolo >0 si tabla global o <0 si local
+	 *            indice de la tabla de simbolo mayor que 0 si tabla global o menor que 0 si local
 	 * @param param
 	 *            Lista de parametros con los que comparar
 	 * @return true si coinciden, false si no
@@ -106,7 +106,7 @@ public class AnalizadorSemantico {
 	 * identificador
 	 * 
 	 * @param indice
-	 *            indice de la tabla de simbolo >0 si tabla global o <0 si local
+	 *            indice de la tabla de simbolo mayor que 0 si tabla global o menor que 0 si local
 	 * @return String lexema del identificador
 	 */
 	public static String lexemaID(int indice) {
@@ -118,6 +118,7 @@ public class AnalizadorSemantico {
 	 * identificador de la tabla global
 	 * 
 	 * @param lexema
+	 *            Nombre de la funcion que pide esta tabla de simbolos
 	 */
 	public static void crearTablaDeSimbolos(String lexema) {
 		TablaDeSimbolos.nuevaTablaActiva(lexema);

@@ -330,7 +330,7 @@ public class TablaDeSimbolos {
 	 * identificador
 	 * 
 	 * @param indice
-	 *            indice de la tabla de simbolo >0 si tabla global o <0 si local
+	 *            indice de la tabla de simbolo mayor que 0 si tabla global o menor que 0 si local
 	 * @return String lexema del identificador
 	 */
 	public static String getLexemaIndice(int indice) {
@@ -342,7 +342,7 @@ public class TablaDeSimbolos {
 	 * indice
 	 * 
 	 * @param indice
-	 *            indice de la tabla de simbolo >0 si tabla global o <0 si local
+	 *            indice de la tabla de simbolo mayor que 0 si tabla global o menor que 0 si local
 	 * @return Tipo del identificador
 	 */
 	public static String getTipoReturnIndice(int indice) {

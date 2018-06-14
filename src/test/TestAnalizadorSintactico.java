@@ -61,10 +61,10 @@ public class TestAnalizadorSintactico {
 		// Cambio la salida de error a la de por defecto
 		System.setErr(System.err);
 
-		 if (errContent.size() != 0) {
-		 System.out.println(errContent.toString());
-		 errContent.reset();
-		 }
+		if (errContent.size() != 0) {
+			System.out.println(errContent.toString());
+			errContent.reset();
+		}
 
 		// Limpio las tablas de simbolos
 		TablaDeSimbolos.resetTablaDeSimbolos();
@@ -123,8 +123,8 @@ public class TestAnalizadorSintactico {
 		analizador.p();
 
 	}
-	
-	//TODO Probar que detecta error 3008 write sin parametros
+
+	// TODO Probar que detecta error 3008 write sin parametros
 
 	/**
 	 * Metodo que prueba que se lanza correctamente un error 3001
@@ -686,9 +686,16 @@ public class TestAnalizadorSintactico {
 	}
 
 	/**
+	 * 
 	 * Test que comprueba que se genera un error con ciertos caracteres y actualiza
 	 * un contador
 	 * 
+	 * @param caracteres
+	 *            Array con los caracteres a comprobar
+	 * @param contador
+	 *            Posicion del array que le toca a este test
+	 * @param error
+	 *            Codigo de error esperado
 	 * @throws IOException
 	 *             Excepcion que se puede dar al trabajar con ficheros
 	 */
