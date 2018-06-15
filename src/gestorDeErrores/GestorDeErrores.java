@@ -20,6 +20,10 @@ public class GestorDeErrores {
 	 * 
 	 * @param codigo
 	 *            Codigo de error a gestionar
+	 * 
+	 * @param dato
+	 *            Dato extra que se le otrorga al gestor de errores para mostrar el
+	 *            mensaje
 	 */
 	public static void gestionarError(int codigo, String dato) {
 		StringBuffer error = new StringBuffer();

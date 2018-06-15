@@ -36,9 +36,9 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		P -> B P
-	 * 		P -> F P
-	 * 		P -> eof
+	 * 		P - B P
+	 * 		P - F P
+	 * 		P - eof
 	 * </pre>
 	 */
 	public void p() {
@@ -80,13 +80,13 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		B -> var T identificador B2 ID ;
-	 * 		B -> if ( E ) THEN
-	 * 		B -> S ;
-	 * 		B -> switch ( E ) { CASE }
-	 * 		B -> while ( E ) { C }
-	 * 		B -> do { C } while ( E ) ;
-	 * 		B -> for ( INICIALIZACION ; E ; ACTUALIZACION ) iniBloq  C endBloq
+	 * 		B - var T identificador B2 ID ;
+	 * 		B - if ( E ) THEN
+	 * 		B - S ;
+	 * 		B - switch ( E ) { CASE }
+	 * 		B - while ( E ) { C }
+	 * 		B - do { C } while ( E ) ;
+	 * 		B - for ( INICIALIZACION ; E ; ACTUALIZACION ) iniBloq  C endBloq
 	 * </pre>
 	 * 
 	 * Correspondiente al analizador Semantico:
@@ -252,8 +252,8 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		B2 -> ASIGNACION E
-	 * 		B2 -> lambda
+	 * 		B2 - ASIGNACION E
+	 * 		B2 - lambda
 	 * </pre>
 	 * 
 	 * Correspondiente al analizador Semantico:
@@ -290,8 +290,8 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		INICIALIZACION  -> identificador ASIGNACION E
-	 * 		INICIALIZACION  -> lambda
+	 * 		INICIALIZACION  - identificador ASIGNACION E
+	 * 		INICIALIZACION  - lambda
 	 * </pre>
 	 */
 	private void inicializacion() {
@@ -336,9 +336,9 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		ACTUALIZACION -> identificador ACTUALIZACION2							
-	 *		ACTUALIZACION -> INCDEC identificador					
-	 *		ACTUALIZACION -> lambda
+	 * 		ACTUALIZACION - identificador ACTUALIZACION2							
+	 *		ACTUALIZACION - INCDEC identificador					
+	 *		ACTUALIZACION - lambda
 	 * </pre>
 	 */
 	private void actualizacion() {
@@ -353,7 +353,7 @@ public class AnalizadorSintactico {
 
 			equip(54); // identificador
 			Tipo tipoActualizacion2 = actualizacion2();
-			
+
 			// Acciones del analizador semantico
 			if (AnalizadorSemantico.tipoID(identificador.getAtributo()).equals(AnalizadorSemantico.TIPO_VACIO)) {
 				AnalizadorSemantico.aniadirTS(identificador.getAtributo(), Entrada.INT, AnalizadorSemantico.DESP_INT,
@@ -400,8 +400,8 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		ACTUALIZACION2 -> ASIGNACION E
-	 * 		ACTUALIZACION2 -> INCDEC
+	 * 		ACTUALIZACION2 - ASIGNACION E
+	 * 		ACTUALIZACION2 - INCDEC
 	 * </pre>
 	 * 
 	 * Correspondiente al analizador Semantico:
@@ -446,8 +446,8 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		INCDEC -> ++
-	 * 		INCDEC -> --
+	 * 		INCDEC - ++
+	 * 		INCDEC - --
 	 * </pre>
 	 */
 	private void incDec() {
@@ -467,8 +467,8 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		ASIGNACION -> = 
-	 *		ASIGNACION -> ASIGNACION_OP
+	 * 		ASIGNACION - = 
+	 *		ASIGNACION - ASIGNACION_OP
 	 * </pre>
 	 * 
 	 * Correspondiente al analizador Semantico:
@@ -499,13 +499,13 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		ASIGNACION_OP -> +=
-	 *		ASIGNACION_OP -> -=
-	 *		ASIGNACION_OP -> *=
-	 *		ASIGNACION_OP -> /=
-	 *		ASIGNACION_OP -> %=
-	 *		ASIGNACION_OP -> &=
-	 *		ASIGNACION_OP -> |=
+	 * 		ASIGNACION_OP - +=
+	 *		ASIGNACION_OP - -=
+	 *		ASIGNACION_OP - *=
+	 *		ASIGNACION_OP - /=
+	 *		ASIGNACION_OP - %=
+	 *		ASIGNACION_OP - &=
+	 *		ASIGNACION_OP - |=
 	 * </pre>
 	 * 
 	 * Correspondiente al analizador Semantico:
@@ -550,8 +550,8 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		THEN -> { C } ELSE
-	 * 		THEN -> S ;
+	 * 		THEN - { C } ELSE
+	 * 		THEN - S ;
 	 * </pre>
 	 * 
 	 * Correspondiente al analizador Semantico:
@@ -599,8 +599,8 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		ELSE -> else { C }
-	 * 		ELSE -> lambda
+	 * 		ELSE - else { C }
+	 * 		ELSE - lambda
 	 * </pre>
 	 * 
 	 * Correspondiente al analizador Semantico:
@@ -633,8 +633,8 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		ID -> , identificador B2 ID
-	 * 		ID -> lambda
+	 * 		ID - , identificador B2 ID
+	 * 		ID - lambda
 	 * </pre>
 	 * 
 	 * Correspondiente al analizador Semantico:
@@ -670,9 +670,9 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		CASE -> case entero : C CASE									
-	 * 		CASE -> default : C
-	 *		CASE -> lambda
+	 * 		CASE - case entero : C CASE									
+	 * 		CASE - default : C
+	 *		CASE - lambda
 	 * </pre>
 	 * 
 	 * Correspondiente al analizador Semantico:
@@ -722,9 +722,9 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		T -> int
-	 * 		T -> bool
-	 * 		T -> chars
+	 * 		T - int
+	 * 		T - bool
+	 * 		T - chars
 	 * </pre>
 	 * 
 	 * Correspondiente al analizador Semantico:
@@ -753,7 +753,7 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		E -> G E2
+	 * 		E - G E2
 	 * </pre>
 	 * 
 	 * Correspondiente al analizador Semantico:
@@ -794,8 +794,8 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		E2 -> || G E2
-	 * 		E2 -> lambda
+	 * 		E2 - || G E2
+	 * 		E2 - lambda
 	 * </pre>
 	 * 
 	 * Correspondiente al analizador Semantico:
@@ -825,7 +825,7 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		G -> D G2
+	 * 		G - D G2
 	 * </pre>
 	 * 
 	 * Correspondiente al analizador Semantico:
@@ -866,8 +866,8 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		G2 -> && D G2
-	 *		G2 -> lambda
+	 * 		G2 - && D G2
+	 *		G2 - lambda
 	 * </pre>
 	 * 
 	 * Correspondiente al analizador Semantico:
@@ -898,7 +898,7 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		D -> I D2
+	 * 		D - I D2
 	 * </pre>
 	 * 
 	 * Correspondiente al analizador Semantico:
@@ -938,9 +938,9 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		D2 -> == I D2
-	 *		D2 -> != I D2
-	 *		D2 -> lambda
+	 * 		D2 - == I D2
+	 *		D2 - != I D2
+	 *		D2 - lambda
 	 * </pre>
 	 * 
 	 * Correspondiente al analizador Semantico:
@@ -969,7 +969,7 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		I -> J I2
+	 * 		I - J I2
 	 * </pre>
 	 * 
 	 * Correspondiente al analizador Semantico:
@@ -1009,11 +1009,11 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 *		I2 -> > J I2
-	 *		I2 -> >= J I2
-	 *		I2 -> < J I2
-	 *		I2 -> <= J I2
-	 *		I2 -> lambda
+	 *		I2 - > J I2
+	 *		I2 - >= J I2
+	 *		I2 - < J I2
+	 *		I2 - <= J I2
+	 *		I2 - lambda
 	 * </pre>
 	 * 
 	 * Correspondiente al analizador Semantico:
@@ -1087,7 +1087,7 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		J -> M J2
+	 * 		J - M J2
 	 * </pre>
 	 * 
 	 * Correspondiente al analizador Semantico:
@@ -1126,9 +1126,9 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		J2 -> + M J2
-	 *		J2 -> - M J2
-	 *		J2 -> lambda
+	 * 		J2 - + M J2
+	 *		J2 - - M J2
+	 *		J2 - lambda
 	 * </pre>
 	 * 
 	 * Correspondiente al analizador Semantico:
@@ -1182,7 +1182,7 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		M -> V M2
+	 * 		M - V M2
 	 * </pre>
 	 * 
 	 * Correspondiente al analizador Semantico:
@@ -1223,10 +1223,10 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		M2 -> * V M2
-	 *		M2 -> / V M2
-	 *		M2 -> % V M2
-	 *		M2 -> lambda
+	 * 		M2 - * V M2
+	 *		M2 - / V M2
+	 *		M2 - % V M2
+	 *		M2 - lambda
 	 * </pre>
 	 * 
 	 * Correspondiente al analizador Semantico:
@@ -1295,16 +1295,16 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		V -> identificador V2
-	 * 		V -> CTE_Entera
-	 * 		V -> cadena
-	 * 		V -> true
-	 * 		V -> false
-	 * 		V -> ( E )	
-	 * 		V -> INCDEC identificador		
-	 *		V -> + V
-	 *		V -> - V
-	 *		V -> ! V
+	 * 		V - identificador V2
+	 * 		V - CTE_Entera
+	 * 		V - cadena
+	 * 		V - true
+	 * 		V - false
+	 * 		V - ( E )	
+	 * 		V - INCDEC identificador		
+	 *		V - + V
+	 *		V - - V
+	 *		V - ! V
 	 * </pre>
 	 * 
 	 * Correspondiente al analizador Semantico:
@@ -1426,9 +1426,9 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		V2 -> ( L )
-	 * 		V2 -> lambda
-	 * 		V2 -> INCDEC
+	 * 		V2 - ( L )
+	 * 		V2 - lambda
+	 * 		V2 - INCDEC
 	 * </pre>
 	 * 
 	 * Correspondiente al analizador Semantico:
@@ -1476,8 +1476,8 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		L -> E Q
-	 * 		L -> lambda
+	 * 		L - E Q
+	 * 		L - lambda
 	 * </pre>
 	 * 
 	 * Correspondiente al analizador Semantico:
@@ -1515,7 +1515,7 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		L2 -> E Q
+	 * 		L2 - E Q
 	 * </pre>
 	 * 
 	 * Correspondiente al analizador Semantico:
@@ -1553,8 +1553,8 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		Q -> , E Q
-	 * 		Q -> lambda
+	 * 		Q - , E Q
+	 * 		Q - lambda
 	 * </pre>
 	 * 
 	 * Correspondiente al analizador Semantico:
@@ -1582,12 +1582,12 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		S -> identificador S2
-	 * 		S -> INCDEC identificador
-	 * 		S -> return X
-	 * 		S -> write ( L2 )
-	 * 		S -> prompt ( identificador )
-	 * 		S -> break
+	 * 		S - identificador S2
+	 * 		S - INCDEC identificador
+	 * 		S - return X
+	 * 		S - write ( L2 )
+	 * 		S - prompt ( identificador )
+	 * 		S - break
 	 * </pre>
 	 * 
 	 * Correspondiente al analizador Semantico:
@@ -1707,9 +1707,9 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		S2 -> ASIGNACION E
-	 * 		S2 -> ( L )
-	 * 		S2 -> INCDEC
+	 * 		S2 - ASIGNACION E
+	 * 		S2 - ( L )
+	 * 		S2 - INCDEC
 	 * </pre>
 	 */
 	private void s2(int indice) {
@@ -1768,8 +1768,8 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		X -> E
-	 * 		X -> lambda
+	 * 		X - E
+	 * 		X - lambda
 	 * </pre>
 	 * 
 	 * Correspondiente al analizador Semantico:
@@ -1799,7 +1799,7 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		F -> function H identificador ( A ) { C }
+	 * 		F - function H identificador ( A ) { C }
 	 * </pre>
 	 */
 	private void f() {
@@ -1855,8 +1855,8 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		A -> T identificador K
-	 * 		A -> lambda
+	 * 		A - T identificador K
+	 * 		A - lambda
 	 * </pre>
 	 * 
 	 * Correspondiente al analizador Semantico:
@@ -1895,8 +1895,8 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		K -> , T identificador K
-	 * 		K -> lambda
+	 * 		K - , T identificador K
+	 * 		K - lambda
 	 * </pre>
 	 */
 	private List<Pair<String, Boolean>> k() {
@@ -1926,8 +1926,8 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		C -> B C
-	 * 		C -> lambda
+	 * 		C - B C
+	 * 		C - lambda
 	 * </pre>
 	 * 
 	 * Correspondiente al analizador Semantico:
@@ -1980,8 +1980,8 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <pre>
-	 * 		H -> T
-	 * 		H -> lambda
+	 * 		H - T
+	 * 		H - lambda
 	 * </pre>
 	 */
 	private String h() {

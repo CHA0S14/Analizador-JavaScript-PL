@@ -56,6 +56,9 @@ public class TablaDeSimbolos {
 
 	/**
 	 * Metodo que crea una nueva tabla activa
+	 * 
+	 * @param nombre
+	 *            Nombre de la funcione a la que se le asigna la tabla de simbolos
 	 */
 	public static void nuevaTablaActiva(String nombre) {
 		tablaActiva = new DatosDeLaTablaDeSimbolos(idTabla, nombre);
@@ -162,8 +165,8 @@ public class TablaDeSimbolos {
 	 * @param valor
 	 *            valor del atributo a modificar
 	 * 
-	 * @param numParametro
-	 *            numero del parametro a modificar
+	 * @param modo
+	 *            modo del paso de parametros
 	 */
 	public static void insetarAtributo(int indice, String atributo, String valor, boolean modo) {
 		switch (atributo) {
@@ -240,10 +243,10 @@ public class TablaDeSimbolos {
 	 * @param indice
 	 *            Indice del identificador a modificar
 	 * @param valor
+	 *            Valor que se le quiere poner a isParam
 	 */
 	public static void insertarAtributoIsParam(int indice, boolean valor) {
 		obtenerTablaSegunIndice(indice).obtenerOperando(indice).setParam(valor);
-		;
 	}
 
 	/**
@@ -260,8 +263,8 @@ public class TablaDeSimbolos {
 	 * 				TablaDeSimbolos.BOOL
 	 *            </pre>
 	 * 
-	 * @param numParametro
-	 *            Numero del parametro a modificar
+	 * @param modo
+	 *            Modo de paso de parametros
 	 */
 	public static void insertarAtributoParametro(int indice, String valor, boolean modo) {
 		Entrada operando = obtenerTablaSegunIndice(indice).obtenerOperando(indice);
@@ -307,7 +310,8 @@ public class TablaDeSimbolos {
 	 * indice
 	 * 
 	 * @param indice
-	 *            indice de la tabla de simbolo >0 si tabla global o <0 si local
+	 *            indice de la tabla de simbolo mayor que 0 si tabla global o menor
+	 *            que 0 si local
 	 * @return Tipo del identificador
 	 */
 	public static String getTipoIndice(int indice) {
@@ -318,7 +322,8 @@ public class TablaDeSimbolos {
 	 * Metodo que devuelve la lista de parametros de un identificador dado su indice
 	 * 
 	 * @param indice
-	 *            indice de la tabla de simbolo >0 si tabla global o <0 si local
+	 *            indice de la tabla de simbolo mayor que 0 si tabla global o menor
+	 *            que 0 si local
 	 * @return Lista con los parametros
 	 */
 	public static List<String> getParamID(int indice) {
@@ -330,19 +335,21 @@ public class TablaDeSimbolos {
 	 * identificador
 	 * 
 	 * @param indice
-	 *            indice de la tabla de simbolo mayor que 0 si tabla global o menor que 0 si local
+	 *            indice de la tabla de simbolo mayor que 0 si tabla global o menor
+	 *            que 0 si local
 	 * @return String lexema del identificador
 	 */
 	public static String getLexemaIndice(int indice) {
 		return obtenerTablaSegunIndice(indice).obtenerOperando(indice).getLexema();
 	}
-	
+
 	/**
-	 * Metodo que devuelve el tipo return de un operando de la tabla de simbolos dado su
-	 * indice
+	 * Metodo que devuelve el tipo return de un operando de la tabla de simbolos
+	 * dado su indice
 	 * 
 	 * @param indice
-	 *            indice de la tabla de simbolo mayor que 0 si tabla global o menor que 0 si local
+	 *            indice de la tabla de simbolo mayor que 0 si tabla global o menor
+	 *            que 0 si local
 	 * @return Tipo del identificador
 	 */
 	public static String getTipoReturnIndice(int indice) {
