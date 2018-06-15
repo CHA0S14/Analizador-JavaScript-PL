@@ -8,7 +8,7 @@ En estos pasos se indicara como hacer una copia del proyecto preparado para func
 Para el proyecto se necesita tener instalado java 1.8 como minimo y un ide, en mi caso he usado Eclipse
 
 ### Pruebas
-El programa tiene una serie de test hecho, para usarlos tienes que tener JUnit en el proyecto y ejecutar cualquiera de los .java del paquete test
+El programa tiene una serie de test hecho, para usarlos tienes que tener JUnit en el proyecto e importado el jar de la carpeta [lib](https://github.com/CHA0S14/Analizador-JavaScript-PL/tree/master/lib) y ejecutar cualquiera de los .java del paquete test
 
 ### Utilización
 Para ejecutar el programa necesita un argumento el cual es el programa ha analizar, ademas necesita los ficheros TablaDeSimbolos.csv y agrupaciones.txt en la ruta donde se esta ejecutando.
@@ -16,4 +16,4 @@ Para ejecutar el programa necesita un argumento el cual es el programa ha analiz
 Existe un jar listo para ejecutar con los dos ficheros en la carpeta [build](https://github.com/CHA0S14/Analizador-JavaScript-PL/tree/master/build)
 
 ## Documentacion
-Se encuentra una documentacion del desarrollo en la carpeta [doc](https://github.com/CHA0S14/Analizador-JavaScript-PL/tree/master/doc), ademas de un javadoc
+Se encuentra una documentacion en pdf del desarrollo en la carpeta [doc](https://github.com/CHA0S14/Analizador-JavaScript-PL/tree/master/doc), ademas de un javadoc en la misma carpeta
